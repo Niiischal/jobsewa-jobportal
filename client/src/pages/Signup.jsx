@@ -4,7 +4,7 @@ import Input from "antd/es/input/Input";
 const Signup = () => {
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="form-container p-5 rounded-sm w-[350px] border-2 border-[#2a68ff]">
+      <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#2a68ff]">
         <h1 className="text-[30px] ">Create an Account</h1>
         <Form layout="vertical">
           <Form.Item label="Full Name" name="name" className="font-semibold">

@@ -14,6 +14,7 @@ root.render(
           components: {
             Button: {
               colorPrimary: "#2a68ff",
+              colorPrimaryHover: "#343a40",
               borderRadius: "3px"
             }
           }
