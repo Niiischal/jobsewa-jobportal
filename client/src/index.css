@@ -17,3 +17,18 @@ li{
   cursor: pointer;
   position: relative;
 }
+
+input{
+  height: 40px !important;
+  border: 1px solid #b9b9b9;
+}
+
+input:focus{
+  outline: none !important;
+  border: 1px solid #6a6a6a !important;
+  box-shadow: none !important;
+}
+
+button{
+  height: 40px !important;
+}

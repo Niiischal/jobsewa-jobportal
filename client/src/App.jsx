@@ -1,8 +1,9 @@
-import { Button } from "antd";
+
+import Signup from "./pages/Signup";
 function App() {
   return (
     <div>
-      <Button type="primary">Nischal</Button>
+      <Signup/>
     </div>
   );
 }
