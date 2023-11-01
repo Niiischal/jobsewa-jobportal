@@ -1,11 +1,12 @@
 import { Button, Form } from "antd";
 import Input from "antd/es/input/Input";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
     <div className="h-screen flex justify-center items-center">
-    <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#2a68ff]">
-      <h1 className="text-[30px] ">Login</h1>
+    <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#2a68ff] ">
+      <h1 className="text-[30px] my-2">Login</h1>
       <Form layout="vertical">
         <Form.Item label="Email" name="email" className="font-semibold">
           <Input type=" email" placeholder="Enter Your Email"></Input>
@@ -21,6 +22,7 @@ const Login = () => {
         <span>
             Not a Member?{" "}
           </span>
+          <Link to="/signup" className="text-[#2a68ff] hover:text-black">Create Account</Link>
         </div>
       </Form>
     </div>
