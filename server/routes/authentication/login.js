@@ -3,7 +3,7 @@ const User = require("../../models/userModel");
 const jwt = require("jsonwebtoken")
 
 //user login api
-router.post("/register", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
 
         // checking if user already exists
