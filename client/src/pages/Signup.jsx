@@ -10,11 +10,14 @@ const rules= [
 ]
 
 const Signup = () => {
+  const onFinish = (values) => {
+    console.log("Success: ", values)
+  }
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#2a68ff]">
         <h1 className="text-[30px]  my-2">Create an Account</h1>
-        <Form layout="vertical">
+        <Form layout="vertical" onFinish={onFinish}>
           <Form.Item label="Full Name" name="name" className="font-semibold" rules={rules}>
             <Input placeholder="Enter Your Full Name"></Input>
           </Form.Item>
