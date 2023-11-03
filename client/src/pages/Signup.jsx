@@ -1,5 +1,4 @@
-import { Button, Form, message } from "antd";
-import Input from "antd/es/input/Input";
+import { Button, Form, message, Input } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../apicalls/signup";
 
@@ -14,7 +13,11 @@ const Signup = () => {
   const onFinish = async (values) => {
     try {
       const response = await RegisterUser(values);
-      message.success(response.message);
+      if (response.success){
+        message.success(response.message);
+      } else{
+        throw new Error(response.message)
+      }
     } catch (error) {
       message.error(error.message);
     }
@@ -48,7 +51,7 @@ const Signup = () => {
           >
             <Input placeholder="Enter Your Password" type="password"></Input>
           </Form.Item>
-          <Button type="primary" htmlType="" block>
+          <Button type="primary" htmlType="submit" block>
             Sign Up
           </Button>
           <div className="mt-4 text-center text-base">

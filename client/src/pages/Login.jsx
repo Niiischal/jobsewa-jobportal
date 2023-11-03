@@ -1,5 +1,4 @@
-import { Button, Form } from "antd";
-import Input from "antd/es/input/Input";
+import { Button, Form, Input } from "antd";
 import { Link } from "react-router-dom";
 
 const rules= [
