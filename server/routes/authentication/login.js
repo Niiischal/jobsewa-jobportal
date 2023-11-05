@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const User = require("../../models/userModel");
 const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs");
 
 //user login api
-router.post("/login", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
 
         // checking if user already exists
@@ -26,7 +27,7 @@ router.post("/login", async (req, res) => {
 
         //send response
         res.send({
-            success: false,
+            success: true,
             message: "User logged in successfully",
             data: token,
           });
