@@ -3,7 +3,7 @@ const User = require("../../models/userModel");
 const bcrypt = require("bcryptjs");
 
 //user registration api
-router.post("/register", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     // checking whether the user already exists
     const user = await User.findOne({ email: req.body.email });
