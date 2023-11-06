@@ -18,6 +18,20 @@ li{
   position: relative;
 }
 
+li:hover::before{
+  position: absolute;
+  content: "";
+  height: 4px;
+  width: 100%;
+  background: #2a68ff;
+  right: 0;
+  color: #2a68ff;
+}
+
+.icon{
+  cursor: pointer;
+}
+
 input{
   height: 40px !important;
   border: 1px solid #b9b9b9;
