@@ -24,7 +24,7 @@ const Signup = () => {
   };
   return (
     <div className="h-screen flex justify-center items-center">
-      <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#2a68ff]">
+      <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#7a63f1]">
         <h1 className="text-[30px]  my-2">Create an Account</h1>
         <Form layout="vertical" onFinish={onFinish}>
           <Form.Item
@@ -56,7 +56,8 @@ const Signup = () => {
           </Button>
           <div className="mt-4 text-center text-base">
             <span>Already have an account? </span>
-            <Link to="/login">Log In</Link>
+            <Link to="/login"
+            className="text-[#7a63f1] hover:text-black">Log In</Link>
           </div>
         </Form>
       </div>
