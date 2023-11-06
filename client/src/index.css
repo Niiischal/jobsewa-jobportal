@@ -23,9 +23,10 @@ li:hover::before{
   content: "";
   height: 4px;
   width: 100%;
-  background: #2a68ff;
+  background: #7a63f1;
   right: 0;
-  color: #2a68ff;
+  bottom: -0px;
+  color: #7a63f1;
 }
 
 .icon{
