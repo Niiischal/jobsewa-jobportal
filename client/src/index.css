@@ -18,17 +18,6 @@ li{
   position: relative;
 }
 
-li:hover::before{
-  position: absolute;
-  content: "";
-  height: 4px;
-  width: 100%;
-  background: #7a63f1;
-  right: 0;
-  bottom: -0px;
-  color: #7a63f1;
-}
-
 .icon{
   cursor: pointer;
 }
