@@ -1,6 +1,7 @@
 import { Button, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 import { LoginUser } from "../apicalls/login";
+import Navbar from "../components/Navbar";
 
 const rules= [
   {
@@ -24,6 +25,8 @@ const Login = () => {
     }
   };
   return (
+    <>
+    <Navbar/>
     <div className="h-screen flex justify-center items-center">
     <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#7a63f1] ">
       <h1 className="text-[30px] my-2">Login</h1>
@@ -47,6 +50,7 @@ const Login = () => {
       </Form>
     </div>
   </div>
+  </>
   )
 }
 

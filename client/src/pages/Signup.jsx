@@ -1,6 +1,7 @@
 import { Button, Form, message, Input } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../apicalls/signup";
+import Navbar from "../components/Navbar";
 
 const rules = [
   {
@@ -23,7 +24,9 @@ const Signup = () => {
     }
   };
   return (
-    <div className="h-screen flex justify-center items-center">
+    <>
+    <Navbar/>
+    <div className=" h-screen flex justify-center items-center">
       <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#7a63f1]">
         <h1 className="text-[30px]  my-2">Create an Account</h1>
         <Form layout="vertical" onFinish={onFinish}>
@@ -62,6 +65,7 @@ const Signup = () => {
         </Form>
       </div>
     </div>
+    </>
   );
 };
 
