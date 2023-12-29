@@ -9,13 +9,10 @@ dbConfig();
 const port = process.env.PORT || 5000;
 
 // Available routes
-const registerRoute = require("./routes/authentication/signup"); 
-const loginRoute = require("./routes/authentication/login");
-const getUserRoute =  require("./routes/authentication/getUser");
+const userRoute = require("./routes/userRoute"); 
 
-app.use("/api/register", registerRoute); 
-app.use("/api/login", loginRoute);
-app.use("/api/getCurrentUser", getUserRoute);
+app.use("/api/users", userRoute); 
+
 
 
 app.listen(port, () =>

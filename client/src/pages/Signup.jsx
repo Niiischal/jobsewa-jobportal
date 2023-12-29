@@ -1,6 +1,6 @@
 import { Button, Checkbox, Col, Form, Input, Row, message } from "antd";
 import { Link } from "react-router-dom";
-import { RegisterUser } from "../apicalls/signup";
+import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 
 const rules = [

@@ -1,6 +1,6 @@
 import { Button, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
-import { LoginUser } from "../apicalls/login";
+import { LoginUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 
 const rules= [
