@@ -6,33 +6,42 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 //user registration api
 router.post("/register", async (req, res) => {
-  try {
-    // checking whether the user already exists
-    const user = await User.findOne({ email: req.body.email });
-    if (user) {
-      throw new Error("User already exists.");
-    }
-
-    // hashing password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt)
-    req.body.password = hashedPassword;
-
-    // create new user
-    const newUser = new User(req.body);
-    await newUser.save();
-    res.send({
+    try {
+      // Check if the user already exists
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        throw new Error("User already exists.");
+      }
+  
+      // Hash the password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      
+      // Extract the role from the request body, default to "user" if not provided
+      const roles = req.body.roles ? [req.body.roles] : ["user"];
+  
+      // Create a new user with the role information
+      const newUser = new User({
+        ...req.body,
+        password: hashedPassword,
+        roles: roles,
+      });
+  
+      // Save the new user to the database
+      await newUser.save();
+  
+      res.send({
         success: true,
         message: "User created successfully",
       });
-
-  } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
-  }
-});
+    } catch (error) {
+      res.send({
+        success: false,
+        message: error.message,
+      });
+    }
+  });
+  
 
 //user login api
 router.post("/login", async (req, res) => {
