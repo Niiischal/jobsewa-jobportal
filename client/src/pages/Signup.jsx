@@ -1,7 +1,8 @@
-import { Button, Checkbox, Col, Form, Input, Row, message } from "antd";
+import { Button, Radio, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const rules = [
   {
@@ -11,11 +12,22 @@ const rules = [
 ];
 
 const Signup = () => {
+  const navigate = useNavigate();
+  
   const onFinish = async (values) => {
     try {
-      const response = await RegisterUser(values);
+      // Extract the selected role from the values object
+      const selectedRole = values.role;
+
+      // Make the API call with the extracted values
+      const response = await RegisterUser({
+        ...values,
+        roles: [selectedRole],
+      });
+
       if (response.success) {
         message.success(response.message);
+        navigate("/login");
       } else {
         throw new Error(response.message);
       }
@@ -55,26 +67,17 @@ const Signup = () => {
             >
               <Input placeholder="Enter Your Password" type="password" />
             </Form.Item>
-            <Row gutter={24}>
-              <Col span={12}>
-                <Form.Item
-                  name="jobSeeker"
-                  valuePropName="checked"
-                  initialValue={false}
-                >
-                  <Checkbox>Job Seeker</Checkbox>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="jobProvider"
-                  valuePropName="checked"
-                  initialValue={false}
-                >
-                  <Checkbox>Job Provider</Checkbox>
-                </Form.Item>
-              </Col>
-            </Row>
+            <Form.Item
+              label="Select Role"
+              name="role"
+              className="font-semibold"
+              rules={rules}
+            >
+              <Radio.Group>
+                <Radio value="jobSeeker">Job Seeker</Radio>
+                <Radio value="jobProvider">Job Provider</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Button type="primary" htmlType="submit" block>
               Sign Up
             </Button>
