@@ -40,7 +40,7 @@ const Signup = () => {
     <>
       <Navbar />
       <div className="h-screen flex justify-center items-center">
-        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#7a63f1]">
+        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary">
           <h1 className="text-[30px] my-2">Create an Account</h1>
           <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
@@ -78,12 +78,12 @@ const Signup = () => {
                 <Radio value="jobProvider">Job Provider</Radio>
               </Radio.Group>
             </Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" className="bg-primary"block>
               Sign Up
             </Button>
             <div className="mt-4 text-center text-base">
               <span>Already have an account? </span>
-              <Link to="/login" className="text-[#7a63f1] hover:text-black">
+              <Link to="/login" className="text-primary hover:text-black">
                 Log In
               </Link>
             </div>

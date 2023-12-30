@@ -8,8 +8,8 @@ const Navbar = () => {
           <Link to='/' className="no-underline"><h1 className="logo text-[27px] text-primary">JobSewa</h1></Link>
         </div>
         <div className="nav-items flex gap-9 items-center">
-            <li className=" hover:text-primary text-primary text-[1.1rem] ">Login</li>
-            <li className=""><Button type="primary">Post A Job</Button></li>
+            <li className=" hover:text-black text-primary text-[1.1rem] ">Login</li>
+            <li className=""><Button type="primary" className="bg-primary"class>Post A Job</Button></li>
         </div>
       </div>
   );

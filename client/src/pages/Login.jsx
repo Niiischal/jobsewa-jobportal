@@ -28,7 +28,7 @@ const Login = () => {
     <>
     <Navbar/>
     <div className="h-screen flex justify-center items-center">
-    <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-[#7a63f1] ">
+    <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary ">
       <h1 className="text-[30px] my-2">Login</h1>
       <Form layout="vertical" onFinish={onFinish}>
         <Form.Item label="Email" name="email" className="font-semibold" rules={rules}>
@@ -38,14 +38,14 @@ const Login = () => {
           <Input placeholder="Enter Your Password" type="password"></Input>
           {/* <li className="mt-3">Forgot Password?</li> */}
         </Form.Item>
-        <Button type="primary" htmlType="" block>
+        <Button type="primary" className="bg-primary" htmlType="" block>
           Sign In
         </Button>
         <div className="mt-4 text-center text-base">
         <span>
             Not a Member?{" "}
           </span>
-          <Link to="/register" className="text-[#7a63f1] hover:text-black">Create Account</Link>
+          <Link to="/register" className="text-primary hover:text-black">Create Account</Link>
         </div>
       </Form>
     </div>
