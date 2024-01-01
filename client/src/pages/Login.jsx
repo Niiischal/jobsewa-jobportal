@@ -36,7 +36,7 @@ const Login = () => {
         </Form.Item>
         <Form.Item label="Password" name="password" className="font-semibold" rules={rules}>
           <Input placeholder="Enter Your Password" type="password"></Input>
-          <li className="mt-2 font-semibold hover:text-primary">Forgot Password?</li>
+          {/* <li className="mt-2 font-semibold hover:text-primary">Forgot Password?</li> */}
         </Form.Item>
         <Button type="primary" className="bg-primary" htmlType="" block>
           Sign In
