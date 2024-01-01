@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ProtectedPage from "./components/ProtectedPage";
-import ProtectedHome from "./pages/JobSeeker/Home"
+import ProtectedHome from "./pages/JobSeeker/Home";
 
 function App() {
   return (
@@ -13,9 +13,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
-          <Route path="/jobseeker-home" element={<ProtectedPage>
-            <ProtectedHome />
-          </ProtectedPage>}/>
+          <Route
+            path="/jobseeker-home"
+            element={
+              <ProtectedPage>
+                <ProtectedHome />
+              </ProtectedPage>
+            }
+          />
         </Routes>
       </Router>
     </div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const rules = [
   {
@@ -35,6 +36,12 @@ const Signup = () => {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/jobseeker-home")
+    }
+  })
 
   return (
     <>

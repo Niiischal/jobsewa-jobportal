@@ -2,6 +2,8 @@ import { Button, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 import { LoginUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const rules= [
   {
@@ -11,12 +13,14 @@ const rules= [
 ]
 
 const Login = () => {
+  const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
       const response = await LoginUser(values);
       if (response.success){
         message.success(response.message);
-        localStorage.setItem("token", response.data)
+        localStorage.setItem("token", response.data);
+        window.location.href = "/jobseeker-home";
       } else{
         throw new Error(response.message)
       }
@@ -24,6 +28,13 @@ const Login = () => {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/jobseeker-home")
+    }
+  })
+
   return (
     <>
     <Navbar label="Signup"/>

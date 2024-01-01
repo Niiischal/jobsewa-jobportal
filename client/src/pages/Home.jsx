@@ -3,7 +3,7 @@ import SideNavbar from '../components/SideNavbar'
 const Home = () => {
   return (
     <div>
-      <Navbar/>
+      <Navbar label="login"/>
       <SideNavbar/>
     </div>
   )
