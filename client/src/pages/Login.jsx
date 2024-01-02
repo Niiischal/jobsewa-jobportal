@@ -1,9 +1,8 @@
 import { Button, Form, Input, message } from "antd";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const rules= [
   {

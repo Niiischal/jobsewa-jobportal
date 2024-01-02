@@ -1,0 +1,77 @@
+import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
+function OTP() {
+  const [email, setEmail] = useState("");
+  const [otp, setOTP] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  const rules = [{ required: true, message: "This field is required" }];
+  return (
+    <>
+      <Navbar />
+      <div className="h-screen flex justify-center items-center">
+        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary ">
+          <h1 className="text-[30px] my-2">OTP Verification</h1>
+          <p className="font-medium text-base my-3">
+            Enter the provided OTP to reset password
+          </p>
+          <Form layout="vertical">
+            <Form.Item
+              label="Email"
+              name="email"
+              className="font-semibold"
+              rules={rules}
+            >
+              <Input
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              label="OTP"
+              name="otp"
+              className="font-semibold"
+              rules={rules}
+            >
+              <Input
+                placeholder="OTP"
+                value={otp}
+                onChange={(e) => setOTP(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item
+              label="New Password"
+              name="newPassword"
+              className="font-semibold"
+              rules={rules}
+            >
+              <Input.Password
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </Form.Item>
+            <Button
+              type="primary"
+              className="bg-primary"
+              htmlType="submit"
+              block
+            >
+              Reset Password
+            </Button>
+            <div className="mt-4 text-center text-base">
+              <Link to="/login" className="text-primary hover:text-black">
+                Back to login
+              </Link>
+            </div>
+          </Form>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default OTP;
