@@ -51,7 +51,7 @@ const Login = () => {
         <Button type="primary" className="bg-primary" htmlType="" block>
           Sign In
         </Button>
-        <Link to="forgotPassword" className="mt-5 text-black font-semibold">Forgot your Password?</Link>
+        <Link to="/forgotPassword" className="mt-5 text-black font-semibold">Forgot your Password?</Link>
         <div className="mt-4 text-center text-base">
         <span>
             Not a Member?{" "}
