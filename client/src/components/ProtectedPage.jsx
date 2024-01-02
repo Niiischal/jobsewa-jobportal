@@ -37,6 +37,7 @@ function ProtectedPage({ children }) {
           {children}
         </div>
       )}
+      <h1>Hellooooo</h1>
     </div>
   );
 }
