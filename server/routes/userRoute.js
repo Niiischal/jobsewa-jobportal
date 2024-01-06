@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
+const nodemailer = require("nodemailer");
 
 //user registration api
 router.post("/register", async (req, res) => {
@@ -118,31 +119,31 @@ router.post("/forgot-password", async (req, res) => {
     // Unique OTP generation if the user doesn't have one
     if (!user.secretOTP) {
       const otp = generateOTP(6);
-    }
 
     //saving the secretOTP in the database
-    user.secretOTP = OTP;
+    user.secretOTP = otp;
     await user.save();
+    }
 
     //get otp from the user document
-    const OTP = user.secretOTP;
+    const otp = user.secretOTP;
 
     // sending otp in the email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "jobSewa@gmail.com",
-        pass: "lywt yrad pvnd ubog",
+        user: "jobsewanp@gmail.com",
+        pass: "zowv hopz ugmd dtgq",
       },
     });
 
     const mailOptions = {
-      from: "jobSewa@gmail.com",
+      from: "jobsewanp@gmail.com",
       to: user.email,
       subject: "OTP to reset your password",
       html: `
       <p>Hi ${user.name},</p>
-      <p>We received a request to reset your password. To reset your password, use this OTP: <strong>${OTP}</strong></p>
+      <p>We received a request to reset your password. To reset your password, use this OTP: <strong>${otp}</strong></p>
       <p>Thank you!<br>JobSewa Support Team</p>
       `,
     };
@@ -152,14 +153,14 @@ router.post("/forgot-password", async (req, res) => {
     res.send(
       {
         success: true,
-        message: "OPT sent in your email",
+        message: "OTP sent in your email",
       }
     )
   } catch (error) {
     res.send(
       {
         success: false,
-        message: "error.message",
+        message: error.message,
       }
     )
   }
