@@ -36,3 +36,15 @@ export const forgotPassword = async (payload) => {
     return { success: false, message: error.message };
   }
 };
+
+//OTP verification and update password
+export const VerificationOTP = async (payload) => {
+  try {
+    const response = await axiosInstance.post('/api/users/verification-OTP', payload);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
+
