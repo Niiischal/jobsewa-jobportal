@@ -13,18 +13,18 @@ function OTP() {
 
   const onFinish = async () => {
     try {
-      const response =  await VerificationOTP({email, otp, newPassword})
+      const response = await VerificationOTP({ email, otp, newPassword });
       if (response.success) {
         message.success(response.message);
         // navigate the user to login if the password is updated successfully
-        navigate("/login")
+        navigate("/login");
       } else {
-        throw new Error(response.message)
+        throw new Error(response.message);
       }
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   return (
     <>
       <Navbar />

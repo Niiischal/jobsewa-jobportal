@@ -1,12 +1,12 @@
-import Navbar from "../components/Navbar"
-import SideNavbar from '../components/SideNavbar'
+import Navbar from "../components/Navbar";
+import SideNavbar from "../components/SideNavbar";
 const Home = () => {
   return (
     <div>
-      <Navbar label="login"/>
-      <SideNavbar/>
+      <Navbar label="login" />
+      <SideNavbar />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -1,9 +1,8 @@
 import { Button, Form, Input, message } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../apicalls/users";
+import Navbar from "../components/Navbar";
 
 function ForgotPassword() {
   const rules = [{ required: true, message: "This field is required" }];

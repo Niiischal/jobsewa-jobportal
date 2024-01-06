@@ -55,7 +55,10 @@ const Login = () => {
               className="font-semibold"
               rules={rules}
             >
-              <Input placeholder="Enter Your Password" type="password"></Input>
+              <Input.Password
+                placeholder="Enter Your Password"
+                type="password"
+              ></Input.Password>
             </Form.Item>
             <Button type="primary" className="bg-primary" htmlType="" block>
               Sign In

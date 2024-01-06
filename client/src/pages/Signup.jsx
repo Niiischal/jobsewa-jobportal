@@ -1,9 +1,8 @@
-import { Button, Radio, Form, Input, message } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, Radio, message } from "antd";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 const rules = [
   {
@@ -14,7 +13,7 @@ const rules = [
 
 const Signup = () => {
   const navigate = useNavigate();
-  
+
   const onFinish = async (values) => {
     try {
       // Extract the selected role from the values object
@@ -39,13 +38,13 @@ const Signup = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      navigate("/jobseeker-home")
+      navigate("/jobseeker-home");
     }
-  })
+  });
 
   return (
     <>
-      <Navbar label="Login"/>
+      <Navbar label="Login" />
       <div className="h-screen flex justify-center items-center">
         <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary">
           <h1 className="text-[30px] my-2">Create an Account</h1>
@@ -72,7 +71,10 @@ const Signup = () => {
               className="font-semibold"
               rules={rules}
             >
-              <Input placeholder="Enter Your Password" type="password" />
+              <Input.Password
+                placeholder="Enter Your Password"
+                type="password"
+              />
             </Form.Item>
             <Form.Item
               label="Select Role"
@@ -85,7 +87,12 @@ const Signup = () => {
                 <Radio value="jobProvider">Job Provider</Radio>
               </Radio.Group>
             </Form.Item>
-            <Button type="primary" htmlType="submit" className="bg-primary"block>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-primary"
+              block
+            >
               Sign Up
             </Button>
             <div className="mt-4 text-center text-base">
