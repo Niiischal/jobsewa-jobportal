@@ -2,9 +2,26 @@ import { Button, Form, Input, message } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../apicalls/users";
 
 function ForgotPassword() {
   const rules = [{ required: true, message: "This field is required" }];
+
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      const response = await forgotPassword(values);
+      if (response.success) {
+        message.success(response.message);
+        navigate("/verifyOTP");
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   return (
     <>
       <Navbar />
@@ -14,7 +31,7 @@ function ForgotPassword() {
           <p className="font-medium text-base my-3">
             Enter your email to reset your password
           </p>
-          <Form layout="vertical">
+          <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
               label="Email"
               name="email"

@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import ProtectedPage from "./components/ProtectedPage";
-import ProtectedHome from "./pages/JobSeeker/Home";
 import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/OTP"
+import Home from "./pages/Home";
+import ProtectedHome from "./pages/JobSeeker/Home";
+import Login from "./pages/Login";
+import OTPVerification from "./pages/OTP";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword/>} />
-          <Route path="/resetPassword" element= {<ResetPassword/>} />
+          <Route path="/verifyOTP" element= {<OTPVerification/>} />
           <Route
             path="/jobseeker-home"
             element={

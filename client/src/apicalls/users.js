@@ -26,3 +26,13 @@ export const GetCurrentUser = async () => {
     return error.message;
   }
 };
+
+//forgot password
+export const forgotPassword = async (payload) => {
+  try {
+    const response = await axiosInstance.post('/api/users/forgot-password', payload);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
