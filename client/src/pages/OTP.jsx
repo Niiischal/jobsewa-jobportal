@@ -1,13 +1,30 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { VerificationOTP } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 function OTP() {
   const [email, setEmail] = useState("");
   const [otp, setOTP] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const navigate = useNavigate();
 
   const rules = [{ required: true, message: "This field is required" }];
+
+  const onFinish = async () => {
+    try {
+      const response =  await VerificationOTP({email, otp, newPassword})
+      if (response.success) {
+        message.success(response.message);
+        // navigate the user to login if the password is updated successfully
+        navigate("/login")
+      } else {
+        throw new Error(response.message)
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+  }
   return (
     <>
       <Navbar />
@@ -17,7 +34,7 @@ function OTP() {
           <p className="font-medium text-base my-3">
             Enter the provided OTP to reset password
           </p>
-          <Form layout="vertical">
+          <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
               label="Email"
               name="email"

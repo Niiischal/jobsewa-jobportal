@@ -166,4 +166,43 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
+// OTP verification and password update api
+router.post("/verification-OTP", async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("User does not exist");
+    }
+
+    // Verify the OTP
+    if (user.secretOTP !== otp) {
+      throw new Error("Invalid OTP");
+    }
+
+    // Update the user's password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    // Clear the OTP-related fields
+    user.secretOTP = null;
+
+    // Save the updated user
+    await user.save();
+
+    // Send a success response
+    res.send({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    // Send an error response
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
