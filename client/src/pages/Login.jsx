@@ -38,7 +38,7 @@ const Login = () => {
     <>
       <Navbar label="Signup" />
       <div className="h-screen flex justify-center items-center">
-        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary ">
+        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fcfdfd]">
           <h1 className="text-[30px] my-2">Login</h1>
           <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
@@ -60,7 +60,7 @@ const Login = () => {
                 type="password"
               ></Input.Password>
             </Form.Item>
-            <Button type="primary" className="bg-primary" htmlType="" block>
+            <Button type="primary" htmlType="" block>
               Sign In
             </Button>
             <Link

@@ -13,9 +13,12 @@ root.render(
         {
           components: {
             Button: {
-              colorPrimary: "#7a63f1",
+              colorPrimary: "#2a68ff",
               colorPrimaryHover: "#343a40",
               borderRadius: "3px"
+            },
+            token: {
+              colorPrimary: "#2a68ff"
             }
           }
         }
