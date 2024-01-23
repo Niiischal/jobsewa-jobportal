@@ -1,10 +1,12 @@
 import Navbar from "../components/Navbar";
-import SideNavbar from "../components/SideNavbar";
+import Search from "../components/SearchBar"
 const Home = () => {
   return (
     <div>
       <Navbar label="login" />
-      <SideNavbar />
+      <div className="flex justify-center items-center pt-5">
+        <Search/>
+      </div>
     </div>
   );
 };
