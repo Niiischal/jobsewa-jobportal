@@ -11,7 +11,8 @@ function SearchBar() {
       enterButton="Search"
       size="large"
       onSearch={onSearch}
-      className='w-[500px]'
+      className='w-[550px]'
+      variant="none"
     />
   )
 }
