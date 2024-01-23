@@ -8,8 +8,13 @@ const Navbar = (props) => {
           <Link to='/' className="no-underline"><h1 className="logo text-[27px] text-primary">JobSewa</h1></Link>
         </div>
         <div className="nav-items flex gap-9 items-center">
-            <li className=" hover:text-black text-primary text-[1.1rem] ">{props.label}</li>
-            <li className=""><Button type="primary" className="bg-primary"class>Post A Job</Button></li>
+          <Link to='/login'>
+          <li className=" hover:text-black text-primary text-[1.2rem] ">{props.label}</li>
+          </Link>
+            <Link to=''>
+            <Button type="primary" className="bg-primary"class>Post A Job</Button>
+            </Link>
+            
         </div>
       </div>
   );

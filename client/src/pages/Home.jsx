@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <div>
       <Navbar label="login"/>
-      <div className="flex flex-col items-center ">
+      <div className="flex flex-col items-center bg-[#e7e8e8]">
         <h1 className="mr-10">
           Find the <span className="text-primary">right</span> job <span className="text-primary">.</span>
         </h1>
