@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
 
 function ProtectedPage({ children }) {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState();
   const navigate = useNavigate();
 
   const validateToken = async () => {
@@ -30,15 +30,12 @@ function ProtectedPage({ children }) {
   });
 
   return (
-    <div>
-      {user && (
-        <div className="p-5">
-          {user.name}
-          {children}
-        </div>
-      )}
-      <h1>Hellooooo</h1>
-    </div>
+    user && (
+      <div>
+        
+        <div className="p-5">{children}</div>
+      </div>
+    )
   );
 }
 
