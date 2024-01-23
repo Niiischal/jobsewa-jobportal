@@ -44,7 +44,7 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar label="Login" />
+      <Navbar/>
       <div className="h-screen flex justify-center items-center">
         <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fdffff]">
           <h1 className="text-[30px] my-2">Create an Account</h1>
