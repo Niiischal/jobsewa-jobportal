@@ -1,4 +1,5 @@
-import { message } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar, Dropdown, Menu } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
@@ -14,7 +15,6 @@ function ProtectedPage({ children }) {
         setUser(response.data);
       } else {
         navigate("/login");
-        message.error(response.message);
       }
     } catch (error) {
       navigate("/login");
@@ -27,12 +27,31 @@ function ProtectedPage({ children }) {
     } else {
       navigate("/login");
     }
-  });
+  }, []);
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">My profile</Menu.Item>
+      <Menu.Item key="2">Logout</Menu.Item>
+    </Menu>
+  );
 
   return (
     user && (
       <div>
-        
+        {/* header */}
+        <div className="flex justify-between items-center bg-primary">
+          <h1>Helooooooooooo</h1>
+
+          {/* Ant Design Dropdown for user information */}
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <div className="cursor-pointer">
+              <Avatar icon={<UserOutlined />} />
+            </div>
+          </Dropdown>
+        </div>
+
+        {/* body */}
         <div className="p-5">{children}</div>
       </div>
     )
