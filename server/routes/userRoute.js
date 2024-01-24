@@ -18,8 +18,8 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-    // Extract the role from the request body, default to "user" if not provided
-    const roles = req.body.roles ? [req.body.roles] : ["user"];
+    // Extract the role from the request body, default to "jobSeeker" if not provided
+    const roles = req.body.roles ? [req.body.roles] : ["jobSeeker"];
 
     // Create a new user with the role information
     const newUser = new User({
@@ -83,7 +83,16 @@ router.post("/login", async (req, res) => {
 // get current user api
 router.get("/get-current-user", authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.body.userId);
+    const userId = req.body.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.send({
+        success: false,
+        message: "User not found",
+      });
+    }
+
     res.send({
       success: true,
       message: "User retrieved successfully",
@@ -120,9 +129,9 @@ router.post("/forgot-password", async (req, res) => {
     if (!user.secretOTP) {
       const otp = generateOTP(6);
 
-    //saving the secretOTP in the database
-    user.secretOTP = otp;
-    await user.save();
+      //saving the secretOTP in the database
+      user.secretOTP = otp;
+      await user.save();
     }
 
     //get otp from the user document
@@ -150,19 +159,15 @@ router.post("/forgot-password", async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    res.send(
-      {
-        success: true,
-        message: "OTP sent in your email",
-      }
-    )
+    res.send({
+      success: true,
+      message: "OTP sent in your email",
+    });
   } catch (error) {
-    res.send(
-      {
-        success: false,
-        message: error.message,
-      }
-    )
+    res.send({
+      success: false,
+      message: error.message,
+    });
   }
 });
 
