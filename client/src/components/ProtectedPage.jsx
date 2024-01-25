@@ -1,7 +1,9 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { BiUser } from "react-icons/bi";
+import { MdOutlineLogout } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
 
 function ProtectedPage({ children }) {
@@ -29,10 +31,20 @@ function ProtectedPage({ children }) {
     }
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login")
+  }
+
   const menu = (
     <Menu>
-      <Menu.Item key="1">My profile</Menu.Item>
-      <Menu.Item key="2">Logout</Menu.Item>
+      <Menu.Item key="1"
+      icon={<BiUser size={18} />}>My profile</Menu.Item>
+      <Menu.Item key="2"
+      icon={<MdOutlineLogout size={18} />}
+      onClick={() => {
+        handleLogout();
+      }}>Logout</Menu.Item>
     </Menu>
   );
 
@@ -40,13 +52,15 @@ function ProtectedPage({ children }) {
     user && (
       <div>
         {/* header */}
-        <div className="flex justify-between items-center bg-primary">
-          <h1>Helooooooooooo</h1>
+        <div className="flex justify-between items-center pl-[2rem] pr-[2rem] border-solid  border-primary">
+        <div className="logo-div">
+          <Link to='/jobseeker-home' className="no-underline"><h1 className="logo text-[27px] text-primary">JobSewa</h1></Link>
+        </div>
 
           {/* Ant Design Dropdown for user information */}
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="cursor-pointer">
-              <Avatar icon={<UserOutlined />} />
+            <Avatar icon={<UserOutlined style={{ color: 'black' }} />} />
             </div>
           </Dropdown>
         </div>
