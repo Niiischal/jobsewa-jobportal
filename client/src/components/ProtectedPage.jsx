@@ -10,7 +10,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
+import UploadResume from "./UploadResume";
+
 const { Search } = Input;
+const { TabPane } = Tabs;
 
 function ProtectedPage({ children }) {
   const { user } = useSelector((state) => state.users);
@@ -101,49 +104,46 @@ function ProtectedPage({ children }) {
 
         {/* navigation */}
         {user.role === "jobSeeker" && (
-          <div className="navigation pl-[2rem] pr-[2rem] flex justify-between">
-            <Tabs
-            type="card"
-              defaultActiveKey="1"
-              items={[
-                {
-                  key: "1",
-                  label: "Job Seeker Tab 1",
-                  icon: <AppleOutlined />,
-                },
-                {
-                  key: "2",
-                  label: "Job Seeker Tab 2",
-                  icon: <AndroidOutlined />,
-                }
-              ]}
-            />
-            <Tabs
-              defaultActiveKey="1"
-              items={[
-                { key: "1", label: "Post a Job", icon: <AppleOutlined /> },
-              ]}
-            />
+          <div className="navigation pl-[2rem] pr-[2rem]">
+            <Tabs defaultActiveKey="1">
+              <Tabs.TabPane tab="Upload Resume" key="1">
+                <div className="flex justify-center items-center">
+                <UploadResume />
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">
+                {/* Content for Job Seeker Tab 2 */}
+              </Tabs.TabPane>
+            </Tabs>
           </div>
         )}
 
         {user.role === "jobProvider" && (
           <div className="navigation pl-[2rem] pr-[2rem]">
-            <Tabs
-              defaultActiveKey="1"
-              items={[
-                {
-                  key: "1",
-                  label: "Job Provider Tab 1",
-                  icon: <AppleOutlined />,
-                },
-                {
-                  key: "2",
-                  label: "Job Provider Tab 2",
-                  icon: <AndroidOutlined />,
-                },
-              ]}
-            />
+            <Tabs defaultActiveKey="1">
+              <TabPane
+                tab={
+                  <span>
+                    <AppleOutlined />
+                    Job Provider Tab 1
+                  </span>
+                }
+                key="1"
+              >
+                {/* Content for Job Provider Tab 1 */}
+              </TabPane>
+              <TabPane
+                tab={
+                  <span>
+                    <AndroidOutlined />
+                    Job Provider Tab 2
+                  </span>
+                }
+                key="2"
+              >
+                {/* Content for Job Provider Tab 2 */}
+              </TabPane>
+            </Tabs>
           </div>
         )}
 
