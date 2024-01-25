@@ -6,11 +6,12 @@ import { MdOutlineLogout } from "react-icons/md";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetLoader } from "../redux/loadersSlice";
+import { SetUser } from "../redux/usersSlice";
 
 function ProtectedPage({ children }) {
-  const [user, setUser] = useState();
+  const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,7 +21,7 @@ function ProtectedPage({ children }) {
       const response = await GetCurrentUser();
       dispatch(SetLoader(false))
       if (response.success) {
-        setUser(response.data);
+        dispatch(SetUser(response.data))
       } else {
         navigate("/login");
       }
