@@ -71,7 +71,7 @@ const Login = () => {
             </Button>
             <Link
               to="/forgotPassword"
-              className="mt-5 text-black font-semibold"
+              className="flex flex-col items-end text-black"
             >
               Forgot your Password?
             </Link>
