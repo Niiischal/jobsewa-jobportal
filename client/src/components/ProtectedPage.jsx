@@ -1,10 +1,10 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Dropdown, Input, Menu, Space, Button } from "antd";
+import { AndroidOutlined, AppleOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Input, Menu, Space, Tabs } from "antd";
 import React, { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineLogout } from "react-icons/md";
+import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
@@ -24,6 +24,10 @@ function ProtectedPage({ children }) {
       dispatch(SetLoader(false));
       if (response.success) {
         dispatch(SetUser(response.data));
+        if (response.data.role === "jobProvider") {
+          // Redirect to the job provider dashboard
+          navigate("/jobprovider-home");
+        }
       } else {
         navigate("/login");
       }
@@ -94,6 +98,54 @@ function ProtectedPage({ children }) {
             </div>
           </Dropdown>
         </div>
+
+        {/* navigation */}
+        {user.role === "jobSeeker" && (
+          <div className="navigation pl-[2rem] pr-[2rem] flex justify-between">
+            <Tabs
+            type="card"
+              defaultActiveKey="1"
+              items={[
+                {
+                  key: "1",
+                  label: "Job Seeker Tab 1",
+                  icon: <AppleOutlined />,
+                },
+                {
+                  key: "2",
+                  label: "Job Seeker Tab 2",
+                  icon: <AndroidOutlined />,
+                }
+              ]}
+            />
+            <Tabs
+              defaultActiveKey="1"
+              items={[
+                { key: "1", label: "Post a Job", icon: <AppleOutlined /> },
+              ]}
+            />
+          </div>
+        )}
+
+        {user.role === "jobProvider" && (
+          <div className="navigation pl-[2rem] pr-[2rem]">
+            <Tabs
+              defaultActiveKey="1"
+              items={[
+                {
+                  key: "1",
+                  label: "Job Provider Tab 1",
+                  icon: <AppleOutlined />,
+                },
+                {
+                  key: "2",
+                  label: "Job Provider Tab 2",
+                  icon: <AndroidOutlined />,
+                },
+              ]}
+            />
+          </div>
+        )}
 
         {/* body */}
         <div className="p-5">{children}</div>
