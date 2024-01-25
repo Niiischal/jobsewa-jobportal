@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
+import { useDispatch } from "react-redux";
+import { SetLoader } from "../redux/loadersSlice";
 
 const rules = [
   {
@@ -13,9 +15,10 @@ const rules = [
 
 const Signup = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
+      dispatch(SetLoader(true))
       // Extract the selected role from the values object
       const selectedRole = values.role;
 
@@ -24,7 +27,7 @@ const Signup = () => {
         ...values,
         roles: [selectedRole],
       });
-
+      dispatch(SetLoader(false))
       if (response.success) {
         message.success(response.message);
         navigate("/login");
@@ -32,6 +35,7 @@ const Signup = () => {
         throw new Error(response.message);
       }
     } catch (error) {
+      dispatch(SetLoader(false))
       message.error(error.message);
     }
   };

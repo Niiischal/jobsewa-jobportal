@@ -3,22 +3,29 @@ import { Avatar, Dropdown, Menu } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiUser } from "react-icons/bi";
 import { MdOutlineLogout } from "react-icons/md";
+import { IoIosHeartEmpty } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
+import { useDispatch } from "react-redux";
+import { SetLoader } from "../redux/loadersSlice";
 
 function ProtectedPage({ children }) {
   const [user, setUser] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validateToken = async () => {
     try {
+      dispatch(SetLoader(true))
       const response = await GetCurrentUser();
+      dispatch(SetLoader(false))
       if (response.success) {
         setUser(response.data);
       } else {
         navigate("/login");
       }
     } catch (error) {
+      dispatch(SetLoader(false))
       navigate("/login");
     }
   };
@@ -45,6 +52,8 @@ function ProtectedPage({ children }) {
       onClick={() => {
         handleLogout();
       }}>Logout</Menu.Item>
+      <Menu.Item key="3"
+      icon={<IoIosHeartEmpty size={18}/>}>My Jobs</Menu.Item>
     </Menu>
   );
 
@@ -60,7 +69,7 @@ function ProtectedPage({ children }) {
           {/* Ant Design Dropdown for user information */}
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="cursor-pointer">
-            <Avatar icon={<UserOutlined style={{ color: 'black' }} />} />
+            <Avatar icon={<UserOutlined style={{ color: 'black' }} shape="square" />} />
             </div>
           </Dropdown>
         </div>
