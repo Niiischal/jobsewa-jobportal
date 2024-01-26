@@ -210,4 +210,10 @@ router.post("/verification-OTP", async (req, res) => {
   }
 });
 
+// pdf upload api
+router.post("/resume-upload", async(req, res) => {
+  
+}
+)
+
 module.exports = router;
