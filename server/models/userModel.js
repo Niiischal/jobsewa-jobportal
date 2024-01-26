@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema(
     secretOTP: {
       type: String,
     },
+    pdf: {
+      type: String,
+    },
   },
   {
     timestamps: true,
