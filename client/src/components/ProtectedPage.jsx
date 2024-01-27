@@ -10,12 +10,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
-import UploadResume from "./UploadResume";
+import Resume from "../pages/JobSeeker/Resume"
 
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-function ProtectedPage({ children }) {
+function ProtectedPage({ children}) {
   const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -108,7 +108,7 @@ function ProtectedPage({ children }) {
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Upload Resume" key="1">
                 <div className="flex justify-center items-center">
-                <UploadResume />
+                <Resume/>
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">
