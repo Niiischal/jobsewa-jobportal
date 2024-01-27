@@ -28,7 +28,8 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     pdf: {
-      type: String,
+      type: "Array",
+      default:[],
     },
   },
   {
