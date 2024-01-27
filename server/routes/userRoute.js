@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
 const nodemailer = require("nodemailer");
+const cloudinary = require("../config/cloudinaryConfig");
+const multer = require("multer");
 
 //user registration api
 router.post("/register", async (req, res) => {
@@ -210,10 +212,34 @@ router.post("/verification-OTP", async (req, res) => {
   }
 });
 
+// retrieve file from the system
+const storage = multer.diskStorage({
+  filename: function (req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  },
+});
+
 // pdf upload api
-router.post("/resume-upload", async(req, res) => {
-  
-}
-)
+router.post("/resume-upload", authMiddleware, multer({storage: storage}).single('file'), async (req, res) => {
+  try {
+    // upload file to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {folder: "JobSewa"});
+
+    const userId = req.body.userId;
+    await User.findByIdAndUpdate(userId, {
+      $push: {files: result.secure_url},
+    })
+    res.send({
+      success: true,
+      message: "File upload successful",
+      result,
+    })
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 module.exports = router;
