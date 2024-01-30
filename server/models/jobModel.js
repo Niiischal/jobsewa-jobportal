@@ -57,6 +57,11 @@ const jobsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        status: {
+            type: String,
+            default: "pending",
+            required: true,
+        }
     },
     {
         timestamps: true,
