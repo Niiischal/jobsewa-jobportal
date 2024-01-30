@@ -1,9 +1,14 @@
+import { Modal } from 'antd'
 import React from 'react'
 
-function JobForm() {
+function JobForm(showJobForm, setShowJobForm) {
   return (
     <div>
-      <h1>Jobform</h1>
+      <Modal
+      title="Add Jobs"
+      open={showJobForm}
+      onCancel={() => setShowJobForm(false)}
+      centered></Modal>
     </div>
   )
 }
