@@ -1,9 +1,9 @@
 import { Button, Form, Input, message } from "antd";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
-import { useDispatch } from "react-redux";
 import { SetLoader } from "../redux/loadersSlice";
 
 const rules = [
