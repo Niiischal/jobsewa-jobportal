@@ -1,4 +1,4 @@
-import { Form, Input, Modal, Select, Tabs } from "antd";
+import { Col, Form, Input, Modal, Row, Select, Tabs } from "antd";
 import React from "react";
 
 const categoryOptions = [
@@ -78,7 +78,8 @@ function JobForm(showJobForm, setShowJobForm) {
         open={showJobForm}
         onCancel={() => setShowJobForm(false)}
         centered
-        width={"90%"}
+        width={"80%"}
+        height={"80%"}
         okText="Post Job"
       >
         <Tabs defaultActiveKey="1">
@@ -109,26 +110,34 @@ function JobForm(showJobForm, setShowJobForm) {
           </Tabs.TabPane>
           <Tabs.TabPane tab="Job Details" key="2">
             <Form layout="vertical">
-              <Form.Item
-                rules={[{ required: true }]}
-                label="No of openings"
-                name="openings"
-              >
-                <Input type="number" required></Input>
-              </Form.Item>
-              <Form.Item
-                rules={[{ required: true }]}
-                label="Category"
-                name="category"
-              >
-                <Select
-                  defaultValue="--select--"
-                  options={categoryOptions.map((category) => ({
-                    label: category,
-                    value: category,
-                  }))}
-                />
-              </Form.Item>
+              <Row gutter={10}>
+                <Col span={12}>
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    label="No of openings"
+                    name="openings"
+                  >
+                    <Input type="number" required></Input>
+                  </Form.Item>
+                </Col>
+
+                <Col span={12}>
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    label="Category"
+                    name="category"
+                  >
+                    <Select
+                      className="h-[40px]"
+                      defaultValue="--select--"
+                      options={categoryOptions.map((category) => ({
+                        label: category,
+                        value: category,
+                      }))}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
               <Form.Item
                 rules={[{ required: true }]}
                 label="Duration"
@@ -181,32 +190,41 @@ function JobForm(showJobForm, setShowJobForm) {
                   }))}
                 />
               </Form.Item>
-              <Form.Item
-                rules={[{ required: true }]}
-                label="Salary Period"
-                name="salaryperiod"
-              >
-                <Select
-                  defaultValue="--select--"
-                  options={salaryPeriodOptions.map((period) => ({
-                    label: period,
-                    value: period,
-                  }))}
-                />
-              </Form.Item>
-              <Form.Item
-                rules={[{ required: true }]}
-                label="Salary Amount"
-                name="salaryamount"
-              >
-                <Select
-                  defaultValue="--select--"
-                  options={salaryAmountOptions.map((amount) => ({
-                    label: amount,
-                    value: amount,
-                  }))}
-                />
-              </Form.Item>
+
+              <Row gutter={10}>
+                <Col span={12}>
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    label="Salary Period"
+                    name="salaryperiod"
+                  >
+                    <Select
+                      defaultValue="--select--"
+                      options={salaryPeriodOptions.map((period) => ({
+                        label: period,
+                        value: period,
+                      }))}
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col span={12}>
+                  <Form.Item
+                    rules={[{ required: true }]}
+                    label="Salary Amount"
+                    name="salaryamount"
+                  >
+                    <Select
+                      defaultValue="--select--"
+                      options={salaryAmountOptions.map((amount) => ({
+                        label: amount,
+                        value: amount,
+                      }))}
+                    />
+                  </Form.Item>
+                </Col>
+              </Row>
+
               <Form.Item
                 rules={[{ required: true }]}
                 label="Skills"
