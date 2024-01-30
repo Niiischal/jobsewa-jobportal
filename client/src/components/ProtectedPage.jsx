@@ -1,16 +1,18 @@
-import { AndroidOutlined, AppleOutlined } from "@ant-design/icons";
+import { AndroidOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Input, Menu, Space, Tabs } from "antd";
 import React, { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import { IoIosHeartEmpty } from "react-icons/io";
+import { IoPersonAddOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
+import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
-import Resume from "../pages/JobSeeker/Resume"
+import Jobs from "../pages/JobProvider/Jobs";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -120,17 +122,17 @@ function ProtectedPage({ children}) {
 
         {user.role === "jobProvider" && (
           <div className="navigation pl-[2rem] pr-[2rem]">
-            <Tabs defaultActiveKey="1">
+            <Tabs defaultActiveKey="1" centered>
               <TabPane
                 tab={
-                  <span>
-                    <AppleOutlined />
-                    Job Provider Tab 1
+                  <span className="flex gap-2 items-center">
+                    <IoPersonAddOutline />
+                    Add Jobs
                   </span>
                 }
                 key="1"
               >
-                {/* Content for Job Provider Tab 1 */}
+                <Jobs/>
               </TabPane>
               <TabPane
                 tab={
