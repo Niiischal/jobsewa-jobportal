@@ -13,8 +13,10 @@ const port = process.env.PORT || 5000;
 
 // Available routes
 const userRoute = require("./routes/userRoute"); 
+const jobRoute = require("./routes/jobRoute"); 
 
 app.use("/api/users", userRoute); 
+app.use("/api/jobs", jobRoute); 
 
 
 
