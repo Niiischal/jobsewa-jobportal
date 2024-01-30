@@ -3,7 +3,7 @@ const Job = require("../models/jobModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 // api to add new job
-router.post("/add-job", authMiddleware, async (req, res) => {
+router.post("/add-jobs", authMiddleware, async (req, res) => {
   try {
     const newJob = new Job(req.body);
     res.send({
