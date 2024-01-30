@@ -57,6 +57,11 @@ const jobsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        jobProvider: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "users",
+            required: true,
+        },
         status: {
             type: String,
             default: "pending",

@@ -9,10 +9,10 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
+import Jobs from "../pages/JobProvider/Jobs";
 import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
-import Jobs from "../pages/JobProvider/Jobs";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
