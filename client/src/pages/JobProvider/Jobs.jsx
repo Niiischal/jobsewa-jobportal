@@ -44,7 +44,7 @@ function Jobs() {
   return (
     <div>
       <div className="flex justify-end">
-        <Button type="primary" onClick={() => setShowJobForm(true)}>
+      <Button type="primary" onClick={() => { setSelectedJob(null); setShowJobForm(true); }}>
           Add Jobs
         </Button>
       </div>

@@ -1,7 +1,7 @@
 import { Col, Form, Input, Modal, Row, Select, message } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AddJob } from "../../apicalls/jobs";
+import { AddJob, EditJob } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 
 const categoryOptions = [
@@ -78,10 +78,15 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
   const { user } = useSelector((state) => state.users);
   const onFinish = async (values) => {
     try {
-      values.jobProvider = user._id;
-      values.status = "pending";
       dispatch(SetLoader(true));
-      const response = await AddJob(values);
+      let response = null;
+      if (selectedJob) {
+        response = await EditJob(selectedJob._id, values);
+      } else {
+        values.jobProvider = user._id;
+        values.status = "pending";
+        await AddJob(values);
+      }
       dispatch(SetLoader(false));
       if (response.success) {
         message.success(response.message);
@@ -100,9 +105,6 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
     if (selectedJob) {
       // Edit mode: Prepopulate the form
       formRef.current.setFieldsValue(selectedJob);
-    } else {
-      // Add mode: Reset the form
-      formRef.current.resetFields();
     }
   }, [selectedJob]);
 
