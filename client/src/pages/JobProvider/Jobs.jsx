@@ -6,6 +6,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 import JobForm from "./JobForm";
 
 function Jobs() {
+  const [selectedJob, setSelectedJob] = useState();
   const [jobs, setJobs] = useState([]);
   const [showJobForm, setShowJobForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,7 +63,15 @@ function Jobs() {
             <p>Status: {job.status}</p>
             <div className="flex justify-between">
               <Button className="text-white bg-red-500">Delete</Button>
-              <Button className="text-white bg-green-800">Edit</Button>
+              <Button
+                className="text-white bg-green-800"
+                onClick={() => {
+                  setSelectedJob(job);
+                  setShowJobForm(true);
+                }}
+              >
+                Edit
+              </Button>
             </div>
           </Card>
         ))}
@@ -77,7 +86,7 @@ function Jobs() {
         />
       )}
       {showJobForm && (
-        <JobForm showJobForm={showJobForm} setShowJobForm={setShowJobForm} />
+        <JobForm showJobForm={showJobForm} setShowJobForm={setShowJobForm} selectedJob={selectedJob} getData={getData}/>
       )}
     </div>
   );
