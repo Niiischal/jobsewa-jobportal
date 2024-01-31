@@ -6,6 +6,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 router.post("/add-jobs", authMiddleware, async (req, res) => {
   try {
     const newJob = new Job(req.body);
+    await newJob.save();
     res.send({
       success: true,
       message: "New job added successfully!",
