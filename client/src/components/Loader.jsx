@@ -5,7 +5,7 @@ import { Spin } from "antd";
 
 function Loader() {
   return (
-    <div className="fixed inset-0 flex justify-center items-center">
+    <div className="fixed inset-0 z-[9999] flex justify-center items-center">
           <Spin
     indicator={
       <LoadingOutlined
