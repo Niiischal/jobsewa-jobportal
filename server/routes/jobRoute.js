@@ -22,7 +22,7 @@ router.post("/add-jobs", authMiddleware, async (req, res) => {
 // api to get all the jobs
 router.get("/get-jobs", async (req, res) => {
   try {
-    const jobs = await Job.find();
+    const jobs = await Job.find().sort({ createdAt: 1 });
     res.send({
       success: true,
       jobs,
@@ -35,19 +35,19 @@ router.get("/get-jobs", async (req, res) => {
   }
 });
 
-router.put("/edit-jobs/:id", authMiddleware, async(req, res) => {
+router.put("/edit-jobs/:id", authMiddleware, async (req, res) => {
   try {
     await Job.findByIdAndUpdate(req.params.id, req.body);
     res.send({
       success: true,
-      message: 'The job has been updated.'
-    })
+      message: "The job has been updated.",
+    });
   } catch (error) {
     res.send({
       success: false,
       message: error.message,
-    })
+    });
   }
-})
+});
 
 module.exports = router;

@@ -85,7 +85,7 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
       } else {
         values.jobProvider = user._id;
         values.status = "pending";
-        await AddJob(values);
+        response = await AddJob(values);
       }
       dispatch(SetLoader(false));
       if (response.success) {

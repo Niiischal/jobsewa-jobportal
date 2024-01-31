@@ -1,5 +1,6 @@
 import { Button, Card, message, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import { useDispatch } from "react-redux";
 import { GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
@@ -44,7 +45,13 @@ function Jobs() {
   return (
     <div>
       <div className="flex justify-end">
-      <Button type="primary" onClick={() => { setSelectedJob(null); setShowJobForm(true); }}>
+        <Button
+          type="primary"
+          onClick={() => {
+            setSelectedJob(null);
+            setShowJobForm(true);
+          }}
+        >
           Add Jobs
         </Button>
       </div>
@@ -55,6 +62,9 @@ function Jobs() {
             key={job._id}
             title={job.category}
           >
+            <p>
+              Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}
+            </p>
             <p>No of Openings: {job.openings}</p>
             <p>Duration: {job.duration}</p>
             <p>Job Level: {job.level}</p>
@@ -86,7 +96,12 @@ function Jobs() {
         />
       )}
       {showJobForm && (
-        <JobForm showJobForm={showJobForm} setShowJobForm={setShowJobForm} selectedJob={selectedJob} getData={getData}/>
+        <JobForm
+          showJobForm={showJobForm}
+          setShowJobForm={setShowJobForm}
+          selectedJob={selectedJob}
+          getData={getData}
+        />
       )}
     </div>
   );
