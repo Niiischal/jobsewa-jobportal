@@ -102,7 +102,6 @@ function JobForm({ showJobForm, setShowJobForm }) {
         onCancel={() => setShowJobForm(false)}
         centered
         width={"80%"}
-        height={"80%"}
         okText="Post Job"
         onOk={() => {
           formRef.current.submit();
