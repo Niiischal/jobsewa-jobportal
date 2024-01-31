@@ -35,4 +35,19 @@ router.get("/get-jobs", async (req, res) => {
   }
 });
 
+router.put("/edit-jobs/:id", authMiddleware, async(req, res) => {
+  try {
+    await Job.findByIdAndUpdate(req.params.id, req.body);
+    res.send({
+      success: true,
+      message: 'The job has been updated.'
+    })
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    })
+  }
+})
+
 module.exports = router;

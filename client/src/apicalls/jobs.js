@@ -18,3 +18,15 @@ export const GetJobs = async () => {
     return { success: false, message: error.message };
   }
 };
+
+export const EditJob = async (id, payload) => {
+  try {
+    const response = await axiosInstance.put(`/api/jobs/edit-jobs/${id}`,
+    payload)
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
+
