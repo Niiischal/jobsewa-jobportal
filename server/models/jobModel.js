@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 const jobsSchema = new mongoose.Schema(
     {
-        companyName: {
+        companyname: {
             type: String,
             required: true,
         },
-        companyEmail: {
+        companyemail: {
             type: String,
             required: true,
         },
-        location: {
+        companylocation: {
             type: String,
             required: true,
         },
@@ -25,7 +25,7 @@ const jobsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        jobLevel: {
+        level: {
             type: String,
             required: true,
         },
@@ -37,11 +37,11 @@ const jobsSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        salaryPeriod: {
+        salaryperiod: {
             type: String,
             required: true,
         },
-        salaryAmount: {
+        salaryamount: {
             type: String,
             required: true,
         },

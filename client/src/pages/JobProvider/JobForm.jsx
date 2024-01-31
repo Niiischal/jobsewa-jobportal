@@ -1,4 +1,4 @@
-import { Col, Form, Input, Modal, Row, Select, Tabs, message } from "antd";
+import { Col, Form, Input, Modal, Row, Select, message } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AddJob } from "../../apicalls/jobs";
@@ -113,7 +113,7 @@ function JobForm({ showJobForm, setShowJobForm }) {
                   <Col span={12}>
                     <Form.Item
                       label="Company Name"
-                      name="Companyname"
+                      name="companyname"
                       rules={[{ required: true, message: "Please enter Company Name" }]}
                     >
                       <Input type="text" />
@@ -122,7 +122,7 @@ function JobForm({ showJobForm, setShowJobForm }) {
                   <Col span={12}>
                     <Form.Item
                       label="Company's Email"
-                      name="Companyemail"
+                      name="companyemail"
                       rules={[{ required: true, message: "Please enter Company's Email" }]}
                     >
                       <Input type="text" />
@@ -131,7 +131,7 @@ function JobForm({ showJobForm, setShowJobForm }) {
                 </Row>
                 <Form.Item
                   label="Location"
-                  name="Companylocation"
+                  name="companylocation"
                   rules={[{ required: true, message: "Please enter Location" }]}
                 >
                   <Input type="text" />
