@@ -1,8 +1,8 @@
 import { Button, Card, message, Pagination } from "antd";
-import React, { useEffect, useState } from "react";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { GetJobs } from "../../apicalls/jobs";
+import { DeleteJob, GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 import JobForm from "./JobForm";
 
@@ -21,6 +21,23 @@ function Jobs() {
       dispatch(SetLoader(false));
       if (response.success) {
         setJobs(response.jobs);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
+  const deleteJob = async (id) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await DeleteJob(id);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        message.success(response.message);
+        getData();
+      } else {
+        message.error(response.message);
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -72,7 +89,14 @@ function Jobs() {
             <p>Experience required: {job.experience}</p>
             <p>Status: {job.status}</p>
             <div className="flex justify-between">
-              <Button className="text-white bg-red-500">Delete</Button>
+              <Button
+                className="text-white bg-red-500"
+                onClick={() => {
+                  deleteJob(job._id);
+                }}
+              >
+                Delete
+              </Button>
               <Button
                 className="text-white bg-green-800"
                 onClick={() => {
@@ -86,7 +110,7 @@ function Jobs() {
           </Card>
         ))}
       </div>
-      {jobs.length > jobsPerPage && (
+      {jobs.length > 0 && (
         <Pagination
           className="mt-[10px] flex justify-end"
           current={currentPage}
