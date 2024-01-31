@@ -60,12 +60,16 @@ function Jobs() {
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
             <p>Status: {job.status}</p>
+            <div className="flex justify-between">
+              <Button className="text-white bg-red-500">Delete</Button>
+              <Button className="text-white bg-green-800">Edit</Button>
+            </div>
           </Card>
         ))}
       </div>
       {jobs.length > jobsPerPage && (
         <Pagination
-        className="mt-[10px] flex justify-end" 
+          className="mt-[10px] flex justify-end"
           current={currentPage}
           total={jobs.length}
           pageSize={jobsPerPage}
