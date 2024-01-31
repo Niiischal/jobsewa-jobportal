@@ -1,4 +1,4 @@
-import { Button, message, Table } from "antd";
+import { Button, Card, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GetJobs } from "../../apicalls/jobs";
@@ -24,44 +24,10 @@ function Jobs() {
     }
   };
 
-  const columns = [
-    {
-      title: "No of Openings",
-      dataIndex: "openings",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-    },
-    {
-      title: "Duration",
-      dataIndex: "duration",
-    },
-    {
-      title: "Job Level",
-      dataIndex: "level",
-    },
-    {
-      title: "Education required",
-      dataIndex: "education",
-    },
-    {
-      title: "Experience required",
-      dataIndex: "experience",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-    },
-  ];
-
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <div>
       <div className="flex justify-end">
@@ -69,7 +35,23 @@ function Jobs() {
           Add Jobs
         </Button>
       </div>
-      <Table columns={columns} dataSource={jobs} />
+      <div className="flex flex-wrap gap-4">
+        {jobs &&
+          jobs.map((job) => (
+            <Card
+            className="border border-primary"
+              key={job._id}
+              title={job.category}
+            >
+              <p>No of Openings: {job.openings}</p>
+              <p>Duration: {job.duration}</p>
+              <p>Job Level: {job.level}</p>
+              <p>Education required: {job.education}</p>
+              <p>Experience required: {job.experience}</p>
+              <p>Status: {job.status}</p>
+            </Card>
+          ))}
+      </div>
       {showJobForm && (
         <JobForm showJobForm={showJobForm} setShowJobForm={setShowJobForm} />
       )}
