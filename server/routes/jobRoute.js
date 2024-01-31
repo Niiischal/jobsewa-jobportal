@@ -50,4 +50,19 @@ router.put("/edit-jobs/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// api to delete a job
+router.delete("/delete-job/:id", authMiddleware, async (req, res) => {
+  try {
+    await Job.findByIdAndDelete(req.params.id);
+    res.send({
+      success: true,
+      message: "The job has been deleted successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 module.exports = router;
