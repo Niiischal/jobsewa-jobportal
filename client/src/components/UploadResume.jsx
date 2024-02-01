@@ -11,46 +11,14 @@ import { SetUser } from "../redux/usersSlice";
 const UploadResume = ({ selectedUser, getData }) => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.users);
-
-
-  // Example useEffect to fetch or set selectedUser
-  useEffect(() => {
-    // Example of fetching data (async)
-    const fetchData = async () => {
-      try {
-        // Perform the data fetching logic here
-        const response = await GetCurrentUser(); // Replace with your data fetching logic
-
-        // Assuming response contains the selectedUser data
-        const selectedUser = response.data;
-
-        // Dispatch an action to update the Redux state with the fetched user
-        dispatch(SetUser(selectedUser));
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    // Call the fetchData function
-    fetchData();
-  }, [dispatch]); // Include any dependencies needed for the effect to run
 
   const handleUpload = async () => {
     try {
-      console.log("handleUpload function called");
 
       dispatch(SetLoader(true));
 
-      console.log("user:", user);
-
-      if (!user || !user._id) {
-        throw new Error("User or user ID is undefined");
-      }
-
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("userId", user._id);
 
       const response = await ResumeUpload(formData);
       dispatch(SetLoader(false));
