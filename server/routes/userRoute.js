@@ -223,7 +223,7 @@ const storage = multer.diskStorage({
 router.post("/resume-upload", authMiddleware, multer({storage: storage}).single('file'), async (req, res) => {
   try {
     // upload file to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {folder: "JobSewa"});
+    const result = await cloudinary.uploader.upload(req.file.path, {folder: "JobSewa", resource_type: "raw", });
 
     const userId = req.body.userId;
     await User.findByIdAndUpdate(userId, {
