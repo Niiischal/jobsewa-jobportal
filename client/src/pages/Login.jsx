@@ -66,7 +66,7 @@ const Login = () => {
                 type="password"
               ></Input.Password>
             </Form.Item>
-            <Button type="primary" htmlType="" block>
+            <Button type="primary" htmlType="submit" block>
               Sign In
             </Button>
             <Link
