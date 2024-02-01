@@ -1,23 +1,40 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload, message } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SlCloudUpload } from "react-icons/sl";
 import { useDispatch, useSelector } from "react-redux";
-import { ResumeUpload } from "../apicalls/users";
+import { GetCurrentUser, ResumeUpload } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
+import { SetUser } from "../redux/usersSlice";
+
 
 const UploadResume = ({ selectedUser, getData }) => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
 
-  useEffect(() => {
-    console.log("UploadResume component mounted");
-    console.log("selectedUser in useEffect:", selectedUser);
-    console.log("user in useEffect:", user);
 
-    // If selectedUser and user are expected to be available here, it might indicate an issue with prop passing.
-  }, [selectedUser, user]);
+  // Example useEffect to fetch or set selectedUser
+  useEffect(() => {
+    // Example of fetching data (async)
+    const fetchData = async () => {
+      try {
+        // Perform the data fetching logic here
+        const response = await GetCurrentUser(); // Replace with your data fetching logic
+
+        // Assuming response contains the selectedUser data
+        const selectedUser = response.data;
+
+        // Dispatch an action to update the Redux state with the fetched user
+        dispatch(SetUser(selectedUser));
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Call the fetchData function
+    fetchData();
+  }, [dispatch]); // Include any dependencies needed for the effect to run
 
   const handleUpload = async () => {
     try {
@@ -25,23 +42,21 @@ const UploadResume = ({ selectedUser, getData }) => {
 
       dispatch(SetLoader(true));
 
-      console.log("selectedUser:", selectedUser);
       console.log("user:", user);
 
-      if (!selectedUser || !selectedUser._id || !user || !user._id) {
-        throw new Error("Selected user or user ID is undefined");
+      if (!user || !user._id) {
+        throw new Error("User or user ID is undefined");
       }
 
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("userId", selectedUser._id);
+      formData.append("userId", user._id);
 
       const response = await ResumeUpload(formData);
       dispatch(SetLoader(false));
 
       if (response.success) {
         message.success(response.message);
-        getData();
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -69,7 +84,10 @@ const UploadResume = ({ selectedUser, getData }) => {
       </Upload>
       <Button
         disabled={!file}
-        onClick={handleUpload}
+        onClick={() => {
+          console.log("handleUpload function called");
+          handleUpload()
+        }}
         style={{
           marginTop: 16,
           width: 200,
