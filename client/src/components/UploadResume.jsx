@@ -3,30 +3,42 @@ import { Button, Upload, message } from "antd";
 import React, { useState } from "react";
 import { SlCloudUpload } from "react-icons/sl";
 import { useDispatch, useSelector } from "react-redux";
+import { ResumeUpload } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
-import { GetCurrentUser, ResumeUpload } from "../apicalls/users";
-import { SetUser } from "../redux/usersSlice";
 
 const UploadResume = ({ selectedUser, getData }) => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
 
+  useEffect(() => {
+    console.log("UploadResume component mounted");
+    console.log("selectedUser in useEffect:", selectedUser);
+    console.log("user in useEffect:", user);
+
+    // If selectedUser and user are expected to be available here, it might indicate an issue with prop passing.
+  }, [selectedUser, user]);
 
   const handleUpload = async () => {
     try {
+      console.log("handleUpload function called");
+
       dispatch(SetLoader(true));
 
-      // Check if selectedUser is defined before accessing its properties
-      if (!selectedUser || !selectedUser._id) {
+      console.log("selectedUser:", selectedUser);
+      console.log("user:", user);
+
+      if (!selectedUser || !selectedUser._id || !user || !user._id) {
         throw new Error("Selected user or user ID is undefined");
       }
 
-      //upload file to cloudinary
       const formData = new FormData();
       formData.append("file", file);
       formData.append("userId", selectedUser._id);
+
       const response = await ResumeUpload(formData);
       dispatch(SetLoader(false));
+
       if (response.success) {
         message.success(response.message);
         getData();
@@ -36,8 +48,6 @@ const UploadResume = ({ selectedUser, getData }) => {
       message.error(error.message);
     }
   };
-
-
 
   return (
     <div className="flex justify-center items-center mt-5 flex-col border border-solid border-primary p-6">
@@ -70,4 +80,5 @@ const UploadResume = ({ selectedUser, getData }) => {
     </div>
   );
 };
+
 export default UploadResume;
