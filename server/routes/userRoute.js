@@ -219,21 +219,26 @@ const storage = multer.diskStorage({
   },
 });
 
-// pdf upload api
-router.post("/resume-upload", authMiddleware, multer({storage: storage}).single('file'), async (req, res) => {
+router.post("/resume-upload", authMiddleware, multer({ storage: storage }).single('file'), async (req, res) => {
   try {
-    // upload file to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {folder: "JobSewa", resource_type: "raw", });
+    // Validate file format
+    if (req.file.mimetype !== 'application/pdf') {
+      throw new Error('Invalid file format. Please upload a PDF document.');
+    }
+
+    // Upload file to cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, { folder: "JobSewa", resource_type: "raw" });
 
     const userId = req.body.userId;
     await User.findByIdAndUpdate(userId, {
-      $push: {files: result.secure_url},
-    })
+      $push: { files: result.secure_url },
+    });
+
     res.send({
       success: true,
       message: "File upload successful",
       result,
-    })
+    });
   } catch (error) {
     res.send({
       success: false,
@@ -241,5 +246,6 @@ router.post("/resume-upload", authMiddleware, multer({storage: storage}).single(
     });
   }
 });
+
 
 module.exports = router;
