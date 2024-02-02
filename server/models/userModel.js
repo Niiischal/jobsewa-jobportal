@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["jobSeeker", "jobProvider", "admin"],
-      default: "jobSeeker",
       required: true,
     },
     status: {
