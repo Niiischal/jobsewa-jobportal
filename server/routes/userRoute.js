@@ -7,6 +7,36 @@ const nodemailer = require("nodemailer");
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
 
+
+// Create a predefined admin user if it doesn't exist
+const createAdminUser = async () => {
+  try {
+    const adminUser = await User.findOne({ email: "admin@jobsewanp.com" });
+
+    if (!adminUser) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(process.env.admin_password, salt);
+
+      const newAdmin = new User({
+        name: "Admin",
+        email: "admin@jobsewanp.com",
+        password: hashedPassword,
+        role: "admin", // Assuming admin has the "admin" role
+      });
+
+      await newAdmin.save();
+      console.log("Admin user created successfully");
+    } else {
+      console.log("Admin user already exists");
+    }
+  } catch (error) {
+    console.error("Error creating admin user:", error.message);
+  }
+};
+
+// Call the function to create the admin user when this route file is imported
+createAdminUser();
+
 //user registration api
 router.post("/register", async (req, res) => {
   try {
@@ -246,6 +276,8 @@ router.post("/resume-upload", authMiddleware, multer({ storage: storage }).singl
     });
   }
 });
+
+
 
 
 module.exports = router;
