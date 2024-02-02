@@ -33,6 +33,12 @@ function ProtectedPage({ children }) {
           // Redirect to the job provider dashboard
           navigate("/jobprovider-home");
         }
+        else if(response.data.role=== "jobSeeker"){
+          navigate("/jobseeker-home")
+        }
+        else if (response.data.role=== "admin"){
+          navigate("/admin-home")
+        }
       } else {
         navigate("/login");
       }
