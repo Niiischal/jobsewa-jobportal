@@ -7,13 +7,12 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
 import Jobs from "../pages/JobProvider/Jobs";
+import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
-import UploadResume from "./UploadResume";
-import Resume from "../pages/JobSeeker/Resume";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -82,9 +81,14 @@ function ProtectedPage({ children}) {
         {/* header */}
         <div className="flex justify-between items-center pl-[2rem] pr-[2rem]">
           <div className="logo-div">
-            <Link to="/jobseeker-home" className="no-underline">
-              <h1 className="logo text-[27px] text-primary">JobSewa</h1>
-            </Link>
+              <h1 className="logo text-[27px] cursor-pointer text-primary" onClick={() => {
+                if (user.role==="jobProvider") {
+                  navigate("/jobProvider-home")
+                }
+                else{
+                  navigate("/admin-home")
+                }
+              }}>JobSewa</h1>
           </div>
 
           {/* Ant Design Dropdown for user information */}
