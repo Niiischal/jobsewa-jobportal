@@ -10,9 +10,9 @@ export const AddJob = async (payload) => {
 };
 
 
-export const GetJobs = async () => {
+export const GetJobs = async (filters) => {
   try {
-    const response = await axiosInstance.get("/api/jobs/get-jobs");
+    const response = await axiosInstance.post("/api/jobs/get-jobs", filters);
     return response.data;
   } catch (error) {
     return { success: false, message: error.message };

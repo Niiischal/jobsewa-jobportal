@@ -1,7 +1,7 @@
 import { Button, Card, message, Pagination } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DeleteJob, GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 import JobForm from "./JobForm";
@@ -12,12 +12,15 @@ function Jobs() {
   const [showJobForm, setShowJobForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [jobsPerPage] = useState(4); // Number of jobs per page
+  const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetJobs();
+      const response = await GetJobs({
+        jobProvider: user._id,
+      });
       dispatch(SetLoader(false));
       if (response.success) {
         setJobs(response.jobs);
