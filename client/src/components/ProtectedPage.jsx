@@ -13,6 +13,7 @@ import Jobs from "../pages/JobProvider/Jobs";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
 import UploadResume from "./UploadResume";
+import Resume from "../pages/JobSeeker/Resume";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -110,7 +111,7 @@ function ProtectedPage({ children}) {
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Upload Resume" key="1">
                 <div className="flex justify-center items-center">
-                <UploadResume/>
+                <Resume/>
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">

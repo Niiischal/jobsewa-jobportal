@@ -1,30 +1,39 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload, message } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SlCloudUpload } from "react-icons/sl";
 import { useDispatch, useSelector } from "react-redux";
-import { GetCurrentUser, ResumeUpload } from "../apicalls/users";
+import { ResumeUpload } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
 
-
-const UploadResume = ({ selectedUser, getData }) => {
+const UploadResume = () => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
 
   const handleUpload = async () => {
     try {
-
       dispatch(SetLoader(true));
 
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("userId", user._id);
 
       const response = await ResumeUpload(formData);
       dispatch(SetLoader(false));
 
       if (response.success) {
         message.success(response.message);
+                // Update user data in the Redux store
+        // Ensure user.files is initialized as an array
+        const updatedUser = {
+          ...user,
+          files: user.files ? [...user.files, response.result.secure_url] : [response.result.secure_url],
+        };
+
+        // Update user data in the Redux store
+        dispatch(SetUser(updatedUser));
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -54,7 +63,7 @@ const UploadResume = ({ selectedUser, getData }) => {
         disabled={!file}
         onClick={() => {
           console.log("handleUpload function called");
-          handleUpload()
+          handleUpload();
         }}
         style={{
           marginTop: 16,
