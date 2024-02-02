@@ -17,7 +17,7 @@ import { SetUser } from "../redux/usersSlice";
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-function ProtectedPage({ children}) {
+function ProtectedPage({ children }) {
   const { user } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -81,14 +81,20 @@ function ProtectedPage({ children}) {
         {/* header */}
         <div className="flex justify-between items-center pl-[2rem] pr-[2rem]">
           <div className="logo-div">
-              <h1 className="logo text-[27px] cursor-pointer text-primary" onClick={() => {
-                if (user.role==="jobProvider") {
-                  navigate("/jobProvider-home")
+            <h1
+              className="logo text-[27px] cursor-pointer text-primary"
+              onClick={() => {
+                if (user.role === "jobProvider") {
+                  navigate("/jobprovider-home");
+                } else if (user.role === "jobSeeker") {
+                  navigate("/jobseeker-home");
+                } else {
+                  navigate("/admin-home");
                 }
-                else{
-                  navigate("/admin-home")
-                }
-              }}>JobSewa</h1>
+              }}
+            >
+              JobSewa
+            </h1>
           </div>
 
           {/* Ant Design Dropdown for user information */}
@@ -115,7 +121,7 @@ function ProtectedPage({ children}) {
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Upload Resume" key="1">
                 <div className="flex justify-center items-center">
-                <Resume/>
+                  <Resume />
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">
@@ -137,7 +143,7 @@ function ProtectedPage({ children}) {
                 }
                 key="1"
               >
-                <Jobs/>
+                <Jobs />
               </TabPane>
               <TabPane
                 tab={
