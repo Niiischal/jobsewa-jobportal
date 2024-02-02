@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["jobSeeker", "jobProvider", "admin"],
       default: "jobSeeker",
+      required: true,
     },
     status: {
       type: String,
@@ -28,14 +29,23 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     pdf: {
-      type: "Array",
-      default:[],
+      type: [String],
+      default: [],
     },
   },
   {
     timestamps: true,
   }
 );
+
+// Middleware to add pdf property only for jobSeeker role
+userSchema.pre("save", function (next) {
+  if (this.role !== "jobSeeker") {
+    // If not a jobSeeker, remove the pdf property
+    this.pdf = undefined;
+  }
+  next();
+});
 
 const User = mongoose.model("users", userSchema);
 
