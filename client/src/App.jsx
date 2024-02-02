@@ -1,14 +1,15 @@
+import { useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Loader from "./components/Loader";
 import ProtectedPage from "./components/ProtectedPage";
+import ProtectedAHome from "./pages/Admin/Home";
 import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
+import ProtectedJPHome from "./pages/JobProvider/Home";
 import ProtectedJSHome from "./pages/JobSeeker/Home";
-import ProtectedJPHome from "./pages/JobProvider/Home"
 import Login from "./pages/Login";
 import OTPVerification from "./pages/OTP";
 import Signup from "./pages/Signup";
-import Loader from "./components/Loader";
-import { useSelector } from "react-redux";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -36,6 +37,14 @@ function App() {
             element={
               <ProtectedPage>
                 <ProtectedJPHome />
+              </ProtectedPage>
+            }
+          />
+                    <Route
+            path="/admin-home"
+            element={
+              <ProtectedPage>
+                <ProtectedAHome />
               </ProtectedPage>
             }
           />
