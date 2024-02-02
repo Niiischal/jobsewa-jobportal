@@ -20,9 +20,14 @@ router.post("/add-jobs", authMiddleware, async (req, res) => {
 });
 
 // api to get all the jobs
-router.get("/get-jobs", async (req, res) => {
+router.post("/get-jobs", async (req, res) => {
   try {
-    const jobs = await Job.find().sort({ createdAt: 1 });
+    const {jobProvider, level = [], experience=[], category= []} = req.body
+    let filters = {}
+    if(jobProvider){
+      filters.jobProvider = jobProvider
+    }
+    const jobs = await Job.find(filters).sort({ createdAt: 1 });
     res.send({
       success: true,
       jobs,
