@@ -32,12 +32,10 @@ function ProtectedPage({ children }) {
         if (response.data.role === "jobProvider") {
           // Redirect to the job provider dashboard
           navigate("/jobprovider-home");
-        }
-        else if(response.data.role=== "jobSeeker"){
-          navigate("/jobseeker-home")
-        }
-        else if (response.data.role=== "admin"){
-          navigate("/admin-home")
+        } else if (response.data.role === "jobSeeker") {
+          navigate("/jobseeker-home");
+        } else if (response.data.role === "admin") {
+          navigate("/admin-home");
         }
       } else {
         navigate("/login");
@@ -162,6 +160,15 @@ function ProtectedPage({ children }) {
               >
                 {/* Content for Job Provider Tab 2 */}
               </TabPane>
+            </Tabs>
+          </div>
+        )}
+
+        {user.role === "admin" && (
+          <div className="navigation pl-[2rem] pr-[2rem]">
+            <Tabs defaultActiveKey="1">
+              <Tabs.TabPane tab="Users" key="1"></Tabs.TabPane>
+              <Tabs.TabPane tab="Jobs" key="2"></Tabs.TabPane>
             </Tabs>
           </div>
         )}
