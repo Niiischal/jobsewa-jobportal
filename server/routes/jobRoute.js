@@ -27,7 +27,7 @@ router.post("/get-jobs", async (req, res) => {
     if(jobProvider){
       filters.jobProvider = jobProvider
     }
-    const jobs = await Job.find(filters).sort({ createdAt: 1 });
+    const jobs = await Job.find(filters).populate("jobProvider").sort({ createdAt: 1 });
     res.send({
       success: true,
       jobs,

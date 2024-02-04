@@ -49,6 +49,8 @@ function Jobs() {
             key={job._id}
             title={job.category}
           >
+            <p className="font-semibold">Job Provider: {job.jobProvider.name}</p>
+            <p>Email: {job.jobProvider.email}</p>
             <p>
               Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}
             </p>
