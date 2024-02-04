@@ -1,11 +1,15 @@
-import React from 'react'
+import { Tabs } from "antd";
+import React from "react";
 
 function Home() {
   return (
     <div>
-      Adminnnnnn
+      <Tabs defaultActiveKey="1">
+        <Tabs.TabPane tab="Users" key="1"></Tabs.TabPane>
+        <Tabs.TabPane tab="Jobs" key="2"></Tabs.TabPane>
+      </Tabs>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
