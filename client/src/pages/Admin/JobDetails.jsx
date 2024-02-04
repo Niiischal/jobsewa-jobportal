@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { GetJobs, UpdateJobStatus } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 
-function Jobs() {
+function JobDetails() {
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [jobsPerPage] = useState(4); // Number of jobs per page
@@ -155,4 +155,4 @@ function Jobs() {
   );
 }
 
-export default Jobs;
+export default JobDetails;
