@@ -48,25 +48,29 @@ function Jobs() {
     }
   };
 
-  switch (status) {
-    case "approved":
-      tagColor = "success";
-      break;
-    case "pending":
-      tagColor = "processing";
-      break;
-    case "rejected":
-      tagColor = "error";
-      break;
-    case "blocked":
-      tagColor = "error";
-      break;
-    default:
-      tagColor = "default";
-  }
+  const StatusTag = ({ status }) => {
+    let tagColor;
+  
+    switch (status) {
+      case "approved":
+        tagColor = "success";
+        break;
+      case "pending":
+        tagColor = "processing";
+        break;
+      case "rejected":
+        tagColor = "error";
+        break;
+      case "blocked":
+        tagColor = "error";
+        break;
+      default:
+        tagColor = "default";
+    }
+  
+    return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
+  };
 
-  return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
-};
 
   useEffect(() => {
     getData();

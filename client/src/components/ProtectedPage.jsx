@@ -9,7 +9,8 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
-import Jobs from "../pages/Admin/Jobs";
+import JobDetails from "../pages/Admin/JobDetails";
+import Jobs from "../pages/JobProvider/Jobs"
 import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
@@ -147,7 +148,7 @@ function ProtectedPage({ children }) {
                 }
                 key="1"
               >
-                <Jobs />
+                <Jobs/>
               </TabPane>
               <TabPane
                 tab={
@@ -169,7 +170,7 @@ function ProtectedPage({ children }) {
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Users" key="1"></Tabs.TabPane>
               <Tabs.TabPane tab="Jobs" key="2">
-                <Jobs/>
+                <JobDetails/>
               </Tabs.TabPane>
             </Tabs>
           </div>
