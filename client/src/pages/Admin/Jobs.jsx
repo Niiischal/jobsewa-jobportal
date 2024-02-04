@@ -1,4 +1,4 @@
-import { Card, message, Pagination, Tag } from "antd";
+import { Card, message, Pagination, Tag, Button } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -63,6 +63,47 @@ function Jobs() {
     return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
   };
 
+  const ActionButtons = ({ status, _id, onStatusUpdate }) => {
+    return (
+      <div className="flex gap-3 justify-center">
+        {status === "pending" && (
+          <Button type="default" onClick={() => onStatusUpdate(_id, "approved")}>
+            Approve
+          </Button>
+        )}
+        {status === "pending" && (
+          <Button danger onClick={() => onStatusUpdate(_id, "rejected")}>
+            Reject
+          </Button>
+        )}
+        {status === "approved" && (
+          <Button danger onClick={() => onStatusUpdate(_id, "blocked")}>
+            Block
+          </Button>
+        )}
+        {status === "blocked" && (
+          <Button onClick={() => onStatusUpdate(_id, "approved")}>
+            Unblock
+          </Button>
+        )}
+        {status === "rejected" && (
+          <div className="flex gap-3">
+            <Button type="default" disabled>
+              Approve
+            </Button>
+            <Button danger disabled>
+              Reject
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const onStatusUpdate = async (id, status) => {
+    
+  }
+
   return (
     <div>
       <div className="flex justify-evenly mt-[10px]">
@@ -83,6 +124,7 @@ function Jobs() {
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
             <p>Status: <StatusTag status={job.status} /></p>
+            <ActionButtons status={job.status} _id={job._id} onStatusUpdate={onStatusUpdate} />
           </Card>
         ))}
       </div>
