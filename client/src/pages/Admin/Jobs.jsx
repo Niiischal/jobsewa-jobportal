@@ -1,8 +1,8 @@
-import { Card, message, Pagination, Tag, Button } from "antd";
+import { Button, Card, Pagination, Tag, message } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { GetJobs } from "../../apicalls/jobs";
+import { GetJobs, UpdateJobStatus } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 
 function Jobs() {
@@ -25,10 +25,24 @@ function Jobs() {
     }
   };
 
+  const onStatusUpdate = async (id, status) => {
+    try {
+        dispatch(SetLoader(true))
+        const response = await UpdateJobStatus(id, status)
+        dispatch(SetLoader(false))
+        if(response.success){
+            message.success(response.message)
+            getData()
+        }
+        else{
+            throw new Error(response.message)
+        }
+    } catch (error) {
+        dispatch(SetLoader(false))
+        message.error(error.message)
+    }
+  }
 
-  useEffect(() => {
-    getData();
-  }, []);
 
   // Get current jobs
   const indexOfLastJob = currentPage * jobsPerPage;
@@ -100,9 +114,9 @@ function Jobs() {
     );
   };
 
-  const onStatusUpdate = async (id, status) => {
-    
-  }
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div>
