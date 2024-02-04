@@ -1,4 +1,4 @@
-import { Button, Card, message, Pagination } from "antd";
+import { Button, Card, message, Pagination, Tag } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,6 +48,26 @@ function Jobs() {
     }
   };
 
+  switch (status) {
+    case "approved":
+      tagColor = "success";
+      break;
+    case "pending":
+      tagColor = "processing";
+      break;
+    case "rejected":
+      tagColor = "error";
+      break;
+    case "blocked":
+      tagColor = "error";
+      break;
+    default:
+      tagColor = "default";
+  }
+
+  return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
+};
+
   useEffect(() => {
     getData();
   }, []);
@@ -90,7 +110,7 @@ function Jobs() {
             <p>Job Level: {job.level}</p>
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
-            <p>Status: {job.status}</p>
+            <p>Status: <StatusTag status={job.status} /></p>
             <div className="flex justify-between">
               <Button
                 className="text-white bg-red-500"
