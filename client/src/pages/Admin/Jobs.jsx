@@ -1,4 +1,4 @@
-import { Card, message, Pagination } from "antd";
+import { Card, message, Pagination, Tag } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -40,6 +40,29 @@ function Jobs() {
     setCurrentPage(page);
   };
 
+  const StatusTag = ({ status }) => {
+    let tagColor;
+  
+    switch (status) {
+      case "approved":
+        tagColor = "success";
+        break;
+      case "pending":
+        tagColor = "processing";
+        break;
+      case "rejected":
+        tagColor = "error";
+        break;
+      case "blocked":
+        tagColor = "error";
+        break;
+      default:
+        tagColor = "default";
+    }
+  
+    return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
+  };
+
   return (
     <div>
       <div className="flex justify-evenly mt-[10px]">
@@ -59,7 +82,7 @@ function Jobs() {
             <p>Job Level: {job.level}</p>
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
-            <p>Status: {job.status}</p>
+            <p>Status: <StatusTag status={job.status} /></p>
           </Card>
         ))}
       </div>
