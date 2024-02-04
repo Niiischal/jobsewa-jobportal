@@ -22,12 +22,19 @@ router.post("/add-jobs", authMiddleware, async (req, res) => {
 // api to get all the jobs
 router.post("/get-jobs", async (req, res) => {
   try {
-    const {jobProvider, level = [], experience=[], category= []} = req.body
-    let filters = {}
-    if(jobProvider){
-      filters.jobProvider = jobProvider
+    const {
+      jobProvider,
+      level = [],
+      experience = [],
+      category = [],
+    } = req.body;
+    let filters = {};
+    if (jobProvider) {
+      filters.jobProvider = jobProvider;
     }
-    const jobs = await Job.find(filters).populate("jobProvider").sort({ createdAt: 1 });
+    const jobs = await Job.find(filters)
+      .populate("jobProvider")
+      .sort({ createdAt: 1 });
     res.send({
       success: true,
       jobs,
@@ -70,4 +77,22 @@ router.delete("/delete-jobs/:id", authMiddleware, async (req, res) => {
     });
   }
 });
+
+// api to update job status
+router.put("/update-status/:id", authMiddleware, async (req, res) => {
+  try {
+    const { status } = req.body;
+    await Job.findByIdAndUpdate(req.params.id, { status });
+    res.send({
+      success: true,
+      message: "Job  Status Updated Successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
