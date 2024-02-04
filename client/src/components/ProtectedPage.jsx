@@ -9,7 +9,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
-import Jobs from "../pages/JobProvider/Jobs";
+import Jobs from "../pages/Admin/Jobs";
 import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
@@ -168,7 +168,9 @@ function ProtectedPage({ children }) {
           <div className="navigation pl-[2rem] pr-[2rem]">
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Users" key="1"></Tabs.TabPane>
-              <Tabs.TabPane tab="Jobs" key="2"></Tabs.TabPane>
+              <Tabs.TabPane tab="Jobs" key="2">
+                <Jobs/>
+              </Tabs.TabPane>
             </Tabs>
           </div>
         )}
