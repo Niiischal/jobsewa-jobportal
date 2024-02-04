@@ -42,14 +42,14 @@ function Jobs() {
 
   return (
     <div>
-      <div className="flex justify-between mt-[10px]">
+      <div className="flex justify-evenly mt-[10px]">
         {currentJobs.map((job) => (
           <Card
             className="border border-primary"
             key={job._id}
             title={job.category}
           >
-            <p className="font-semibold">Job Provider: {job.jobProvider.name}</p>
+            <p className="font-semibold">Recruiter: {job.jobProvider.name}</p>
             <p>Email: {job.jobProvider.email}</p>
             <p>
               Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}
