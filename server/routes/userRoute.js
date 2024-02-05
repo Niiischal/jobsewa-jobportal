@@ -138,6 +138,23 @@ router.get("/get-current-user", authMiddleware, async (req, res) => {
   }
 });
 
+// get all user api
+router.get("/get-users", authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find()
+    res.send({
+      success: true,
+      message: "Users retrieved successfully",
+      data: users,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 //forgot password api
 router.post("/forgot-password", async (req, res) => {
   try {
