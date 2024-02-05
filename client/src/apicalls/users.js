@@ -36,6 +36,17 @@ export const GetAllUser = async () => {
   }
 };
 
+export const UpdateUserStatus = async (id, payload) => {
+  try {
+    const response = await axiosInstance.put(`/api/users/update-user-status/${id}`, {
+      payload,
+    });
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 export const forgotPassword = async (payload) => {
   try {
     const response = await axiosInstance.post(
