@@ -7,7 +7,6 @@ const nodemailer = require("nodemailer");
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
 
-
 // Create a predefined admin user if it doesn't exist
 const createAdminUser = async () => {
   try {
@@ -15,7 +14,10 @@ const createAdminUser = async () => {
 
     if (!adminUser) {
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(process.env.admin_password, salt);
+      const hashedPassword = await bcrypt.hash(
+        process.env.admin_password,
+        salt
+      );
 
       const newAdmin = new User({
         name: "Admin",
@@ -141,7 +143,7 @@ router.get("/get-current-user", authMiddleware, async (req, res) => {
 // get all user api
 router.get("/get-users", authMiddleware, async (req, res) => {
   try {
-    const users = await User.find()
+    const users = await User.find();
     res.send({
       success: true,
       message: "Users retrieved successfully",
@@ -156,9 +158,9 @@ router.get("/get-users", authMiddleware, async (req, res) => {
 });
 
 // user status update api
-router.post("/update-user-status/:id", authMiddleware, async(req, res) => {
+router.put("/update-user-status/:id", authMiddleware, async (req, res) => {
   try {
-    await User.findByIdAndUpdate(req.params.id, req.body)
+    await User.findByIdAndUpdate(req.params.id, req.body);
     res.send({
       success: true,
       message: "User status updated successfully",
@@ -169,7 +171,7 @@ router.post("/update-user-status/:id", authMiddleware, async(req, res) => {
       message: error.message,
     });
   }
-})
+});
 
 //forgot password api
 router.post("/forgot-password", async (req, res) => {
@@ -282,35 +284,40 @@ const storage = multer.diskStorage({
   },
 });
 
-router.post("/resume-upload", authMiddleware, multer({ storage: storage }).single('file'), async (req, res) => {
-  try {
-    // Validate file format
-    if (req.file.mimetype !== 'application/pdf') {
-      throw new Error('Invalid file format. Please upload a PDF document.');
+router.post(
+  "/resume-upload",
+  authMiddleware,
+  multer({ storage: storage }).single("file"),
+  async (req, res) => {
+    try {
+      // Validate file format
+      if (req.file.mimetype !== "application/pdf") {
+        throw new Error("Invalid file format. Please upload a PDF document.");
+      }
+
+      // Upload file to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "JobSewa",
+        resource_type: "raw",
+      });
+
+      const userId = req.body.userId;
+      await User.findByIdAndUpdate(userId, {
+        $push: { files: result.secure_url },
+      });
+
+      res.send({
+        success: true,
+        message: "File upload successful",
+        result,
+      });
+    } catch (error) {
+      res.send({
+        success: false,
+        message: error.message,
+      });
     }
-
-    // Upload file to cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, { folder: "JobSewa", resource_type: "raw" });
-
-    const userId = req.body.userId;
-    await User.findByIdAndUpdate(userId, {
-      $push: { files: result.secure_url },
-    });
-
-    res.send({
-      success: true,
-      message: "File upload successful",
-      result,
-    });
-  } catch (error) {
-    res.send({
-      success: false,
-      message: error.message,
-    });
   }
-});
-
-
-
+);
 
 module.exports = router;

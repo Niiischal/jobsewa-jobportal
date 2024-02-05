@@ -2,7 +2,7 @@ import { Card, message, Pagination, Tag, Button } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { GetAllUser } from "../../apicalls/users";
+import { GetAllUser, UpdateUserStatus } from "../../apicalls/users";
 import { SetLoader } from "../../redux/loadersSlice";
 
 function UserDetails() {
@@ -59,10 +59,24 @@ function UserDetails() {
     );
   };
 
+  const onStatusUpdate = async (id, status) => {
+    try {
+        dispatch(SetLoader(true))
+        const response = await UpdateUserStatus(id, status)
+        dispatch(SetLoader(false))
+        if(response.success){
+            message.success(response.message)
+            getData()
+        }
+        else{
+            throw new Error(response.message)
+        }
+    } catch (error) {
+        dispatch(SetLoader(false))
+        message.error(error.message)
+    }
+  }
 
-  useEffect(() => {
-    getData();
-  }, []);
 
   // Get current jobs
   const indexOfLastUser = currentPage * UsersPerPage;
@@ -73,6 +87,11 @@ function UserDetails() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
 
   return (
     <div>
@@ -89,7 +108,8 @@ function UserDetails() {
             <p>Email: {user.email}</p>
             <p>Role: {user.role}</p>
             <p>Status: <StatusTag status={user.status} /></p>
-            <ActionButtons status={user.status} _id={user._id}/>
+            <ActionButtons status={user.status} _id={user._id}
+            onStatusUpdate={onStatusUpdate}/>
           </Card>
         ))}
       </div>
