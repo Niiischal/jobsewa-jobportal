@@ -155,6 +155,22 @@ router.get("/get-users", authMiddleware, async (req, res) => {
   }
 });
 
+// user status update api
+router.post("/update-user-status/:id", authMiddleware, async(req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, req.body)
+    res.send({
+      success: true,
+      message: "User status updated successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+})
+
 //forgot password api
 router.post("/forgot-password", async (req, res) => {
   try {
