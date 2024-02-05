@@ -86,6 +86,12 @@ router.post("/login", async (req, res) => {
       throw new Error("User not found");
     }
 
+    // Blocking the user from login while the user status is not active
+    if(user.status!=="active")
+    {
+      throw new Error(" The account have been blocked, contact the admin")
+    }
+
     //comparing password
     const validPassword = await bcrypt.compare(
       req.body.password,
