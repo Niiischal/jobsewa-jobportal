@@ -27,6 +27,15 @@ export const GetCurrentUser = async () => {
   }
 };
 
+export const GetAllUser = async () => {
+  try {
+    const response = await axiosInstance.get("/api/users/get-users");
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 export const forgotPassword = async (payload) => {
   try {
     const response = await axiosInstance.post(
