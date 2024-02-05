@@ -1,4 +1,4 @@
-import { Card, message, Pagination, Tag } from "antd";
+import { Card, message, Pagination, Tag, Button } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -42,6 +42,23 @@ function UserDetails() {
     return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
   };
 
+  const ActionButtons = ({ status, _id, onStatusUpdate }) => {
+    return (
+      <div className="flex gap-3 justify-center">
+        {status === "active" && (
+          <Button danger onClick={() => onStatusUpdate(_id, "blocked")}>
+            Block
+          </Button>
+        )}
+        {status === "blocked" && (
+          <Button onClick={() => onStatusUpdate(_id, "active")}>
+            Unblock
+          </Button>
+        )}
+      </div>
+    );
+  };
+
 
   useEffect(() => {
     getData();
@@ -72,6 +89,7 @@ function UserDetails() {
             <p>Email: {user.email}</p>
             <p>Role: {user.role}</p>
             <p>Status: <StatusTag status={user.status} /></p>
+            <ActionButtons status={user.status} _id={user._id}/>
           </Card>
         ))}
       </div>
