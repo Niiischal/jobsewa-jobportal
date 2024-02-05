@@ -36,10 +36,10 @@ export const GetAllUser = async () => {
   }
 };
 
-export const UpdateUserStatus = async (id, payload) => {
+export const UpdateUserStatus = async (id, status) => {
   try {
     const response = await axiosInstance.put(`/api/users/update-user-status/${id}`, {
-      payload,
+      status,
     });
     return response.data;
   } catch (error) {
