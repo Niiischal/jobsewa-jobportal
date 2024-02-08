@@ -17,7 +17,7 @@ function JobDetails() {
       const response = await GetJobs(null)
       dispatch(SetLoader(false));
       if (response.success) {
-        setJobs(response.jobs);
+        setJobs(response.data);
       }
     } catch (error) {
       dispatch(SetLoader(false));
