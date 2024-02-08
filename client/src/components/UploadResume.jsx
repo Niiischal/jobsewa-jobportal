@@ -12,34 +12,34 @@ const UploadResume = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
 
-  const handleUpload = async () => {
-    try {
-      dispatch(SetLoader(true));
+  // const handleUpload = async () => {
+  //   try {
+  //     dispatch(SetLoader(true));
 
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("userId", user._id);
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     formData.append("userId", user._id);
 
-      const response = await ResumeUpload(formData);
-      dispatch(SetLoader(false));
+  //     const response = await ResumeUpload(formData);
+  //     dispatch(SetLoader(false));
 
-      if (response.success) {
-        message.success(response.message);
-                // Update user data in the Redux store
-        // Ensure user.files is initialized as an array
-        const updatedUser = {
-          ...user,
-          files: user.files ? [...user.files, response.result.secure_url] : [response.result.secure_url],
-        };
+  //     if (response.success) {
+  //       message.success(response.message);
+  //               // Update user data in the Redux store
+  //       // Ensure user.files is initialized as an array
+  //       const updatedUser = {
+  //         ...user,
+  //         files: user.files ? [...user.files, response.result.secure_url] : [response.result.secure_url],
+  //       };
 
-        // Update user data in the Redux store
-        dispatch(SetUser(updatedUser));
-      }
-    } catch (error) {
-      dispatch(SetLoader(false));
-      message.error(error.message);
-    }
-  };
+  //       // Update user data in the Redux store
+  //       dispatch(SetUser(updatedUser));
+  //     }
+  //   } catch (error) {
+  //     dispatch(SetLoader(false));
+  //     message.error(error.message);
+  //   }
+  // };
 
   return (
     <div className="flex justify-center items-center mt-5 flex-col border border-solid border-primary p-6">
@@ -63,7 +63,7 @@ const UploadResume = () => {
         disabled={!file}
         onClick={() => {
           console.log("handleUpload function called");
-          handleUpload();
+          // handleUpload();
         }}
         style={{
           marginTop: 16,
