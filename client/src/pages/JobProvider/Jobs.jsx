@@ -23,7 +23,7 @@ function Jobs() {
       });
       dispatch(SetLoader(false));
       if (response.success) {
-        setJobs(response.jobs);
+        setJobs(response.data);
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -71,7 +71,6 @@ function Jobs() {
     return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
   };
 
-
   useEffect(() => {
     getData();
   }, []);
@@ -85,6 +84,9 @@ function Jobs() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+
+  console.log("Current Jobs:", currentJobs);
 
   return (
     <div>
