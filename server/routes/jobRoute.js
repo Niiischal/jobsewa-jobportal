@@ -37,7 +37,7 @@ router.post("/get-jobs", async (req, res) => {
       .sort({ createdAt: 1 });
     res.send({
       success: true,
-      jobs,
+      data: jobs,
     });
   } catch (error) {
     res.send({
