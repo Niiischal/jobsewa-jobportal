@@ -12,6 +12,7 @@ import { GetCurrentUser } from "../apicalls/users";
 import JobDetails from "../pages/Admin/JobDetails";
 import UserDetails from "../pages/Admin/UserDetails";
 import Jobs from "../pages/JobProvider/Jobs";
+import Home from "../pages/JobSeeker/Home";
 import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
@@ -131,7 +132,7 @@ function ProtectedPage({ children }) {
                 </div>
               </Tabs.TabPane>
               <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">
-                {/* Content for Job Seeker Tab 2 */}
+                <Home />
               </Tabs.TabPane>
             </Tabs>
           </div>
@@ -149,7 +150,7 @@ function ProtectedPage({ children }) {
                 }
                 key="1"
               >
-                <Jobs/>
+                <Jobs />
               </TabPane>
               <TabPane
                 tab={
@@ -170,10 +171,10 @@ function ProtectedPage({ children }) {
           <div className="navigation pl-[2rem] pr-[2rem]">
             <Tabs defaultActiveKey="1">
               <Tabs.TabPane tab="Users" key="1">
-                <UserDetails/>
+                <UserDetails />
               </Tabs.TabPane>
               <Tabs.TabPane tab="Jobs" key="2">
-                <JobDetails/>
+                <JobDetails />
               </Tabs.TabPane>
             </Tabs>
           </div>
