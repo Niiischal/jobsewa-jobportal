@@ -1,46 +1,29 @@
-import { message } from "antd";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { GetJobs } from "../../apicalls/jobs";
-import { SetLoader } from "../../redux/loadersSlice";
+import { Tabs } from 'antd';
+import React from 'react';
+import { useSelector } from "react-redux";
+import Resume from './Resume';
+import Jobs from './Jobs';
 
-const Home = () => {
-  const [jobs, setJobs] = useState();
-  const [filters, setFilters] = useState({
-    status: "approved",
-  });
-  
+function Home() {
   const { user } = useSelector((state) => state.users);
-  const dispatch = useDispatch();
-  const getData = async () => {
-    try {
-      dispatch(SetLoader(true));
-      const response = await GetJobs(filters);
-      dispatch(SetLoader(false));
-      if (response.success) {
-        setJobs(response.data);
-      }
-    } catch (error) {
-      dispatch(SetLoader(false));
-      message.error(error.message);
-    }
-  };
-
-  useEffect(() => {
-    getData()
-  }, []);
-
   return (
     <div>
-      {jobs?.map((job) => {
-        return (
+      {user.role === "jobSeeker" && (
           <div>
-            <h1>{job.category}</h1>
+            <Tabs defaultActiveKey="1">
+              <Tabs.TabPane tab="Upload Resume" key="1">
+                <div className="flex justify-center items-center">
+                  <Resume/>
+                </div>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">
+                <Jobs/>
+              </Tabs.TabPane>
+            </Tabs>
           </div>
-        );
-      })}
+        )}
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
