@@ -1,24 +1,14 @@
-import { AndroidOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Input, Menu, Space, Tabs } from "antd";
+import { Button, Dropdown, Input, Menu, Space } from "antd";
 import React, { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import { IoIosHeartEmpty } from "react-icons/io";
-import { IoPersonAddOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
-import JobDetails from "../pages/Admin/JobDetails";
-import UserDetails from "../pages/Admin/UserDetails";
-import Jobs from "../pages/JobProvider/Jobs";
-import Home from "../pages/JobSeeker/Home";
-import Resume from "../pages/JobSeeker/Resume";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
-
-const { Search } = Input;
-const { TabPane } = Tabs;
 
 function ProtectedPage({ children }) {
   const { user } = useSelector((state) => state.users);
@@ -121,64 +111,6 @@ function ProtectedPage({ children }) {
             </div>
           </Dropdown>
         </div>
-
-        {/* navigation */}
-        {user.role === "jobSeeker" && (
-          <div className="navigation pl-[2rem] pr-[2rem]">
-            <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Upload Resume" key="1">
-                <div className="flex justify-center items-center">
-                  <Resume />
-                </div>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab={<span>Job Seeker Tab 2</span>} key="2">
-                <Home />
-              </Tabs.TabPane>
-            </Tabs>
-          </div>
-        )}
-
-        {user.role === "jobProvider" && (
-          <div className="navigation pl-[2rem] pr-[2rem]">
-            <Tabs defaultActiveKey="1" centered>
-              <TabPane
-                tab={
-                  <span className="flex gap-2 items-center">
-                    <IoPersonAddOutline />
-                    Add Jobs
-                  </span>
-                }
-                key="1"
-              >
-                <Jobs />
-              </TabPane>
-              <TabPane
-                tab={
-                  <span>
-                    <AndroidOutlined />
-                    Job Provider Tab 2
-                  </span>
-                }
-                key="2"
-              >
-                {/* Content for Job Provider Tab 2 */}
-              </TabPane>
-            </Tabs>
-          </div>
-        )}
-
-        {user.role === "admin" && (
-          <div className="navigation pl-[2rem] pr-[2rem]">
-            <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Users" key="1">
-                <UserDetails />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Jobs" key="2">
-                <JobDetails />
-              </Tabs.TabPane>
-            </Tabs>
-          </div>
-        )}
 
         {/* body */}
         <div className="p-5">{children}</div>
