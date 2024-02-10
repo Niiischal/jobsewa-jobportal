@@ -49,20 +49,30 @@ const Jobs = () => {
   return (
     <div className="flex flex-col md:flex-row">
       {/* Job Cards */}
-      <div className="md:w-[25%] p-4 bg-gray-200 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
+      <div className="md:w-[25%] p-4 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
         <div className="flex flex-col gap-3">
           {jobs?.map((job) => (
             <div
               key={job.id}
-              className="bg-gray-100 p-6 rounded-lg border-solid border-primary shadow-md grid grid-rows-auto-1fr gap-3 cursor-pointer transition duration-250 ease-in-out"
+              className="p-6 rounded-lg border-solid border-primary shadow-md grid grid-rows-auto-1fr gap-2 cursor-pointer transition duration-250 ease-in-out"
               onClick={() => handleJobClick(job)} // Call handleJobClick function when a card is clicked
             >
-              <div className="flex justify-end cursor-pointer items-center">
+              <div className="flex items-center justify-between px-6 py-4 bg-gray-100">
+                <div className="flex items-center">
+                  <span className="text-lg font-bold text-gray-800">
+                    {job.companyname}
+                  </span>
+                </div>
+                <span>
                 <IoIosHeartEmpty size={25} />
-              </div>
-              <p className="font-semibold">{job.category}</p>
-              <p className="text-gray-400">{job.companyname}</p>
+                </span>
+                </div>
+              <p className="font-semibold text-[22px]">{job.category}</p>
+              <span className="font-proxima font-normal text-base leading-6 text-gray-400">{job.companyname}</span>
               <p>{job.companylocation}</p>
+              <div className="align-baseling font-proxima">
+                <span>{job.companylocation}</span><span>{job.type}</span>
+              </div>
               <p>Job Level: {job.level}</p>
               <p>Education required: {job.education}</p>
               <p>Experience required: {job.experience}</p>
