@@ -24,6 +24,12 @@ const levelOptions = [
   "Mid Level",
 ];
 
+const typeOptions= [
+  "Remote",
+  "On-site",
+  "Hybrid",
+]
+
 const educationOptions = [
   "below SLC/SEE",
   "SLC/SEE",
@@ -228,6 +234,26 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
               </Col>
               <Col span={8}>
                 <Form.Item
+                  label="Job Type"
+                  name="type"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select job type",
+                    },
+                  ]}
+                >
+                  <Select
+                    className="h-[40px]"
+                    defaultValue="--select--"
+                    options={typeOptions.map((type) => ({
+                      label: type,
+                      value: type,
+                    }))}
+                  />
+                </Form.Item>
+              </Col>
+              <Form.Item
                   label="Education required"
                   name="education"
                   rules={[
@@ -246,9 +272,8 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
                     }))}
                   />
                 </Form.Item>
-              </Col>
-              <Col span={8}>
-                <Form.Item
+            </Row>
+            <Form.Item
                   label="Experience"
                   name="experience"
                   rules={[
@@ -267,8 +292,6 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
                     }))}
                   />
                 </Form.Item>
-              </Col>
-            </Row>
             <Row gutter={8}>
               <Col span={8}>
                 <Form.Item
