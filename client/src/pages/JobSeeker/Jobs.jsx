@@ -1,5 +1,6 @@
-import { message } from "antd";
+import { Button, Card, message } from "antd";
 import React, { useEffect, useState } from "react";
+import { IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
@@ -31,14 +32,31 @@ const Jobs = () => {
   }, []);
 
   return (
-    <div>
-      {jobs?.map((job) => {
-        return (
-          <div>
-            <h1>{job.category}</h1>
-          </div>
-        );
-      })}
+    <div className="flex gap-3">
+       {jobs?.map((job) => (
+          <Card
+            className="border border-primary"
+            key={job._id}
+          >
+            <div className="flex justify-end cursor-pointer">
+            <IoIosHeartEmpty size={25} />
+            </div>
+            <p>{job.companyname}</p>
+            <p>{job.companylocation}</p>
+            <p>Job Level: {job.level}</p>
+            <p>Education required: {job.education}</p>
+            <p>Experience required: {job.experience}</p>
+            <div className="flex justify-between">
+              <Button
+                className="text-white bg-green-800"
+                onClick={() => {
+                }}
+              >
+                Edit
+              </Button>
+            </div>
+          </Card>
+        ))}
     </div>
   );
 };
