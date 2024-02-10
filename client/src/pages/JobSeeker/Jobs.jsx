@@ -4,10 +4,12 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
+import { useNavigate } from "react-router-dom";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState();
   const [selectedJob, setSelectedJob] = useState(null); // State to keep track of selected job
+  const navigate = useNavigate()
 
   const [filters, setFilters] = useState({
     status: "approved",
@@ -38,6 +40,9 @@ const Jobs = () => {
     // For mobile devices, do not set the selected job
     if (window.innerWidth > 768) {
       setSelectedJob(job); // Update the selected job when a card is clicked
+    }
+    else{
+      navigate("/job-details")
     }
   };
 
