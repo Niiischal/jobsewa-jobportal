@@ -5,7 +5,10 @@ module.exports = {
     extend: {
       colors:{
         'primary': '#2a68ff',
-      }
+      },
+      fontFamily: {
+        'proxima': ['Proxima Nova', 'Helvetica', 'Arial', 'sans-serif'],
+      },
     },
   },
   plugins: [],
