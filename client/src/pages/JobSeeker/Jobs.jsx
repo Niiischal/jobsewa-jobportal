@@ -2,9 +2,9 @@ import { Button, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
-import { useNavigate } from "react-router-dom";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState();
@@ -42,7 +42,7 @@ const Jobs = () => {
       setSelectedJob(job); // Update the selected job when a card is clicked
     }
     else{
-      navigate("/job-details")
+      navigate("/job-details", { state: { selectedJob: job } });
     }
   };
 
