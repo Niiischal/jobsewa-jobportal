@@ -33,7 +33,7 @@ function App() {
               </ProtectedPage>
             }
           />
-                    <Route
+          <Route
             path="/jobprovider-home"
             element={
               <ProtectedPage>
@@ -41,7 +41,7 @@ function App() {
               </ProtectedPage>
             }
           />
-                    <Route
+          <Route
             path="/admin-home"
             element={
               <ProtectedPage>
@@ -49,8 +49,8 @@ function App() {
               </ProtectedPage>
             }
           />
-                              <Route
-            path="/job-details"
+          <Route
+            path="/job-details/:id"
             element={
               <ProtectedPage>
                 <JobDetails />

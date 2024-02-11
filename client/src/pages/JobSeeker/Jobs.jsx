@@ -41,7 +41,7 @@ const Jobs = () => {
     if (window.innerWidth > 768) {
       setSelectedJob(job);
     } else {
-      navigate("/job-details", { state: { selectedJob: job } });
+      navigate(`/job-details/${job._id}`);
     }
   };
 
