@@ -1,4 +1,4 @@
-import { Button, message } from "antd";
+import { Button, message, Tag } from "antd"; // Import Tag from Ant Design
 import React, { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,9 +7,9 @@ import { GetJobs } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 
 const Jobs = () => {
-  const [jobs, setJobs] = useState();
-  const [selectedJob, setSelectedJob] = useState(null); // State to keep track of selected job
-  const navigate = useNavigate()
+  const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({
     status: "approved",
@@ -17,7 +17,7 @@ const Jobs = () => {
 
   const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
-  
+
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
@@ -37,63 +37,52 @@ const Jobs = () => {
   }, []);
 
   const handleJobClick = (job) => {
-    // For mobile devices, do not set the selected job
     if (window.innerWidth > 768) {
-      setSelectedJob(job); // Update the selected job when a card is clicked
-    }
-    else{
+      setSelectedJob(job);
+    } else {
       navigate("/job-details", { state: { selectedJob: job } });
     }
   };
 
   return (
     <div className="flex flex-col md:flex-row">
-      {/* Job Cards */}
       <div className="md:w-[25%] p-4 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
-        <div className="flex flex-col gap-3">
-          {jobs?.map((job) => (
+        <div className="flex flex-col gap-4">
+          {jobs.map((job) => (
             <div
               key={job.id}
-              className="p-6 rounded-lg border-solid border-primary shadow-md grid grid-rows-auto-1fr gap-2 cursor-pointer transition duration-250 ease-in-out"
-              onClick={() => handleJobClick(job)} // Call handleJobClick function when a card is clicked
+              className="p-6 rounded-lg border border-gray-200 shadow-lg cursor-pointer hover:shadow-xl transition duration-300"
+              onClick={() => handleJobClick(job)}
             >
-              <div className="flex items-center justify-between px-6 py-4 bg-gray-100">
-                <div className="flex items-center">
-                  <span className="text-lg font-bold text-gray-800">
-                    {job.companyname}
-                  </span>
-                </div>
-                <span>
-                <IoIosHeartEmpty size={25} />
-                </span>
-                </div>
-              <p className="font-semibold text-[22px]">{job.category}</p>
-              <span className="font-proxima font-normal text-base leading-6 text-gray-400">{job.companyname}</span>
-              <p>{job.companylocation}</p>
-              <div className="align-baseling font-proxima">
-                <span>{job.companylocation}</span><span>{job.type}</span>
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-800">{job.companyname}</h2>
+                <IoIosHeartEmpty size={24} className="text-red-500" />
               </div>
-              <p>Job Level: {job.level}</p>
-              <p>Education required: {job.education}</p>
-              <p>Experience required: {job.experience}</p>
-              <div className="flex justify-between">
-                <Button className="text-white bg-green-800" onClick={() => {}}>
-                  Edit
-                </Button>
+              <p className="text-base font-semibold text-gray-700">{job.category}</p>
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-gray-600">{job.companylocation}</p>
+                <p className="text-sm text-gray-600">{job.createdAt}</p>
+                <p className="text-sm text-gray-600">{job.type}</p>
               </div>
+              <div className="flex items-center">
+                <Tag color="blue">{job.level}</Tag> {/* Colorful Ant Design Tag */}
+                <Tag color="geekblue">{job.education}</Tag> {/* Colorful Ant Design Tag */}
+              </div>
+              <p className="text-sm text-gray-700 mt-2">{job.description}</p>
+              <Button type="primary" className="w-full mt-4">
+                Apply Now
+              </Button>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Job Details - Only for desktop */}
       {window.innerWidth > 768 && selectedJob && (
         <div className="w-1/2 p-4 bg-white">
           <div>
             <h1>{`Content for ${selectedJob.category}`}</h1>
             <p>{`Company: ${selectedJob.companyname}`}</p>
             <p>{`Location: ${selectedJob.companylocation}`}</p>
-            {/* Render additional details or components related to the selected job */}
           </div>
         </div>
       )}

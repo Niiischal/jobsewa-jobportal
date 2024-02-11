@@ -1,8 +1,8 @@
 import { Tabs } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
-import Resume from "./Resume";
 import Jobs from "./Jobs";
+import Resume from "./Resume";
 
 function Home() {
   const { user } = useSelector((state) => state.users);
