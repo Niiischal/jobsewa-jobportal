@@ -10,7 +10,7 @@ function Home() {
     <div>
       {user.role === "jobSeeker" && (
         <div>
-          <Tabs defaultActiveKey="1">
+          <Tabs centered defaultActiveKey="1">
             <Tabs.TabPane tab="Availabe Jobs" key="1">
               <Jobs />
             </Tabs.TabPane>
