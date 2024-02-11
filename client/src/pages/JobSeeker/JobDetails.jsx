@@ -1,17 +1,17 @@
-import { Button, Table, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
+import { Button, Table, Tag, message } from "antd";
+import { IoIosHeartEmpty } from "react-icons/io";
+import { useDispatch } from "react-redux";
 
 function JobDetails() {
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
   const { id } = useParams();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
 
   const JobDetailsTable = ({ job }) => {
     const columns = [
@@ -82,58 +82,62 @@ function JobDetails() {
     };
   }, []);
 
+  useEffect(() => {
+    if (windowWidth > 768) {
+      navigate('/job-seeker-home'); // Redirect to job seeker home if screen width is more than 768px
+    }
+  }, [windowWidth, navigate]);
+
   return (
-    windowWidth < 768 && job && (
-      <div
-      className="font-proxima"
-    >
-      <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
-        <div className="flex gap-4">
-          <div className="flex justify-between flex-col">
-            <div>
-              <h2>{job.category}</h2>
+    job && (
+      <div className="font-proxima">
+        <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
+          <div className="flex gap-4">
+            <div className="flex justify-between flex-col">
+              <div>
+                <h2>{job.category}</h2>
+              </div>
+              <div className="flex items-center gap-2 text-[12px] text-gray-600">
+                <span>{job.companyname}</span>
+                <span>{job.companylocation}</span>
+                <span>{job.companyemail}</span>
+              </div>
+              <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
+                <Tag color="blue">{job.level}</Tag>
+                <Tag color="green">{job.type}</Tag>
+                <Tag color="red">{job.education}</Tag>
+                <Tag color="orange">{job.experience}</Tag>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-[12px] text-gray-600">
-              <span>{job.companyname}</span>
-              <span>{job.companylocation}</span>
-              <span>{job.companyemail}</span>
-            </div>
-            <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
-              <Tag color="blue">{job.level}</Tag>
-              <Tag color="green">{job.type}</Tag>
-              <Tag color="red">{job.education}</Tag>
-              <Tag color="orange">{job.experience}</Tag>
+            <div className="flex flex-1 flex-col pt-[15px] items-end">
+              <IoIosHeartEmpty size={24} className="text-red-500 hover:cursor-pointer" />
+              <Button type="primary" className="w-full mt-[4.8rem]">
+                Quick Apply
+              </Button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col pt-[15px] items-end">
-            <IoIosHeartEmpty size={24} className="text-red-500 hover:cursor-pointer" />
-            <Button type="primary" className="w-full mt-[4.8rem]">
-              Quick Apply
-            </Button>
+        </div>
+        <div className="pl-[10px] pr-[10px]">
+          <div className="details flex flex-col gap-3">
+            <div className="descprition">
+              <h3>Description</h3>
+              <span className="text-[14px] text-gray-500">
+                {job.description}
+              </span>
+            </div>
+            <div className="specification">
+              <h3>Specification</h3>
+              <span className="text-[14px] text-gray-500">
+                {job.specification}
+              </span>
+            </div>
+            <div className="facts">
+              <h3>Numbers & Facts</h3>
+              <JobDetailsTable job={job} />
+            </div>
           </div>
         </div>
       </div>
-      <div className="pl-[10px] pr-[10px]">
-        <div className="details flex flex-col gap-3">
-          <div className="descprition">
-            <h3>Description</h3>
-            <span className="text-[14px] text-gray-500">
-              {job.description}
-            </span>
-          </div>
-          <div className="specification">
-            <h3>Specification</h3>
-            <span className="text-[14px] text-gray-500">
-              {job.specification}
-            </span>
-          </div>
-          <div className="facts">
-            <h3>Numbers & Facts</h3>
-            <JobDetailsTable job={job} />
-          </div>
-        </div>
-      </div>
-    </div>
     )
   );
 }
