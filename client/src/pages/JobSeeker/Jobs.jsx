@@ -1,5 +1,5 @@
 import { Button, message, Tag } from "antd";
-import { formatDistanceToNow } from 'date-fns'; // Import formatDistanceToNow from date-fns
+import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,7 +51,10 @@ const Jobs = () => {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="md:w-[28%] p-4 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
+      <div
+        className="md:w-[28%] p-4 overflow-y-scroll"
+        style={{ maxHeight: "calc(100vh - 4rem)" }}
+      >
         <div className="flex flex-col gap-4">
           {jobs.map((job) => (
             <div
@@ -60,23 +63,29 @@ const Jobs = () => {
               onClick={() => handleJobClick(job)}
             >
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-gray-800">{job.companyname}</h2>
+                <h2 className="text-lg font-semibold text-gray-800">
+                  {job.companyname}
+                </h2>
                 <IoIosHeartEmpty size={24} className="text-red-500" />
               </div>
-              <p className="text-base font-semibold text-gray-700 mb-2">{job.category}</p>
+              <p className="text-base font-semibold text-gray-700 mb-2">
+                {job.category}
+              </p>
               <div className="flex items-center gap-3 mb-2 text-[13px] text-gray-600">
                 <p>{job.companylocation}</p>
 
                 {/* changed the created at to ago format */}
-                <p>{formatDate(job.createdAt)}</p> 
+                <p>{formatDate(job.createdAt)}</p>
                 <p>{job.type}</p>
               </div>
               <div className="flex items-center gap-3">
-                <Tag color="blue">{job.level}</Tag> 
-                <Tag color="green">{job.education}</Tag> 
+                <Tag color="blue">{job.level}</Tag>
+                <Tag color="green">{job.education}</Tag>
               </div>
               <div>
-              <p className="text-sm text-gray-700">{job.description && job.description.slice(0, 200) + "..."}</p>
+                <p className="text-sm text-gray-700">
+                  {job.description && job.description.slice(0, 200) + "..."}
+                </p>
               </div>
               <Button type="primary" className="w-full mt-4">
                 Apply Now
