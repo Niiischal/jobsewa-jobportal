@@ -1,4 +1,5 @@
-import { Button, message, Tag } from "antd"; // Import Tag from Ant Design
+import { Button, message, Tag } from "antd";
+import { formatDistanceToNow } from 'date-fns'; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +45,10 @@ const Jobs = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    return formatDistanceToNow(new Date(dateString), { addSuffix: true });
+  };
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="md:w-[25%] p-4 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
@@ -54,21 +59,23 @@ const Jobs = () => {
               className="p-6 rounded-lg border border-gray-200 shadow-lg cursor-pointer hover:shadow-xl transition duration-300"
               onClick={() => handleJobClick(job)}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-gray-800">{job.companyname}</h2>
                 <IoIosHeartEmpty size={24} className="text-red-500" />
               </div>
-              <p className="text-base font-semibold text-gray-700">{job.category}</p>
-              <div className="flex items-center justify-between">
+              <p className="text-base font-semibold text-gray-700 mb-2">{job.category}</p>
+              <div className="flex items-center gap-3 mb-2">
                 <p className="text-sm text-gray-600">{job.companylocation}</p>
-                <p className="text-sm text-gray-600">{job.createdAt}</p>
+                <p className="text-sm text-gray-600">{formatDate(job.createdAt)}</p> {/* Format createdAt */}
                 <p className="text-sm text-gray-600">{job.type}</p>
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center gap-2">
                 <Tag color="blue">{job.level}</Tag> {/* Colorful Ant Design Tag */}
                 <Tag color="geekblue">{job.education}</Tag> {/* Colorful Ant Design Tag */}
               </div>
-              <p className="text-sm text-gray-700 mt-2">{job.description}</p>
+              <div>
+              <p className="text-sm text-gray-700">{job.description && job.description.slice(0, 200) + "..."}</p>
+              </div>
               <Button type="primary" className="w-full mt-4">
                 Apply Now
               </Button>
