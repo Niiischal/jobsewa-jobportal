@@ -1,4 +1,4 @@
-import { Button, message, Tag, Table } from "antd";
+import { Button, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -158,10 +158,9 @@ const Jobs = () => {
                 </div>
               </div>
               <div className="flex flex-1 flex-col pt-[15px] items-end">
-                <IoIosHeartEmpty size={24} className="text-red-500" />
+                <IoIosHeartEmpty size={24} className="text-red-500 hover:cursor-pointer" />
                 <Button type="primary" className="w-full mt-[4.8rem]">
-                  {" "}
-                  Quick Apply{" "}
+                  Quick Apply
                 </Button>
               </div>
             </div>
@@ -170,15 +169,15 @@ const Jobs = () => {
             <div className="details flex flex-col gap-3">
               <div className="descprition">
                 <h2>Description</h2>
-                <h3 className="text-[16px] font-semibold text-gray-500">
+                <span className="text-[16px] text-gray-500">
                   {selectedJob.description}
-                </h3>
+                </span>
               </div>
               <div className="specification">
                 <h2>Specification</h2>
-                <h3 className="text-[16px] text-gray-500">
+                <span className="text-[16px] text-gray-500">
                   {selectedJob.specification}
-                </h3>
+                </span>
               </div>
               <div className="facts">
                 <h2>Numbers & Facts</h2>
