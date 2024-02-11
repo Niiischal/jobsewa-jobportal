@@ -90,7 +90,7 @@ const Jobs = () => {
   }, []);
 
   const handleJobClick = (job) => {
-    if (windowWidth > 768) { // Use windowWidth state instead of directly accessing window.innerWidth
+    if (windowWidth > 768) { 
       setSelectedJob(job);
     } else {
       navigate(`/job-details/${job._id}`);
