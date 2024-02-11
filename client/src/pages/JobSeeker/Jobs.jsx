@@ -1,4 +1,4 @@
-import { Button, message, Tag } from "antd";
+import { Button, message, Tag, Table } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -11,6 +11,45 @@ const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const navigate = useNavigate();
+
+  const JobDetailsTable = ({ selectedJob }) => {
+    const columns = [
+      {
+        title: "Title",
+        dataIndex: "title",
+        render: (text) => <span style={{ fontWeight: '600' }}>{text}</span>, 
+      },
+      {
+        title: "Value",
+        dataIndex: "value",
+      },
+    ];
+
+    const data = [
+      {
+        key: "openings",
+        title: "Job Openings",
+        value: selectedJob.openings,
+      },
+      {
+        key: "salaryperiod",
+        title: "Salary Period",
+        value: selectedJob.salaryperiod,
+      },
+      {
+        key: "salaryamount",
+        title: "Salary Amount",
+        value: selectedJob.salaryamount,
+      },
+      {
+        key: "skills",
+        title: "Job Skills",
+        value: selectedJob.skills,
+      },
+    ];
+
+    return <Table columns={columns} dataSource={data} pagination={false} bordered={false} showHeader={false} />;
+  };
 
   const [filters, setFilters] = useState({
     status: "approved",
@@ -96,11 +135,56 @@ const Jobs = () => {
       </div>
 
       {window.innerWidth > 768 && selectedJob && (
-        <div className="w-1/2 p-4 bg-white">
-          <div>
-            <h1>{`Content for ${selectedJob.category}`}</h1>
-            <p>{`Company: ${selectedJob.companyname}`}</p>
-            <p>{`Location: ${selectedJob.companylocation}`}</p>
+        <div
+          className="w-[71%] font-proxima overflow-y-scroll"
+          style={{ maxHeight: "calc(100vh - 4rem)" }}
+        >
+          <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
+            <div className="flex gap-8">
+              <div className="flex justify-between flex-col">
+                <div>
+                  <h1>{selectedJob.category}</h1>
+                </div>
+                <div className="flex items-center gap-3 text-[16px] text-gray-600">
+                  <span>{selectedJob.companyname}</span>
+                  <span>{selectedJob.companylocation}</span>
+                  <span>{selectedJob.companyemail}</span>
+                </div>
+                <div className="flex items-center gap-3 my-5 border-b dark:border-gray-900">
+                  <Tag color="blue">{selectedJob.level}</Tag>
+                  <Tag color="green">{selectedJob.type}</Tag>
+                  <Tag color="red">{selectedJob.education}</Tag>
+                  <Tag color="orange">{selectedJob.experience}</Tag>
+                </div>
+              </div>
+              <div className="flex flex-1 flex-col pt-[15px] items-end">
+                <IoIosHeartEmpty size={24} className="text-red-500" />
+                <Button type="primary" className="w-full mt-[4.8rem]">
+                  {" "}
+                  Quick Apply{" "}
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="pl-[10px] pr-[10px]">
+            <div className="details flex flex-col gap-3">
+              <div className="descprition">
+                <h2>Description</h2>
+                <h3 className="text-[16px] font-semibold text-gray-500">
+                  {selectedJob.description}
+                </h3>
+              </div>
+              <div className="specification">
+                <h2>Specification</h2>
+                <h3 className="text-[16px] text-gray-500">
+                  {selectedJob.specification}
+                </h3>
+              </div>
+              <div className="facts">
+                <h2>Numbers & Facts</h2>
+                <JobDetailsTable selectedJob={selectedJob} />
+              </div>
+            </div>
           </div>
         </div>
       )}
