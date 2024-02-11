@@ -10,6 +10,7 @@ function JobDetails() {
   const [job, setJob] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
   const { id } = useParams();
 
   const JobDetailsTable = ({ job }) => {
@@ -69,8 +70,20 @@ function JobDetails() {
     getData();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    job && (
+    windowWidth < 768 && job && (
       <div
       className="font-proxima"
     >
