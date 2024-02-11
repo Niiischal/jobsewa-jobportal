@@ -10,6 +10,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
   const navigate = useNavigate();
 
   const JobDetailsTable = ({ selectedJob }) => {
@@ -76,8 +77,20 @@ const Jobs = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const handleJobClick = (job) => {
-    if (window.innerWidth > 768) {
+    if (windowWidth > 768) { // Use windowWidth state instead of directly accessing window.innerWidth
       setSelectedJob(job);
     } else {
       navigate(`/job-details/${job._id}`);
@@ -134,9 +147,9 @@ const Jobs = () => {
         </div>
       </div>
 
-      {window.innerWidth > 768 && selectedJob && (
+      {windowWidth > 768 && selectedJob && (
         <div
-          className="w-[71%] font-proxima overflow-y-scroll"
+          className="w-[69%] font-proxima overflow-y-scroll"
           style={{ maxHeight: "calc(100vh - 4rem)" }}
         >
           <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
