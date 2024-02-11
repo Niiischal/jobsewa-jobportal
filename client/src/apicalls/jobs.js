@@ -30,6 +30,15 @@ export const EditJob = async (id, payload) => {
   }
 };
 
+export const GetJobById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/api/jobs/get-job-by-id/${id}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 export const DeleteJob = async (id) => {
   try {
     const response = await axiosInstance.delete(`/api/jobs/delete-jobs/${id}`);

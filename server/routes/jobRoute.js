@@ -47,6 +47,21 @@ router.post("/get-jobs", async (req, res) => {
   }
 });
 
+router.get("/get-product-by-id/:id", async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id).populate("jobProvider");
+    res.send({
+      success: true,
+      data: job,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 router.put("/edit-jobs/:id", authMiddleware, async (req, res) => {
   try {
     await Job.findByIdAndUpdate(req.params.id, req.body);
