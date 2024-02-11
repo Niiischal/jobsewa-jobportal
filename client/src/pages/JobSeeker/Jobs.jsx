@@ -51,7 +51,7 @@ const Jobs = () => {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="md:w-[25%] p-4 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
+      <div className="md:w-[28%] p-4 overflow-y-scroll" style={{ maxHeight: "calc(100vh - 4rem)" }}>
         <div className="flex flex-col gap-4">
           {jobs.map((job) => (
             <div
@@ -64,14 +64,16 @@ const Jobs = () => {
                 <IoIosHeartEmpty size={24} className="text-red-500" />
               </div>
               <p className="text-base font-semibold text-gray-700 mb-2">{job.category}</p>
-              <div className="flex items-center gap-3 mb-2">
-                <p className="text-sm text-gray-600">{job.companylocation}</p>
-                <p className="text-sm text-gray-600">{formatDate(job.createdAt)}</p> {/* Format createdAt */}
-                <p className="text-sm text-gray-600">{job.type}</p>
+              <div className="flex items-center gap-3 mb-2 text-[13px] text-gray-600">
+                <p>{job.companylocation}</p>
+
+                {/* changed the created at to ago format */}
+                <p>{formatDate(job.createdAt)}</p> 
+                <p>{job.type}</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Tag color="blue">{job.level}</Tag> {/* Colorful Ant Design Tag */}
-                <Tag color="geekblue">{job.education}</Tag> {/* Colorful Ant Design Tag */}
+              <div className="flex items-center gap-3">
+                <Tag color="blue">{job.level}</Tag> 
+                <Tag color="green">{job.education}</Tag> 
               </div>
               <div>
               <p className="text-sm text-gray-700">{job.description && job.description.slice(0, 200) + "..."}</p>
