@@ -1,11 +1,10 @@
 import { Button, Table, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { IoIosHeartEmpty } from "react-icons/io";
+import { IoIosHeartEmpty, IoMdArrowRoundBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 function JobDetails() {
   const [job, setJob] = useState(null);

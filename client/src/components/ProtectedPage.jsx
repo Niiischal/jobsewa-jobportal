@@ -94,16 +94,6 @@ function ProtectedPage({ children }) {
             </h1>
           </div>
 
-          {/* Ant Design Dropdown for user information */}
-          <Space.Compact
-            style={{
-              width: "60%",
-            }}
-          >
-            <Input defaultValue="Combine input and button" />
-            <Button type="primary">Search</Button>
-          </Space.Compact>
-
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="relative z-10 cursor-pointer bg-gray-200 rounded flex items-center gap-1">
               <BiUser size={28} />
