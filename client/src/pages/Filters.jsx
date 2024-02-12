@@ -56,6 +56,21 @@ const levels = [
   },
 ];
 
+const types = [
+  {
+    name: "Remote",
+    value: "Remote",
+  },
+  {
+    name: "On-site",
+    value: "On-site",
+  },
+  {
+    name: "Hybrid",
+    value: "Hybrid",
+  },
+];
+
 function Filters({ showFilters, setShowFilters, filters, setFilters }) {
   const [showText, setShowText] = useState(false);
 
@@ -74,72 +89,98 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
         </Button>
       </div>
       {showText && (
-        <div className="flex bg-gray-100 rounded-lg justify-between">
-            <div className="flex flex-col">
+        <div className="flex bg-gray-100 rounded-lg justify-between pl-4 pr-4 sm:w-[60%] sm:ml-[20%]">
+          <div className="flex flex-col">
             <h3 className="text-gray-600">Categories</h3>
-              {categories.map((category) => {
-                return (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      name="category"
-                      checked={
-                        filters?.categories?.includes(category.value)
+            {categories.map((category) => {
+              return (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="category"
+                    checked={filters?.categories?.includes(category.value)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFilters({
+                          ...filters,
+                          category: [...filters.category, category.value],
+                        });
+                      } else {
+                        setFilters({
+                          ...filters,
+                          category: filters.category.filter(
+                            (item) => item !== category.value
+                          ),
+                        });
                       }
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setFilters({
-                            ...filters,
-                            category: [...filters.category, category.value],
-                          });
-                        } else {
-                          setFilters({
-                            ...filters,
-                            category: filters.category.filter(
-                              (item) => item !== category.value
-                            ),
-                          });
-                        }
-                      }}
-                    />
-                    <label htmlFor="category">{category.name}</label>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="flex flex-col">
-            <h3 className="text-gray-600">Level</h3>
-              {levels.map((level) => {
-                return (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      name="level"
-                      checked={
-                        filters?.level?.includes(level.value)
-                      }
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setFilters({
-                            ...filters,
-                            level: [...filters.level, level.value],
-                          });
-                        } else {
-                          setFilters({
-                            ...filters,
-                            level: filters.level.filter(
-                              (item) => item !== level.value
-                            ),
-                          });
-                        }
-                      }}
-                    />
-                    <label htmlFor="level">{level.name}</label>
-                  </div>
-                );
-              })}
-            </div>
+                    }}
+                  />
+                  <label htmlFor="category">{category.name}</label>
+                </div>
+              );
+            })}
           </div>
+          <div className="flex flex-col">
+            <h3 className="text-gray-600">Level</h3>
+            {levels.map((level) => {
+              return (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="level"
+                    checked={filters?.level?.includes(level.value)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFilters({
+                          ...filters,
+                          level: [...filters.level, level.value],
+                        });
+                      } else {
+                        setFilters({
+                          ...filters,
+                          level: filters.level.filter(
+                            (item) => item !== level.value
+                          ),
+                        });
+                      }
+                    }}
+                  />
+                  <label htmlFor="level">{level.name}</label>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex flex-col">
+            <h3 className="text-gray-600">Type</h3>
+            {types.map((type) => {
+              return (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="type"
+                    checked={filters?.type?.includes(type.value)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFilters({
+                          ...filters,
+                          level: [...filters.type, type.value],
+                        });
+                      } else {
+                        setFilters({
+                          ...filters,
+                          level: filters.type.filter(
+                            (item) => item !== type.value
+                          ),
+                        });
+                      }
+                    }}
+                  />
+                  <label htmlFor="level">{type.name}</label>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );
