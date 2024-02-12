@@ -27,25 +27,31 @@ router.post("/get-jobs", async (req, res) => {
       level = [],
       type = [],
       category = [],
-      status
+      status,
     } = req.body;
     let filters = {};
     if (jobProvider) {
       filters.jobProvider = jobProvider;
     }
-    if(status){
-      filters.status = status
+    if (status) {
+      filters.status = status;
     }
 
     // filter by category
-    if(category.length>0){
-      filters.category = { $in: category}
+    if (category.length > 0) {
+      filters.category = { $in: category };
     }
 
     // filter by job level
-    if(level.length > 0){
-      filters.level = { $in: level}
+    if (level.length > 0) {
+      filters.level = { $in: level };
     }
+
+    // filter by job level
+    if (type.length > 0) {
+      filters.type = { $in: type };
+    }
+
     const jobs = await Job.find(filters)
       .populate("jobProvider")
       .sort({ createdAt: 1 });
