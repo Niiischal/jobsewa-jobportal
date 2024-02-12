@@ -27,10 +27,14 @@ router.post("/get-jobs", async (req, res) => {
       level = [],
       experience = [],
       category = [],
+      status
     } = req.body;
     let filters = {};
     if (jobProvider) {
       filters.jobProvider = jobProvider;
+    }
+    if(status){
+      filters.status = status
     }
     const jobs = await Job.find(filters)
       .populate("jobProvider")
