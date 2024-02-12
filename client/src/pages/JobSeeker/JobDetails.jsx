@@ -1,10 +1,11 @@
+import { Button, Table, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
+import { IoIosHeartEmpty } from "react-icons/io";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
-import { Button, Table, Tag, message } from "antd";
-import { IoIosHeartEmpty } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function JobDetails() {
   const [job, setJob] = useState(null);
@@ -18,7 +19,7 @@ function JobDetails() {
       {
         title: "Title",
         dataIndex: "title",
-        render: (text) => <span style={{ fontWeight: '600' }}>{text}</span>, 
+        render: (text) => <span style={{ fontWeight: "600" }}>{text}</span>,
       },
       {
         title: "Value",
@@ -49,7 +50,15 @@ function JobDetails() {
       },
     ];
 
-    return <Table columns={columns} dataSource={data} pagination={false} bordered={false} showHeader={false} />;
+    return (
+      <Table
+        columns={columns}
+        dataSource={data}
+        pagination={false}
+        bordered={false}
+        showHeader={false}
+      />
+    );
   };
 
   const getData = async () => {
@@ -84,13 +93,19 @@ function JobDetails() {
 
   useEffect(() => {
     if (windowWidth > 768) {
-      navigate('/job-seeker-home'); // Redirect to job seeker home if screen width is more than 768px
+      navigate("/jobseeker-home"); // Redirect to job seeker home if screen width is more than 768px
     }
   }, [windowWidth, navigate]);
 
   return (
     job && (
       <div className="font-proxima">
+        <Button type="primary" onClick={() => {
+              navigate("/jobseeker-home");
+            }}>
+          <IoMdArrowRoundBack
+          />
+        </Button>
         <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
           <div className="flex gap-4">
             <div className="flex justify-between flex-col">
@@ -110,7 +125,10 @@ function JobDetails() {
               </div>
             </div>
             <div className="flex flex-1 flex-col pt-[15px] items-end">
-              <IoIosHeartEmpty size={24} className="text-red-500 hover:cursor-pointer" />
+              <IoIosHeartEmpty
+                size={24}
+                className="text-red-500 hover:cursor-pointer"
+              />
               <Button type="primary" className="w-full mt-[4.8rem]">
                 Quick Apply
               </Button>
