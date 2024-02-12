@@ -65,7 +65,8 @@ const Jobs = () => {
   const [filters, setFilters] = useState({
     status: "approved",
     category: [],
-    level: []
+    level: [],
+    type: [],
   });
 
   const { user } = useSelector((state) => state.users);
@@ -101,6 +102,10 @@ const Jobs = () => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(filters);
+  }, [filters]);
+
   const handleJobClick = (job) => {
     if (windowWidth > 768) {
       setSelectedJob(job);
@@ -115,12 +120,12 @@ const Jobs = () => {
 
   return (
     <div className="flex flex-col gap-10">
-        <Filters
-          showFilters={showFilters}
-          setShowFilters={setShowFilters}
-          filters={filters}
-          setFilters={setFilters}
-        />
+      <Filters
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
+        filters={filters}
+        setFilters={setFilters}
+      />
       <div className="flex flex-col md:flex-row">
         <div
           className="md:w-[28%] p-4 overflow-y-scroll"

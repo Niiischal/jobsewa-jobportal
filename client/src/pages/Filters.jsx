@@ -163,19 +163,19 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
                       if (e.target.checked) {
                         setFilters({
                           ...filters,
-                          level: [...filters.type, type.value],
+                          type: [...filters.type, type.value],
                         });
                       } else {
                         setFilters({
                           ...filters,
-                          level: filters.type.filter(
+                          type: filters.type.filter(
                             (item) => item !== type.value
                           ),
                         });
                       }
                     }}
                   />
-                  <label htmlFor="level">{type.name}</label>
+                  <label htmlFor="type">{type.name}</label>
                 </div>
               );
             })}
