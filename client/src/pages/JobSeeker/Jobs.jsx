@@ -103,7 +103,7 @@ const Jobs = () => {
   }, []);
 
   useEffect(() => {
-    console.log(filters);
+    getData()
   }, [filters]);
 
   const handleJobClick = (job) => {

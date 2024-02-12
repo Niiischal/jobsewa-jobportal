@@ -25,7 +25,7 @@ router.post("/get-jobs", async (req, res) => {
     const {
       jobProvider,
       level = [],
-      experience = [],
+      type = [],
       category = [],
       status
     } = req.body;
@@ -35,6 +35,11 @@ router.post("/get-jobs", async (req, res) => {
     }
     if(status){
       filters.status = status
+    }
+
+    // filter by category
+    if(category.length>0){
+      filters.category = { $in: category}
     }
     const jobs = await Job.find(filters)
       .populate("jobProvider")
