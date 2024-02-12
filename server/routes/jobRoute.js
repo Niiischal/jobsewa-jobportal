@@ -41,6 +41,11 @@ router.post("/get-jobs", async (req, res) => {
     if(category.length>0){
       filters.category = { $in: category}
     }
+
+    // filter by job level
+    if(level.length > 0){
+      filters.level = { $in: level}
+    }
     const jobs = await Job.find(filters)
       .populate("jobProvider")
       .sort({ createdAt: 1 });
