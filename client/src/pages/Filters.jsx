@@ -1,6 +1,6 @@
+import { Button } from "antd";
 import React, { useState } from "react";
 import SearchBar from "../components/SearchBar";
-import { Button } from "antd";
 
 const categories = [
   {
@@ -37,7 +37,7 @@ const categories = [
   },
 ];
 
-const level = [
+const levels = [
   {
     name: "Entry Level",
     value: "Entry Level",
@@ -65,19 +65,18 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
 
   return (
     <div className="pl-[10px] pr-[10px]">
-      <div className="flex justify-center">
+      <div className="flex sm:w-[50%] sm:ml-[25%] sm:justify-center">
         <SearchBar />
       </div>
-      <div className="flex justify-end mt-3">
+      <div className="flex justify-end mt-3 sm:justify-center">
         <Button type="primary" onClick={toggleText}>
           Filters
         </Button>
       </div>
       {showText && (
-        <div className="flex gap-4 justify-between">
-          <div className="flex flex-col">
-            <h3 className="text-gray-600">Categories</h3>
+        <div className="flex bg-gray-100 rounded-lg justify-between">
             <div className="flex flex-col">
+            <h3 className="text-gray-600">Categories</h3>
               {categories.map((category) => {
                 return (
                   <div className="flex items-center gap-2">
@@ -86,8 +85,6 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
                       name="category"
                       checked={
                         filters?.categories?.includes(category.value)
-                          ? true
-                          : false
                       }
                       onChange={(e) => {
                         if (e.target.checked) {
@@ -110,8 +107,39 @@ function Filters({ showFilters, setShowFilters, filters, setFilters }) {
                 );
               })}
             </div>
+            <div className="flex flex-col">
+            <h3 className="text-gray-600">Level</h3>
+              {levels.map((level) => {
+                return (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="level"
+                      checked={
+                        filters?.level?.includes(level.value)
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFilters({
+                            ...filters,
+                            level: [...filters.level, level.value],
+                          });
+                        } else {
+                          setFilters({
+                            ...filters,
+                            level: filters.level.filter(
+                              (item) => item !== level.value
+                            ),
+                          });
+                        }
+                      }}
+                    />
+                    <label htmlFor="level">{level.name}</label>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
       )}
     </div>
   );

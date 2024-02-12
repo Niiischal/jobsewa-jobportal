@@ -64,6 +64,8 @@ const Jobs = () => {
 
   const [filters, setFilters] = useState({
     status: "approved",
+    category: [],
+    level: []
   });
 
   const { user } = useSelector((state) => state.users);
