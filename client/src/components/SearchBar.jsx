@@ -9,9 +9,8 @@ function SearchBar() {
       placeholder="Enter the job title"
       allowClear
       enterButton="Search"
-      size="large"
+      size="small"
       onSearch={onSearch}
-      className='w-[550px]'
       variant="none"
     />
   )
