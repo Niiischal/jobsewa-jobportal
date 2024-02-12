@@ -113,14 +113,12 @@ const Jobs = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      {showFilters && (
         <Filters
           showFilters={showFilters}
           setShowFilters={setShowFilters}
           filters={filters}
           setFilters={setFilters}
         />
-      )}
       <div className="flex flex-col md:flex-row">
         <div
           className="md:w-[28%] p-4 overflow-y-scroll"
