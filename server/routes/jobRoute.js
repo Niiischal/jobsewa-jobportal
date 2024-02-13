@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Job = require("../models/jobModel");
 const authMiddleware = require("../middlewares/authMiddleware");
+const User = require("../models/userModel")
 
 // api to add new job
 router.post("/add-jobs", authMiddleware, async (req, res) => {
@@ -81,6 +82,47 @@ router.get("/get-job-by-id/:id", async (req, res) => {
     });
   }
 });
+
+router.post("/save-job-by-id/:id", authMiddleware, async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.body.userId;
+
+    // Find the job by id
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).send({
+        success: false,
+        message: "Job not found",
+      });
+    }
+
+    const user = await User.findById(userId).populate('savedJobs');
+
+    // Checking whether the job is already saved by the user
+    if (user.savedJobs.some(savedJob => savedJob._id.toString() === jobId)) {
+      return res.status(400).send({
+        success: false,
+        message: "Job already saved by the user",
+      });
+    }
+
+    // Adding the job ID to the user's savedJobs field
+    user.savedJobs.push(jobId);
+    await user.save();
+
+    res.send({
+      success: true,
+      message: "Job saved successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 
 router.put("/edit-jobs/:id", authMiddleware, async (req, res) => {
   try {
