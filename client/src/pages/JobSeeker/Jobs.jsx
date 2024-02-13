@@ -1,10 +1,10 @@
 import { Button, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
-import { IoIosHeartEmpty } from "react-icons/io";
+import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetJobs } from "../../apicalls/jobs";
+import { GetJobs, SaveJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 import Filters from "../Filters";
 
@@ -12,6 +12,7 @@ const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [savedJob, setSavedJob] = useState([])
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
   const navigate = useNavigate();
 
@@ -118,6 +119,24 @@ const Jobs = () => {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
+  useEffect(() => {
+    console.log("Saved Jobs:", savedJob);
+  }, [savedJob]);
+
+  const handleSaveJob = async (jobId) => {
+    try {
+      const response = await SaveJobById(jobId);
+      if (response.success) {
+        setSavedJob([...savedJob, jobId]); // Add the saved job ID to the state
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error("Failed to save job. Please try again later.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10">
       <Filters
@@ -193,10 +212,21 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  <IoIosHeartEmpty
-                    size={24}
-                    className="text-red-500 hover:cursor-pointer"
-                  />
+                {savedJob.includes(selectedJob._id) ? (
+              <IoIosHeart
+                size={24}
+                className="text-red-500 cursor-not-allowed"
+              />
+            ) : (
+              <IoIosHeartEmpty
+                size={24}
+                className="text-red-500 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event bubbling
+                  handleSaveJob(selectedJob._id);
+                }}
+              />
+            )}
                   <Button type="primary" className="w-full mt-[4.8rem]">
                     Quick Apply
                   </Button>
