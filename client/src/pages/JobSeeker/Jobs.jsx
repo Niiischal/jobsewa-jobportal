@@ -121,8 +121,6 @@ const Jobs = () => {
   return (
     <div className="flex flex-col gap-10">
       <Filters
-        showFilters={showFilters}
-        setShowFilters={setShowFilters}
         filters={filters}
         setFilters={setFilters}
       />
@@ -173,10 +171,10 @@ const Jobs = () => {
 
         {windowWidth > 768 && selectedJob && (
           <div
-            className="w-[69%] font-proxima overflow-y-scroll"
+            className="w-[69%] font-proxima overflow-y-scroll border border-gray-200 shadow-lg"
             style={{ maxHeight: "calc(100vh - 4rem)" }}
           >
-            <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
+            <div className="pl-[10px] pr-[10px] pt[0] rounded-lg">
               <div className="flex gap-8">
                 <div className="flex justify-between flex-col">
                   <div>

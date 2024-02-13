@@ -71,7 +71,7 @@ const types = [
   },
 ];
 
-function Filters({ showFilters, setShowFilters, filters, setFilters }) {
+function Filters({ filters, setFilters }) {
   const [showText, setShowText] = useState(false);
 
   const toggleText = () => {
