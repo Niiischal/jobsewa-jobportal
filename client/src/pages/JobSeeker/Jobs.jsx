@@ -1,8 +1,8 @@
 import { Button, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
-import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import { useDispatch, useSelector } from "react-redux";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetJobs, SaveJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
@@ -11,8 +11,11 @@ import Filters from "../Filters";
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [showFilters, setShowFilters] = useState(false);
-  const [savedJob, setSavedJob] = useState([])
+  const [savedJob, setSavedJob] = useState(() => {
+    // Retrieve saved jobs from local storage, or initialize to an empty array if not found
+    const savedJobs = localStorage.getItem("savedJobs");
+    return savedJobs ? JSON.parse(savedJobs) : [];
+  });
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
   const navigate = useNavigate();
 
@@ -70,7 +73,6 @@ const Jobs = () => {
     type: [],
   });
 
-  const { user } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -104,7 +106,7 @@ const Jobs = () => {
   }, []);
 
   useEffect(() => {
-    getData()
+    getData();
   }, [filters]);
 
   const handleJobClick = (job) => {
@@ -127,7 +129,9 @@ const Jobs = () => {
     try {
       const response = await SaveJobById(jobId);
       if (response.success) {
-        setSavedJob([...savedJob, jobId]); // Add the saved job ID to the state
+        const updatedSavedJobs = [...savedJob, jobId];
+        setSavedJob(updatedSavedJobs); // Update the saved job state
+        localStorage.setItem("savedJobs", JSON.stringify(updatedSavedJobs)); // Update local storage
         message.success(response.message);
       } else {
         message.error(response.message);
