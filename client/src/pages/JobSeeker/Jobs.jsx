@@ -159,21 +159,6 @@ const Jobs = () => {
                   <h2 className="text-lg font-semibold text-gray-800">
                     {job.companyname}
                   </h2>
-                  {savedJob.includes(selectedJob._id) ? (
-              <IoIosHeart
-                size={24}
-                className="text-red-500 cursor-not-allowed"
-              />
-            ) : (
-              <IoIosHeartEmpty
-                size={24}
-                className="text-red-500 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent event bubbling
-                  handleSaveJob(selectedJob._id);
-                }}
-              />
-            )}
                 </div>
                 <p className="text-base font-semibold text-gray-700 mb-2">
                   {job.category}
