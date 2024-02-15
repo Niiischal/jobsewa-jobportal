@@ -88,14 +88,6 @@ router.post("/save-job-by-id/:id", authMiddleware, async (req, res) => {
     const jobId = req.params.id;
     const userId = req.body.userId;
 
-    // Find the job by id
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).send({
-        success: false,
-        message: "Job not found",
-      });
-    }
 
     const user = await User.findById(userId).populate("savedJobs");
 
