@@ -48,6 +48,15 @@ export const SaveJobById = async (id) => {
   }
 };
 
+export const GetSavedJobById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`api/jobs/get-saved-jobs/${id}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 export const DeleteJob = async (id) => {
   try {
     const response = await axiosInstance.delete(`/api/jobs/delete-jobs/${id}`);
