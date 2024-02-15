@@ -11,6 +11,7 @@ import Filters from "../Filters";
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [showDiv, setShowDiv] = useState(false);
   const [savedJob, setSavedJob] = useState(() => {
     // Retrieve saved jobs from local storage, or initialize to an empty array if not found
     const savedJobs = localStorage.getItem("savedJobs");
@@ -113,7 +114,8 @@ const Jobs = () => {
     if (windowWidth > 768) {
       setSelectedJob(job);
     } else {
-      navigate(`/job-details/${job._id}`);
+      setSelectedJob(job);
+      setShowDiv(!showDiv);
     }
   };
 
@@ -143,10 +145,7 @@ const Jobs = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <Filters
-        filters={filters}
-        setFilters={setFilters}
-      />
+      <Filters filters={filters} setFilters={setFilters} />
       <div className="flex flex-col md:flex-row">
         <div
           className="md:w-[28%] p-4 overflow-y-scroll"
@@ -215,21 +214,21 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                {savedJob.includes(selectedJob._id) ? (
-              <IoIosHeart
-                size={24}
-                className="text-red-500 cursor-not-allowed"
-              />
-            ) : (
-              <IoIosHeartEmpty
-                size={24}
-                className="text-red-500 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent event bubbling
-                  handleSaveJob(selectedJob._id);
-                }}
-              />
-            )}
+                  {savedJob.includes(selectedJob._id) ? (
+                    <IoIosHeart
+                      size={24}
+                      className="text-red-500 cursor-not-allowed"
+                    />
+                  ) : (
+                    <IoIosHeartEmpty
+                      size={24}
+                      className="text-red-500 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent event bubbling
+                        handleSaveJob(selectedJob._id);
+                      }}
+                    />
+                  )}
                   <Button type="primary" className="w-full mt-[4.8rem]">
                     Quick Apply
                   </Button>
@@ -252,6 +251,60 @@ const Jobs = () => {
                 </div>
                 <div className="facts">
                   <h2>Numbers & Facts</h2>
+                  <JobDetailsTable selectedJob={selectedJob} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {windowWidth < 768 && selectedJob && (
+          <div className="font-proxima mt-5">
+            <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
+              <div className="flex gap-4">
+                <div className="flex justify-between flex-col">
+                  <div>
+                    <h2>{selectedJob.category}</h2>
+                  </div>
+                  <div className="flex items-center gap-2 text-[12px] text-gray-600">
+                    <span>{selectedJob.companyname}</span>
+                    <span>{selectedJob.companylocation}</span>
+                    <span>{selectedJob.companyemail}</span>
+                  </div>
+                  <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
+                    <Tag color="blue">{selectedJob.level}</Tag>
+                    <Tag color="green">{selectedJob.type}</Tag>
+                    <Tag color="red">{selectedJob.education}</Tag>
+                    <Tag color="orange">{selectedJob.experience}</Tag>
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col pt-[15px] items-end">
+                  <IoIosHeartEmpty
+                    size={24}
+                    className="text-red-500 hover:cursor-pointer"
+                  />
+                  <Button type="primary" className="w-full mt-[4.8rem]">
+                    Quick Apply
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <div className="pl-[10px] pr-[10px]">
+              <div className="details flex flex-col gap-3">
+                <div className="descprition">
+                  <h3>Description</h3>
+                  <span className="text-[14px] text-gray-500">
+                    {selectedJob.description}
+                  </span>
+                </div>
+                <div className="specification">
+                  <h3>Specification</h3>
+                  <span className="text-[14px] text-gray-500">
+                    {selectedJob.specification}
+                  </span>
+                </div>
+                <div className="facts">
+                  <h3>Numbers & Facts</h3>
                   <JobDetailsTable selectedJob={selectedJob} />
                 </div>
               </div>
