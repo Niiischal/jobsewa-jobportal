@@ -279,10 +279,21 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  <IoIosHeartEmpty
-                    size={24}
-                    className="text-red-500 hover:cursor-pointer"
-                  />
+                {savedJob.includes(selectedJob._id) ? (
+                    <IoIosHeart
+                      size={24}
+                      className="text-red-500 cursor-not-allowed"
+                    />
+                  ) : (
+                    <IoIosHeartEmpty
+                      size={24}
+                      className="text-red-500 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent event bubbling
+                        handleSaveJob(selectedJob._id);
+                      }}
+                    />
+                  )}
                   <Button type="primary" className="w-full mt-[4.8rem]">
                     Quick Apply
                   </Button>
