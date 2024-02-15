@@ -7,7 +7,6 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import ProtectedJPHome from "./pages/JobProvider/Home";
 import ProtectedJSHome from "./pages/JobSeeker/Home";
-import JobDetails from "./pages/JobSeeker/JobDetails";
 import Login from "./pages/Login";
 import OTPVerification from "./pages/OTP";
 import Signup from "./pages/Signup";
@@ -46,14 +45,6 @@ function App() {
             element={
               <ProtectedPage>
                 <ProtectedAHome />
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/job-details/:id"
-            element={
-              <ProtectedPage>
-                <JobDetails />
               </ProtectedPage>
             }
           />
