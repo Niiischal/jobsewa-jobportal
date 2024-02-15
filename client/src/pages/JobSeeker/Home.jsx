@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import Jobs from "./Jobs";
 import Resume from "./Resume";
+import SavedJobs from "./SavedJobs";
 
 function Home() {
   const { user } = useSelector((state) => state.users);
@@ -18,6 +19,9 @@ function Home() {
               <div className="flex justify-center items-center">
                 <Resume />
               </div>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Saved Jobs" key="3">
+              <SavedJobs />
             </Tabs.TabPane>
           </Tabs>
         </div>
