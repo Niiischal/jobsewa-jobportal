@@ -97,6 +97,7 @@ function ProtectedPage({ children }) {
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="relative z-10 cursor-pointer bg-gray-200 rounded flex items-center gap-1">
               <BiUser size={28} />
+              <span>{user.name}</span>
               <RiArrowDropDownLine size={28} />
             </div>
           </Dropdown>
