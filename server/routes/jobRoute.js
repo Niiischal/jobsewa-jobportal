@@ -169,6 +169,21 @@ router.post("/apply-job/:id", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/get-applied-jobs/:id", authMiddleware, async (req, res) => {
+  try {
+    const appliedJobs = await User.findById(req.body.userId).populate("appliedJobs");
+    res.send({
+      success: true,
+      data: appliedJobs,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 router.put("/edit-jobs/:id", authMiddleware, async (req, res) => {
   try {
     await Job.findByIdAndUpdate(req.params.id, req.body);
