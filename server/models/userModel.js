@@ -45,11 +45,12 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Middleware to add pdf property only for jobSeeker role
 userSchema.pre("save", function (next) {
   if (this.role !== "jobSeeker") {
     // If not a jobSeeker, remove the pdf property
     this.pdf = undefined;
+    this.savedJobs = undefined;
+    this.appliedJobs = undefined;
   }
   next();
 });
