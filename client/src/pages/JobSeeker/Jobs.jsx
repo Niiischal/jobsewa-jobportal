@@ -123,9 +123,6 @@ const Jobs = () => {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
-  useEffect(() => {
-    console.log("Saved Jobs:", savedJob);
-  }, [savedJob]);
 
   const handleSaveJob = async (jobId) => {
     try {
@@ -182,7 +179,7 @@ const Jobs = () => {
                     {job.description && job.description.slice(0, 200) + "..."}
                   </p>
                 </div>
-                <Button type="primary" className="w-full mt-4">
+                <Button type="primary" className="w-full mt-4" disabled>
                   Apply Now
                 </Button>
               </div>
