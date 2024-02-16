@@ -70,7 +70,11 @@ const jobsSchema = new mongoose.Schema(
             type: String,
             default: "pending",
             required: true,
-        }
+        },
+        appliedCandidates:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        }]
     },
     {
         timestamps: true,
