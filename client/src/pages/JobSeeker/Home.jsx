@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
+import AppliedJobs from "./AppliedJobs";
 import Jobs from "./Jobs";
 import Resume from "./Resume";
 import SavedJobs from "./SavedJobs";
@@ -22,6 +23,9 @@ function Home() {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Saved Jobs" key="3">
               <SavedJobs />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Applied Jobs" key="4">
+              <AppliedJobs/>
             </Tabs.TabPane>
           </Tabs>
         </div>
