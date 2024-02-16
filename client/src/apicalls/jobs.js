@@ -41,7 +41,7 @@ export const GetJobById = async (id) => {
 
 export const SaveJobById = async (id) => {
   try {
-    const response = await axiosInstance.post(`api/jobs/save-job-by-id/${id}`);
+    const response = await axiosInstance.post(`/api/jobs/save-job-by-id/${id}`);
     return response.data;
   } catch (error) {
     return { success: false, message: error.message };
@@ -50,7 +50,16 @@ export const SaveJobById = async (id) => {
 
 export const GetSavedJobById = async (id) => {
   try {
-    const response = await axiosInstance.get(`api/jobs/get-saved-jobs/${id}`);
+    const response = await axiosInstance.get(`/api/jobs/get-saved-jobs/${id}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
+export const ApplyJob = async (id) => {
+  try {
+    const response = await axiosInstance.post(`/api/jobs/apply-job/${id}`);
     return response.data;
   } catch (error) {
     return { success: false, message: error.message };
