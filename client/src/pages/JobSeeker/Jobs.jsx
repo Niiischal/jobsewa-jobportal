@@ -159,6 +159,9 @@ const Jobs = () => {
     }
   };
 
+    // Function to check if a job is applied by the current user
+    const isJobAppliedByUser = (jobId) => appliedJob.includes(jobId);
+
   return (
     <div className="flex flex-col gap-10">
       <Filters filters={filters} setFilters={setFilters} />
@@ -252,8 +255,9 @@ const Jobs = () => {
                       e.stopPropagation(); // Prevent event bubbling
                       handleApplyJob(selectedJob._id);
                     }}
+                    disabled={isJobAppliedByUser(selectedJob._id)}
                   >
-                    Quick Apply
+                    {isJobAppliedByUser(selectedJob._id) ? 'Applied' : 'Quick Apply'}
                   </Button>
                 </div>
               </div>
@@ -317,8 +321,16 @@ const Jobs = () => {
                       }}
                     />
                   )}
-                  <Button type="primary" className="w-full mt-[4.8rem]">
-                    Quick Apply
+                  <Button
+                    type="primary"
+                    className="w-full mt-[4.8rem]"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      handleApplyJob(selectedJob._id);
+                    }}
+                    disabled={isJobAppliedByUser(selectedJob._id)}
+                  >
+                    {isJobAppliedByUser(selectedJob._id) ? 'Applied' : 'Quick Apply'}
                   </Button>
                 </div>
               </div>
