@@ -88,12 +88,11 @@ router.post("/save-job-by-id/:id", authMiddleware, async (req, res) => {
     const jobId = req.params.id;
     const userId = req.body.userId;
 
-
     const user = await User.findById(userId).populate("savedJobs");
 
     // Checking whether the job is already saved by the user
     if (user.savedJobs.some((savedJob) => savedJob._id.toString() === jobId)) {
-      return res.status(400).send({
+      res.send({
         success: false,
         message: "Job already saved by the user",
       });
@@ -121,6 +120,43 @@ router.get("/get-saved-jobs/:id", authMiddleware, async (req, res) => {
     res.send({
       success: true,
       data: savedJob,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.post("apply-job/:id", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate("appliedJobs");
+    const job = await Job.findById(req.params.id);
+
+    if (!job || !user) {
+      return res.status(404).send({
+        success: false,
+        message: "Job or user not found",
+      });
+    }
+
+    if (user.appliedJobs.some((appliedJob) => appliedJob._id.equals(jobId))) {
+      res.send({
+        success: false,
+        message: "User already applied to this job",
+      });
+    }
+
+    user.appliedJobs.push(jobId);
+    job.appliedCandidates.push(userId);
+
+    await user.save();
+    await job.save();
+
+    res.send({
+      success: true,
+      message: "Job applied Successfully",
     });
   } catch (error) {
     res.send({
