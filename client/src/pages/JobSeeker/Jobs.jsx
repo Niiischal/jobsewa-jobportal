@@ -3,8 +3,7 @@ import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow fr
 import React, { useEffect, useState } from "react";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { GetJobs, SaveJobById } from "../../apicalls/jobs";
+import { ApplyJob, GetJobs, SaveJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 import Filters from "../Filters";
 
@@ -13,12 +12,18 @@ const Jobs = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [showDiv, setShowDiv] = useState(false);
   const [savedJob, setSavedJob] = useState(() => {
-    // Retrieve saved jobs from local storage, or initialize to an empty array if not found
+    // Retrieve saved jobs from local storage
     const savedJobs = localStorage.getItem("savedJobs");
+    // initialize an empty arrary if the savedJob is not found
     return savedJobs ? JSON.parse(savedJobs) : [];
   });
+  const [appliedJob, setAppliedJob] = useState(() => {
+    // Retrieve saved jobs from local storage
+    const appliedJobs = localStorage.getItem("appliedJobs");
+    // initialize an empty arrary if the savedJob is not found
+    return appliedJobs ? JSON.parse(appliedJobs) : [];
+  });
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
-  const navigate = useNavigate();
 
   const JobDetailsTable = ({ selectedJob }) => {
     const columns = [
@@ -123,7 +128,6 @@ const Jobs = () => {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
-
   const handleSaveJob = async (jobId) => {
     try {
       const response = await SaveJobById(jobId);
@@ -137,6 +141,21 @@ const Jobs = () => {
       }
     } catch (error) {
       message.error("Failed to save job. Please try again later.");
+    }
+  };
+  const handleApplyJob = async (jobId) => {
+    try {
+      const response = await ApplyJob(jobId);
+      if (response.success) {
+        const updatedAppliedJobs = [...appliedJob, jobId];
+        setAppliedJob(updatedAppliedJobs); // Update the applied job state
+        localStorage.setItem("appliedJobs", JSON.stringify(updatedAppliedJobs)); // Update local storage
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error("Failed to apply for job. Please try again later.");
     }
   };
 
@@ -226,7 +245,14 @@ const Jobs = () => {
                       }}
                     />
                   )}
-                  <Button type="primary" className="w-full mt-[4.8rem]">
+                  <Button
+                    type="primary"
+                    className="w-full mt-[4.8rem]"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      handleApplyJob(selectedJob._id);
+                    }}
+                  >
                     Quick Apply
                   </Button>
                 </div>
@@ -276,7 +302,7 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                {savedJob.includes(selectedJob._id) ? (
+                  {savedJob.includes(selectedJob._id) ? (
                     <IoIosHeart
                       size={24}
                       className="text-red-500 cursor-not-allowed"
