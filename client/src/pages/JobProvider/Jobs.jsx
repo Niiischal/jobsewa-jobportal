@@ -85,9 +85,6 @@ function Jobs() {
     setCurrentPage(page);
   };
 
-
-  console.log("Current Jobs:", currentJobs);
-
   return (
     <div>
       <div className="flex justify-end">
