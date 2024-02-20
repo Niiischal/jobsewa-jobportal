@@ -132,9 +132,11 @@ const Jobs = () => {
     try {
       const response = await SaveJobById(jobId);
       if (response.success) {
-        const updatedSavedJobs = [...savedJob, jobId];
-        setSavedJob(updatedSavedJobs); // Update the saved job state
-        localStorage.setItem("savedJobs", JSON.stringify(updatedSavedJobs)); // Update local storage
+        setSavedJob((prevSavedJobs) => ({
+          ...prevSavedJobs,
+          [jobId]: true,
+        }));
+        localStorage.setItem("savedJobs", JSON.stringify(savedJob));
         message.success(response.message);
       } else {
         message.error(response.message);
@@ -233,7 +235,7 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  {savedJob.includes(selectedJob._id) ? (
+                  {savedJob[selectedJob._id] ? (
                     <IoIosHeart
                       size={24}
                       className="text-red-500 cursor-not-allowed"
@@ -306,7 +308,7 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  {savedJob.includes(selectedJob._id) ? (
+                  {savedJob[selectedJob._id] ? (
                     <IoIosHeart
                       size={24}
                       className="text-red-500 cursor-not-allowed"
