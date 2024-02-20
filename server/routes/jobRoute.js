@@ -151,6 +151,13 @@ router.post("/apply-job/:id", authMiddleware, async (req, res) => {
       });
     }
 
+    if (job.appliedCandidates.includes(userId)) {
+      return res.send({
+        success: false,
+        message: "This candidate has already applied to this job",
+      });
+    }
+
     user.appliedJobs.push(jobId);
     job.appliedCandidates.push(userId);
 
@@ -231,5 +238,42 @@ router.put("/update-status/:id", authMiddleware, async (req, res) => {
     });
   }
 });
+
+router.get("/job-applications/:id", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.body.userId;
+
+    // Find all jobs posted by the specified user
+    const jobs = await Job.find({ jobProvider: userId });
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No jobs found for the specified user",
+      });
+    }
+
+    let appliedCandidates = [];
+
+    // Loop through each job to retrieve applied candidates
+    for (const job of jobs) {
+      // Populate the appliedCandidates field of the job to get the list of users who have applied
+      await job.populate("appliedCandidates")
+      
+      // Extract the list of users from each job object and push them to the appliedCandidates array
+      appliedCandidates.push(...job.appliedCandidates);
+    }
+
+    res.status(200).json({
+      success: true,
+      data: appliedCandidates,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 
 module.exports = router;

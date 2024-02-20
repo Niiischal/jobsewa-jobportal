@@ -7,7 +7,6 @@ const nodemailer = require("nodemailer");
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
 
-// Create a predefined admin user if it doesn't exist
 const createAdminUser = async () => {
   try {
     const adminUser = await User.findOne({ email: "admin@jobsewanp.com" });
@@ -23,7 +22,7 @@ const createAdminUser = async () => {
         name: "Admin",
         email: "admin@jobsewanp.com",
         password: hashedPassword,
-        role: "admin", // Assuming admin has the "admin" role
+        role: "admin", 
       });
 
       await newAdmin.save();
