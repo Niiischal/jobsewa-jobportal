@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 import React from "react";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
+import JobApplication from "./JobApplicaton";
 import Jobs from "./Jobs";
 
 function Home() {
@@ -27,12 +28,12 @@ function Home() {
               tab={
                 <span>
                   <AndroidOutlined />
-                  Job Provider Tab 2
+                  Job Applicants
                 </span>
               }
               key="2"
             >
-              {/* Content for Job Provider Tab 2 */}
+              <JobApplication/>
             </Tabs.TabPane>
           </Tabs>
         </div>
