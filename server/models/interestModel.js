@@ -14,7 +14,7 @@ const interestSchema = new mongoose.Schema(
             required: true,
         },
         education: {
-            type: Number,
+            type: String,
             required: true,
         },
         title: {
@@ -44,6 +44,6 @@ const interestSchema = new mongoose.Schema(
     }
 )
 
-const Interest = mongoose.model("interest", interestSchema);
+const Interest = mongoose.model("interests", interestSchema);
 
 module.exports = Interest;

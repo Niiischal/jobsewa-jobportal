@@ -1,65 +1,88 @@
-import { Col, Form, Input, Modal, Row, Select } from "antd";
-import React from 'react';
+import { Col, Form, Input, Modal, Row, Select, message } from "antd";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { PostInterest } from "../../apicalls/interests";
+import { SetLoader } from "../../redux/loadersSlice";
 
 const educationOptions = [
-    "below SLC/SEE",
-    "SLC/SEE",
-    "Intermediate",
-    "Bachelors",
-    "Post-Graduate-Diploma",
-    "Masters",
-    "MPhil",
-    "PHD",
-  ];
+  "below SLC/SEE",
+  "SLC/SEE",
+  "Intermediate",
+  "Bachelors",
+  "Post-Graduate-Diploma",
+  "Masters",
+  "MPhil",
+  "PHD",
+];
 
-  const categoryOptions = [
-    "Accounting / Finance",
-    "Architecture / Interior Design",
-    "Banking / Insurance / Financial Services",
-    "Commercial / Logistics / Supply Chain",
-    "Construction / Engineering / Architects",
-    "Creative / Content / Graphics / Video Editing",
-    "Hospitality / Tourism",
-    "IT / Telecommunication",
-  ];
+const categoryOptions = [
+  "Accounting / Finance",
+  "Architecture / Interior Design",
+  "Banking / Insurance / Financial Services",
+  "Commercial / Logistics / Supply Chain",
+  "Construction / Engineering / Architects",
+  "Creative / Content / Graphics / Video Editing",
+  "Hospitality / Tourism",
+  "IT / Telecommunication",
+];
 
-  const titleOptions = [
-    "Web Developer",
-    "Mobile App Developer",
-    "UI/UX Designer",
-    "Data Analyst",
-    "Project Manager",
-    "Accountant",
-    "HR Executive",
-    "Doctor",
-    "Nurse",
-    "Auditor",
-    "Writer"
-  ];
+const titleOptions = [
+  "Web Developer",
+  "Mobile App Developer",
+  "UI/UX Designer",
+  "Data Analyst",
+  "Project Manager",
+  "Accountant",
+  "HR Executive",
+  "Doctor",
+  "Nurse",
+  "Auditor",
+  "Writer",
+];
 
-  const experienceOptions = [
-    "Fresher",
-    "6 months",
-    "1 year",
-    "2 years",
-    "3 years",
-    "4 years",
-    "5 years",
-    "More than 5 years",
-  ];
+const experienceOptions = [
+  "Fresher",
+  "6 months",
+  "1 year",
+  "2 years",
+  "3 years",
+  "4 years",
+  "5 years",
+  "More than 5 years",
+];
 
-  const skillsOptions = [
-    "Accounting",
-    "Analytics & Data Science",
-    "Counseling",
-    "Data Visualization",
-    "Digital Marketing",
-    "Web Design",
-    "Web Developer",
-  ];
+const skillsOptions = [
+  "Accounting",
+  "Analytics & Data Science",
+  "Counseling",
+  "Data Visualization",
+  "Digital Marketing",
+  "Web Design",
+  "Web Developer",
+];
 
-function InterestForm({showInterestForm, setShowInterestForm }) {
-    const formRef = React.useRef(null);
+function InterestForm({ showInterestForm, setShowInterestForm }) {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
+
+  const onFinish = async (values) => {
+    try {
+      values.jobSeeker = user._id;
+      dispatch(SetLoader(true));
+      const response = await PostInterest(values);
+      if (response.success) {
+        message.success(response.message);
+        setShowInterestForm(false);
+        dispatch(SetLoader(false))
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+  const formRef = React.useRef(null);
   return (
     <div>
       <Modal
@@ -69,25 +92,31 @@ function InterestForm({showInterestForm, setShowInterestForm }) {
         width={"80%"}
         okText="Post Interest"
         onOk={() => {
-            formRef.current.submit();
+          formRef.current.submit();
         }}
       >
         <div>
-        <h1 className="text-xl font-semibold uppercase text-center"> Add Interest </h1>
-        <Form layout='vertical' ref={formRef} >
+          <h1 className="text-xl font-semibold uppercase text-center">
+            {" "}
+            Add Interest{" "}
+          </h1>
+          <Form layout="vertical" ref={formRef} onFinish={onFinish}>
             <Row gutter={8}>
-                <Col span={8}>
-                    <Form.Item
-                    label="Full Name"
-                    name="name"
-                    rules={[
-                        { required: true, message: "Please Provide your  Full Name!" },
-                      ]}
-                    >
-                        <Input type="text" />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
+              <Col span={8}>
+                <Form.Item
+                  label="Full Name"
+                  name="name"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Provide your  Full Name!",
+                    },
+                  ]}
+                >
+                  <Input type="text" />
+                </Form.Item>
+              </Col>
+              <Col span={8}>
                 <Form.Item
                   label="Email"
                   name="email"
@@ -112,7 +141,7 @@ function InterestForm({showInterestForm, setShowInterestForm }) {
             </Row>
             <Row gutter={8}>
               <Col span={8}>
-              <Form.Item
+                <Form.Item
                   label="Education"
                   name="education"
                   rules={[
@@ -149,7 +178,6 @@ function InterestForm({showInterestForm, setShowInterestForm }) {
                     }))}
                   />
                 </Form.Item>
-
               </Col>
               <Col span={8}>
                 <Form.Item
@@ -171,7 +199,7 @@ function InterestForm({showInterestForm, setShowInterestForm }) {
               </Col>
             </Row>
             <Row gutter={12}>
-                <Col span={12}>
+              <Col span={12}>
                 <Form.Item
                   label="Experience"
                   name="experience"
@@ -191,8 +219,8 @@ function InterestForm({showInterestForm, setShowInterestForm }) {
                     }))}
                   />
                 </Form.Item>
-                </Col>
-                <Col span={12}>
+              </Col>
+              <Col span={12}>
                 <Form.Item
                   label="Skills"
                   name="skills"
@@ -208,13 +236,13 @@ function InterestForm({showInterestForm, setShowInterestForm }) {
                     }))}
                   />
                 </Form.Item>
-                </Col>
+              </Col>
             </Row>
-        </Form>
+          </Form>
         </div>
       </Modal>
     </div>
-  )
+  );
 }
 
-export default InterestForm
+export default InterestForm;
