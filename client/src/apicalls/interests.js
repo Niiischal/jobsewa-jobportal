@@ -8,3 +8,12 @@ export const PostInterest = async (payload) =>{
         return { success: false, message: error.message };
     }
 }
+
+export const GetInterests = async (filters) => {
+    try {
+      const response = await axiosInstance.post("/api/interests/get-interest", filters);
+      return response.data;
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  };
