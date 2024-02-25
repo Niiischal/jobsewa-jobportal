@@ -61,7 +61,7 @@ const skillsOptions = [
   "Web Developer",
 ];
 
-function InterestForm({ showInterestForm, setShowInterestForm }) {
+function InterestForm({ showInterestForm, setShowInterestForm}) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
 
