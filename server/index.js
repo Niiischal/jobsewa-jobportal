@@ -14,9 +14,11 @@ const port = process.env.PORT || 5000;
 // Available routes
 const userRoute = require("./routes/userRoute"); 
 const jobRoute = require("./routes/jobRoute"); 
+const interestRoute = require("./routes/interestRoute")
 
 app.use("/api/users", userRoute); 
 app.use("/api/jobs", jobRoute); 
+app.use("/api/interests", interestRoute)
 
 
 

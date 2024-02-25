@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const Interest = require("../models/interestModel")
+const authMiddleware = require("../middlewares/authMiddleware");
 
 router.post("/post-interests", authMiddleware, async (req, res) => {
     try {
@@ -16,3 +17,5 @@ router.post("/post-interests", authMiddleware, async (req, res) => {
       });
     }
   });
+
+module.exports = router;
