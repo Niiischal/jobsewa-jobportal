@@ -20,7 +20,7 @@ router.post("/post-interests", authMiddleware, async (req, res) => {
 
 router.post("/get-interest", async (req, res) => {
   try {
-    const {jobSeeker} = req.body
+    const { jobSeeker } = req.body;
     let filters = {};
     if (jobSeeker) {
       filters.jobSeeker = jobSeeker;
@@ -29,6 +29,21 @@ router.post("/get-interest", async (req, res) => {
     res.send({
       success: true,
       data: interests,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+router.put("/edit-interests/:id", authMiddleware, async (req, res) => {
+  try {
+    await Interest.findByIdAndUpdate(req.params.id, req.body);
+    res.send({
+      success: true,
+      message: "The interest has been updated successfully",
     });
   } catch (error) {
     res.send({
