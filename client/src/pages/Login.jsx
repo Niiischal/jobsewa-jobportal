@@ -44,7 +44,7 @@ const Login = () => {
     <>
       <Navbar/>
       <div className="h-screen flex justify-center items-center">
-        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fcfdfd]">
+        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fcfdfd] cursor-pointer shadow-lg hover:shadow-xl transition duration-300">
           <h1 className="text-[30px] my-2">Login</h1>
           <Form layout="vertical" onFinish={onFinish}>
             <Form.Item

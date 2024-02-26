@@ -1,9 +1,9 @@
 import { Button, Form, Input, Radio, message } from "antd";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
-import { useDispatch } from "react-redux";
 import { SetLoader } from "../redux/loadersSlice";
 
 const rules = [
@@ -50,7 +50,7 @@ const Signup = () => {
     <>
       <Navbar/>
       <div className="h-screen flex justify-center items-center">
-        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fdffff]">
+        <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fcfdfd] cursor-pointer shadow-lg hover:shadow-xl transition duration-300">
           <h1 className="text-[30px] my-2">Create an Account</h1>
           <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
