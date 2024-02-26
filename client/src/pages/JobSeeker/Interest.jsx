@@ -73,6 +73,17 @@ function Interest() {
             <p>Education: {interest.education}</p>
             <p>Experience: {interest.experience}</p>
             <p>Skills: {interest.skills}</p>
+            <div className="flex justify-between">
+              <Button
+                className="text-white bg-green-800"
+                onClick={() => {
+                  setSelectedInterest(interest);
+                  setShowInterestForm(true);
+                }}
+              >
+                Edit
+              </Button>
+            </div>
           </Card>
         ))}
       </div>

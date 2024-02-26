@@ -1,7 +1,7 @@
 import { Col, Form, Input, Modal, Row, Select, message } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PostInterest } from "../../apicalls/interests";
+import { EditInterest, PostInterest } from "../../apicalls/interests";
 import { SetLoader } from "../../redux/loadersSlice";
 
 const educationOptions = [
@@ -61,21 +61,27 @@ const skillsOptions = [
   "Web Developer",
 ];
 
-function InterestForm({ showInterestForm, setShowInterestForm}) {
+function InterestForm({ showInterestForm, setShowInterestForm, selectedInterest, getData}) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
 
   const onFinish = async (values) => {
     try {
-      values.jobSeeker = user._id;
       dispatch(SetLoader(true));
-      const response = await PostInterest(values);
+      let response = null;
+      if(selectedInterest) {
+        response = await EditInterest(selectedInterest._id, values)
+      }
+      else{
+        values.jobSeeker = user._id;
+        response = await PostInterest(values);
+      }
+      dispatch(SetLoader(true));
       if (response.success) {
         message.success(response.message);
         setShowInterestForm(false);
-        dispatch(SetLoader(false))
-      } else {
-        message.error(response.message);
+        // dispatch(SetLoader(false))
+        getData()
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -83,6 +89,13 @@ function InterestForm({ showInterestForm, setShowInterestForm}) {
     }
   };
   const formRef = React.useRef(null);
+
+  useEffect(() => {
+    if (selectedInterest) {
+      // Edit mode: Prepopulate the form
+      formRef.current.setFieldsValue(selectedInterest);
+    }
+  }, [selectedInterest]);
   return (
     <div>
       <Modal
