@@ -1,7 +1,7 @@
 import { Button, Card, Pagination, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetInterests } from "../../apicalls/interests";
+import { DeleteInterest, GetInterests } from "../../apicalls/interests";
 import { SetLoader } from "../../redux/loadersSlice";
 import InterestForm from "./InterestForm";
 
@@ -23,6 +23,23 @@ function Interest() {
       dispatch(SetLoader(false));
       if (response.success) {
         setInterests(response.data);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
+  const deleteInterest = async (id) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await DeleteInterest(id);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        message.success(response.message);
+        getData();
+      } else {
+        message.error(response.message);
       }
     } catch (error) {
       dispatch(SetLoader(false));
