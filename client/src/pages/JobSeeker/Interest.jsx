@@ -91,6 +91,14 @@ function Interest() {
             <p>Experience: {interest.experience}</p>
             <p>Skills: {interest.skills}</p>
             <div className="flex justify-between">
+            <Button
+                className="text-white bg-red-500"
+                onClick={() => {
+                  deleteInterest(interest._id);
+                }}
+              >
+                Delete
+              </Button>
               <Button
                 className="text-white bg-green-800"
                 onClick={() => {
