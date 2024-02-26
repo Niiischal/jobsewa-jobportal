@@ -308,7 +308,7 @@ router.post(
 
       const userId = req.body.userId;
       await User.findByIdAndUpdate(userId, {
-        $push: { files: result.secure_url },
+        $push: { pdf: result.secure_url },
       });
 
       res.send({
