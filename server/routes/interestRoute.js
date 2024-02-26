@@ -53,4 +53,19 @@ router.put("/edit-interests/:id", authMiddleware, async (req, res) => {
   }
 });
 
+router.delete("/delete-interests/:id", authMiddleware, async (req, res) => {
+  try {
+    await Interest.findByIdAndDelete(req.params.id);
+    res.send({
+      success: true,
+      message: "The interest has been deleted successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
