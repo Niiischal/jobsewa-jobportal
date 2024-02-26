@@ -35,3 +35,12 @@ export const EditInterest = async (id, payload) => {
     return { success: false, message: error.message };
   }
 };
+
+export const DeleteInterest = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/api/interests/delete-interests/${id}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
