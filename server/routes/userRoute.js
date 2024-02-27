@@ -356,4 +356,38 @@ router.put("/update-user/:id", authMiddleware, async (req, res) => {
   }
 });
 
+//change password
+router.put("/change-password/:id", authMiddleware, async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    // Validate password is present in the request body
+    if (!password) {
+      return res.send({
+        success: false,
+        message: "password is required",
+      });
+    }
+
+    // Hash the password before storing it in the database
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update user information in the database with the hashed password
+    await User.findByIdAndUpdate(req.params.id, {
+      password: hashedPassword,
+    });
+
+    res.send({
+      success: true,
+      message: "User information updated successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+
 module.exports = router;
