@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineLogout } from "react-icons/md";
-import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
@@ -76,10 +75,10 @@ function ProtectedPage({ children }) {
     user && (
       <div>
         {/* header */}
-        <div className="flex justify-between items-center pl-[2rem] pr-[2rem]">
+        <div className="flex justify-between items-center pl-[2rem] pr-[2rem] bg-primary">
           <div className="logo-div">
             <h1
-              className="logo text-[27px] cursor-pointer text-primary"
+              className="logo text-[27px] cursor-pointer text-white"
               onClick={() => {
                 if (user.role === "jobProvider") {
                   navigate("/jobprovider-home");
@@ -94,13 +93,12 @@ function ProtectedPage({ children }) {
             </h1>
           </div>
 
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <div className="relative z-10 cursor-pointer bg-gray-200 rounded flex items-center gap-1">
-              <BiUser size={28} />
-              <span>{user.name}</span>
-              <RiArrowDropDownLine size={28} />
-            </div>
-          </Dropdown>
+          <div className="relative z-10 cursor-pointer rounded flex items-center gap-3 ">
+            <span className="text-white">{user.name}</span>
+            <Dropdown overlay={menu} trigger={["click"]}>
+              <BiUser size={26} color="white" />
+            </Dropdown>
+          </div>
         </div>
 
         {/* body */}
