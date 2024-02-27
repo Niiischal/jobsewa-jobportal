@@ -82,3 +82,16 @@ export const ResumeUpload = async (payload) => {
     return { success: false, message: error.message };
   }
 }
+
+//update user information
+export const UpdateUser = async (id, name, email) => {
+  try {
+    const response = await axiosInstance.put(
+      `/api/users/update-user/${id}`,
+      { name, email }
+    );
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
