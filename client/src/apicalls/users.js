@@ -95,3 +95,16 @@ export const UpdateUser = async (id, name, email) => {
     return error.message;
   }
 };
+
+//change password
+export const ChangePassword = async (id, password) => {
+  try {
+    const response = await axiosInstance.put(
+      `/api/users/change-password/${id}`,
+      { password }
+    );
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
