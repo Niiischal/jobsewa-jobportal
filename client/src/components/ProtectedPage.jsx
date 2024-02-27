@@ -53,7 +53,8 @@ function ProtectedPage({ children }) {
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" icon={<BiUser size={18} />}>
+      <Menu.Item key="1" icon={<BiUser size={18} />}
+      onClick={()=> navigate("/profile")}>
         My profile
       </Menu.Item>
       <Menu.Item

@@ -9,6 +9,7 @@ import ProtectedJPHome from "./pages/JobProvider/Home";
 import ProtectedJSHome from "./pages/JobSeeker/Home";
 import Login from "./pages/Login";
 import OTPVerification from "./pages/OTP";
+import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 
 function App() {
@@ -45,6 +46,14 @@ function App() {
             element={
               <ProtectedPage>
                 <ProtectedAHome />
+              </ProtectedPage>
+            }
+          />
+                    <Route
+            path="/profile"
+            element={
+              <ProtectedPage>
+                <Profile />
               </ProtectedPage>
             }
           />
