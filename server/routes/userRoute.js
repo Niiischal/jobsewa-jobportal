@@ -325,4 +325,35 @@ router.post(
   }
 );
 
+// Update user information
+router.put("/update-user/:id", authMiddleware, async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    // Validate if name and email are present in the request body
+    if (!name || !email) {
+      return res.send({
+        success: false,
+        message: "Name, email, and password are required fields",
+      });
+    }
+
+    // Update user information in the database with the hashed password
+    await User.findByIdAndUpdate(req.params.id, {
+      name,
+      email,
+    });
+
+    res.send({
+      success: true,
+      message: "User information updated successfully",
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
