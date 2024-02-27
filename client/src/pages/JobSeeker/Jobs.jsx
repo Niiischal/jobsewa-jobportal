@@ -1,4 +1,4 @@
-import { Button, Table, Tag, message } from "antd";
+import { Button, Modal, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
@@ -8,6 +8,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 import Filters from "../Filters";
 
 const Jobs = () => {
+  const [showJobModal, setShowJobModal] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [showDiv, setShowDiv] = useState(false);
@@ -120,7 +121,7 @@ const Jobs = () => {
       setSelectedJob(job);
     } else {
       setSelectedJob(job);
-      setShowDiv(!showDiv);
+      setShowJobModal(true)
     }
   };
 
@@ -161,8 +162,8 @@ const Jobs = () => {
     }
   };
 
-    // Function to check if a job is applied by the current user
-    const isJobAppliedByUser = (jobId) => appliedJob.includes(jobId);
+  // Function to check if a job is applied by the current user
+  const isJobAppliedByUser = (jobId) => appliedJob.includes(jobId);
 
   return (
     <div className="flex flex-col gap-10">
@@ -259,7 +260,9 @@ const Jobs = () => {
                     }}
                     disabled={isJobAppliedByUser(selectedJob._id)}
                   >
-                    {isJobAppliedByUser(selectedJob._id) ? 'Applied' : 'Quick Apply'}
+                    {isJobAppliedByUser(selectedJob._id)
+                      ? "Applied"
+                      : "Quick Apply"}
                   </Button>
                 </div>
               </div>
@@ -287,78 +290,87 @@ const Jobs = () => {
           </div>
         )}
 
-        {windowWidth < 768 && selectedJob && (
-          <div className="font-proxima mt-5">
-            <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
-              <div className="flex gap-4">
-                <div className="flex justify-between flex-col">
-                  <div>
-                    <h2>{selectedJob.category}</h2>
+        <Modal
+          open={showJobModal}
+          onCancel={() => setShowJobModal(false)}
+          centered
+          width={"90%"}
+        >
+          {windowWidth < 768 && selectedJob && (
+            <div className="font-proxima mt-5">
+              <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
+                <div className="flex gap-4">
+                  <div className="flex justify-between flex-col">
+                    <div>
+                      <h2>{selectedJob.category}</h2>
+                    </div>
+                    <div className="flex items-center gap-2 text-[12px] text-gray-600">
+                      <span>{selectedJob.companyname}</span>
+                      <span>{selectedJob.companylocation}</span>
+                      <span>{selectedJob.companyemail}</span>
+                    </div>
+                    <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
+                      <Tag color="blue">{selectedJob.level}</Tag>
+                      <Tag color="green">{selectedJob.type}</Tag>
+                      <Tag color="red">{selectedJob.education}</Tag>
+                      <Tag color="orange">{selectedJob.experience}</Tag>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-[12px] text-gray-600">
-                    <span>{selectedJob.companyname}</span>
-                    <span>{selectedJob.companylocation}</span>
-                    <span>{selectedJob.companyemail}</span>
-                  </div>
-                  <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
-                    <Tag color="blue">{selectedJob.level}</Tag>
-                    <Tag color="green">{selectedJob.type}</Tag>
-                    <Tag color="red">{selectedJob.education}</Tag>
-                    <Tag color="orange">{selectedJob.experience}</Tag>
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  {savedJob[selectedJob._id] ? (
-                    <IoIosHeart
-                      size={24}
-                      className="text-red-500 cursor-not-allowed"
-                    />
-                  ) : (
-                    <IoIosHeartEmpty
-                      size={24}
-                      className="text-red-500 cursor-pointer"
+                  <div className="flex flex-1 flex-col pt-[15px] items-end">
+                    {savedJob[selectedJob._id] ? (
+                      <IoIosHeart
+                        size={24}
+                        className="text-red-500 cursor-not-allowed"
+                      />
+                    ) : (
+                      <IoIosHeartEmpty
+                        size={24}
+                        className="text-red-500 cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent event bubbling
+                          handleSaveJob(selectedJob._id);
+                        }}
+                      />
+                    )}
+                    <Button
+                      type="primary"
+                      className="w-full mt-[4.8rem]"
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent event bubbling
-                        handleSaveJob(selectedJob._id);
+                        handleApplyJob(selectedJob._id);
                       }}
-                    />
-                  )}
-                  <Button
-                    type="primary"
-                    className="w-full mt-[4.8rem]"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent event bubbling
-                      handleApplyJob(selectedJob._id);
-                    }}
-                    disabled={isJobAppliedByUser(selectedJob._id)}
-                  >
-                    {isJobAppliedByUser(selectedJob._id) ? 'Applied' : 'Quick Apply'}
-                  </Button>
+                      disabled={isJobAppliedByUser(selectedJob._id)}
+                    >
+                      {isJobAppliedByUser(selectedJob._id)
+                        ? "Applied"
+                        : "Quick Apply"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="pl-[10px] pr-[10px]">
+                <div className="details flex flex-col gap-3">
+                  <div className="descprition">
+                    <h3>Description</h3>
+                    <span className="text-[14px] text-gray-500">
+                      {selectedJob.description}
+                    </span>
+                  </div>
+                  <div className="specification">
+                    <h3>Specification</h3>
+                    <span className="text-[14px] text-gray-500">
+                      {selectedJob.specification}
+                    </span>
+                  </div>
+                  <div className="facts">
+                    <h3>Numbers & Facts</h3>
+                    <JobDetailsTable selectedJob={selectedJob} />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="pl-[10px] pr-[10px]">
-              <div className="details flex flex-col gap-3">
-                <div className="descprition">
-                  <h3>Description</h3>
-                  <span className="text-[14px] text-gray-500">
-                    {selectedJob.description}
-                  </span>
-                </div>
-                <div className="specification">
-                  <h3>Specification</h3>
-                  <span className="text-[14px] text-gray-500">
-                    {selectedJob.specification}
-                  </span>
-                </div>
-                <div className="facts">
-                  <h3>Numbers & Facts</h3>
-                  <JobDetailsTable selectedJob={selectedJob} />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </Modal>
       </div>
     </div>
   );
