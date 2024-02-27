@@ -1,7 +1,7 @@
 import { Button, Form, Input, Tabs, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { GetCurrentUser, UpdateUser } from "../apicalls/users";
+import { ChangePassword, GetCurrentUser, UpdateUser } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
 
 const { TabPane } = Tabs;
@@ -71,6 +71,37 @@ const Profile = () => {
     }
   };
 
+  const handlePasswordSave = async (values) => {
+    try {
+      dispatch(SetLoader(true));
+      const { password, confirmPassword } = values;
+
+      if (currentUser && currentUser._id) {
+        if (password !== confirmPassword) {
+          throw new Error("Password and Confirm Password do not match.");
+        }
+        dispatch(SetLoader(true));
+
+        await ChangePassword(currentUser._id, password);
+
+        const updatedUserResponse = await GetCurrentUser();
+        const updatedUserData = updatedUserResponse.data;
+        message.success("Password updated successfully");
+
+        dispatch(SetLoader(false));
+        setCurrentUser(updatedUserData);
+
+        form.setFieldsValue({
+          password: "",
+        });
+      } else {
+        throw new Error("User ID is undefined or null.");
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -110,7 +141,38 @@ const Profile = () => {
           </TabPane>
 
           <TabPane tab="Password" key="2">
-            Password change
+            <Form layout="vertical" form={form} onFinish={handlePasswordSave}>
+              <Form.Item
+                label="Password"
+                name="password"
+                className="font-semibold"
+                rules={rules}
+              >
+                <Input.Password
+                  placeholder="Password"
+                  className="border rounded-sm py-2"
+                />
+              </Form.Item>
+              <Form.Item
+                label="Confirm Password"
+                name="confirmPassword"
+                className="font-semibold"
+                rules={rules}
+              >
+                <Input.Password
+                  placeholder="Confirm Password"
+                  className="border rounded-sm py-2"
+                />
+              </Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                className="mt-2 h-9 rounded bg-[primary] text-white text-base font-medium active:scale-[.98] active:duration-75 transition-all ease-in-out"
+              >
+                Save Password
+              </Button>
+            </Form>
           </TabPane>
         </Tabs>
       </div>
