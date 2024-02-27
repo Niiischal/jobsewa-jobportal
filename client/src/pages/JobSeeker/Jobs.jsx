@@ -295,6 +295,7 @@ const Jobs = () => {
           onCancel={() => setShowJobModal(false)}
           centered
           width={"90%"}
+          footer={null}
         >
           {windowWidth < 768 && selectedJob && (
             <div className="font-proxima mt-5">
