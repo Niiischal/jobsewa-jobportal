@@ -54,33 +54,53 @@ function ProtectedPage({ children }) {
 
   const menu = (
     <Menu>
-      <Menu.Item
-        key="1"
-        icon={<BiUser size={18} />}
-        onClick={() => navigate("/profile")}
-      >
-        My profile
-      </Menu.Item>
-      <Menu.Item
-        key="2"
-        icon={<IoIosHeartEmpty size={18} />}
-        onClick={() => navigate("/my-jobs")}
-      >
-        My Jobs
-      </Menu.Item>
-      <Menu.Item
-        key="3"
-        icon={<CiFileOn size={18} />}
-        onClick={() => navigate("/resume")}
-      >
-        Resume
-      </Menu.Item>
+      {user && user.role === "jobSeeker" && (
+        <>
+          <Menu.Item
+            key="1"
+            icon={<BiUser size={18} />}
+            onClick={() => navigate("/profile")}
+          >
+            My profile
+          </Menu.Item>
+          <Menu.Item
+            key="2"
+            icon={<IoIosHeartEmpty size={18} />}
+            onClick={() => navigate("/my-jobs")}
+          >
+            My Jobs
+          </Menu.Item>
+          <Menu.Item
+            key="3"
+            icon={<CiFileOn size={18} />}
+            onClick={() => navigate("/resume")}
+          >
+            Resume
+          </Menu.Item>
+        </>
+      )}
+      {user && user.role === "jobProvider" && (
+        <>
+          <Menu.Item
+            key="1"
+            icon={<BiUser size={18} />}
+            onClick={() => navigate("/profile")}
+          >
+            My Profile
+          </Menu.Item>
+          <Menu.Item
+            key="2"
+            icon={<IoIosHeartEmpty size={18} />}
+            onClick={() => navigate("/jobprovider-home")}
+          >
+            My Jobs
+          </Menu.Item>
+        </>
+      )}
       <Menu.Item
         key="4"
         icon={<MdOutlineLogout size={18} />}
-        onClick={() => {
-          handleLogout();
-        }}
+        onClick={handleLogout}
       >
         Logout
       </Menu.Item>
