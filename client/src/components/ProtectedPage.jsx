@@ -1,6 +1,7 @@
 import { Dropdown, Menu } from "antd";
 import React, { useEffect } from "react";
 import { BiUser } from "react-icons/bi";
+import { CiFileOn } from "react-icons/ci";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineLogout } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,18 +58,22 @@ function ProtectedPage({ children }) {
       onClick={()=> navigate("/profile")}>
         My profile
       </Menu.Item>
+      <Menu.Item key="2" icon={<IoIosHeartEmpty size={18} />}
+      onClick={()=> navigate("/my-jobs")}>
+        My Jobs
+      </Menu.Item>
+      <Menu.Item key="3" icon={<CiFileOn size={18} />}
+      onClick={()=> navigate("")}>
+        Resume
+      </Menu.Item>
       <Menu.Item
-        key="2"
+        key="4"
         icon={<MdOutlineLogout size={18} />}
         onClick={() => {
           handleLogout();
         }}
       >
         Logout
-      </Menu.Item>
-      <Menu.Item key="3" icon={<IoIosHeartEmpty size={18} />}
-      onClick={()=> navigate("/my-jobs")}>
-        My Jobs
       </Menu.Item>
     </Menu>
   );
