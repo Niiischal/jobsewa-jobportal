@@ -241,39 +241,30 @@ router.put("/update-status/:id", authMiddleware, async (req, res) => {
 
 router.get("/get-job-applicants/:id", authMiddleware, async (req, res) => {
   try {
-    const jobId = req.params.id;
-    console.log("job id:", jobId)
+    const userId = req.body.userId;
 
-    const job = await Job.findById(jobId).populate("appliedCandidates")
-
-    if (!job) {
-      return res.status(404).send({
+    // Find all jobs posted by the specified user
+    const jobs = await Job.find({ jobProvider: userId });
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({
         success: false,
-        message: "Job not found",
+        message: "No jobs found for the specified user",
       });
     }
 
-    // Extract relevant information for each applicant
-    const applicants = job.appliedCandidates.map(candidate => ({
-      userId: candidate._id,
-      name: candidate.name,
-      email: candidate.email,
-      pdf: candidate.pdf,
-    }));
+    let appliedCandidates = [];
 
-    res.send({
+    for (const job of jobs) {
+      await job.populate("appliedCandidates")
+      appliedCandidates.push(...job.appliedCandidates);
+    }
+
+    res.status(200).json({
       success: true,
-      data: {
-        job: {
-          id: job._id,
-          category: job._category,
-          // Include other job details as needed
-        },
-        applicants
-      },
+      data: appliedCandidates,
     });
   } catch (error) {
-    res.send({
+    res.status(500).json({
       success: false,
       message: error.message,
     });

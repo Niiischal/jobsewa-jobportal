@@ -40,7 +40,9 @@ function JobApplication() {
           <div className="flex items-center gap-3 mb-2 text-[13px] text-gray-600">
             <p>Email: {user.email}</p>
             <p>Role: {user.role}</p>
-            <p>Pdf: {user.pdf}</p>
+            <a href={user.pdf} target="_blank" rel="noopener noreferrer">
+              <p>Resume of the User</p>
+            </a>
           </div>
           <div>
             <p>Applied Jobs:</p>
