@@ -13,7 +13,8 @@ function Home() {
     <div>
       {user.role === "jobSeeker" && (
         <div>
-          <Tabs centered defaultActiveKey="1">
+          <Jobs/>
+          {/* <Tabs centered defaultActiveKey="1">
             <Tabs.TabPane tab="Availabe Jobs" key="1">
               <Jobs />
             </Tabs.TabPane>
@@ -31,7 +32,7 @@ function Home() {
             <Tabs.TabPane tab="Post Interest" key="5">
               <Interest/>
             </Tabs.TabPane>
-          </Tabs>
+          </Tabs> */}
         </div>
       )}
     </div>

@@ -143,7 +143,7 @@ const Profile = () => {
           <TabPane tab="Password" key="2">
             <Form layout="vertical" form={form} onFinish={handlePasswordSave}>
               <Form.Item
-                label="Password"
+                label="New Password"
                 name="password"
                 className="font-semibold"
                 rules={rules}
