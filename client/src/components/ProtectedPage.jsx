@@ -97,6 +97,17 @@ function ProtectedPage({ children }) {
           </Menu.Item>
         </>
       )}
+      {user && user.role === "admin" && (
+        <>
+          <Menu.Item
+            key="1"
+            icon={<BiUser size={18} />}
+            onClick={() => navigate("/profile")}
+          >
+            My Profile
+          </Menu.Item>
+        </>
+      )}
       <Menu.Item
         key="4"
         icon={<MdOutlineLogout size={18} />}

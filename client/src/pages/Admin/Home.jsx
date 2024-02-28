@@ -9,7 +9,7 @@ function Home() {
   return (
     <div>
       {user.role === "admin" && (
-        <div className="navigation pl-[2rem] pr-[2rem]">
+        <div className="navigation pl-[1rem] pr-[1rem]">
           <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab="Users" key="1">
               <UserDetails />
