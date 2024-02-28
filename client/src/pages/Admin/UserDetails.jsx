@@ -1,4 +1,4 @@
-import { Card, message, Pagination, Tag, Button } from "antd";
+import { Button, Card, Pagination, Tag, message } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -27,7 +27,7 @@ function UserDetails() {
 
   const StatusTag = ({ status }) => {
     let tagColor;
-  
+
     switch (status) {
       case "active":
         tagColor = "success";
@@ -38,7 +38,7 @@ function UserDetails() {
       default:
         tagColor = "default";
     }
-  
+
     return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
   };
 
@@ -51,9 +51,7 @@ function UserDetails() {
           </Button>
         )}
         {status === "blocked" && (
-          <Button onClick={() => onStatusUpdate(_id, "active")}>
-            Unblock
-          </Button>
+          <Button onClick={() => onStatusUpdate(_id, "active")}>Unblock</Button>
         )}
       </div>
     );
@@ -61,22 +59,20 @@ function UserDetails() {
 
   const onStatusUpdate = async (id, status) => {
     try {
-        dispatch(SetLoader(true))
-        const response = await UpdateUserStatus(id, status)
-        dispatch(SetLoader(false))
-        if(response.success){
-            message.success(response.message)
-            getData()
-        }
-        else{
-            throw new Error(response.message)
-        }
+      dispatch(SetLoader(true));
+      const response = await UpdateUserStatus(id, status);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        message.success(response.message);
+        getData();
+      } else {
+        throw new Error(response.message);
+      }
     } catch (error) {
-        dispatch(SetLoader(false))
-        message.error(error.message)
+      dispatch(SetLoader(false));
+      message.error(error.message);
     }
-  }
-
+  };
 
   // Get current jobs
   const indexOfLastUser = currentPage * UsersPerPage;
@@ -92,7 +88,6 @@ function UserDetails() {
     getData();
   }, []);
 
-
   return (
     <div>
       <div className="flex justify-between mt-[10px]">
@@ -107,9 +102,14 @@ function UserDetails() {
             </p>
             <p>Email: {user.email}</p>
             <p>Role: {user.role}</p>
-            <p>Status: <StatusTag status={user.status} /></p>
-            <ActionButtons status={user.status} _id={user._id}
-            onStatusUpdate={onStatusUpdate}/>
+            <p>
+              Status: <StatusTag status={user.status} />
+            </p>
+            <ActionButtons
+              status={user.status}
+              _id={user._id}
+              onStatusUpdate={onStatusUpdate}
+            />
           </Card>
         ))}
       </div>

@@ -242,6 +242,7 @@ router.put("/update-status/:id", authMiddleware, async (req, res) => {
 router.get("/get-job-applicants/:id", authMiddleware, async (req, res) => {
   try {
     const jobId = req.params.id;
+    console.log("job id:", jobId)
 
     const job = await Job.findById(jobId).populate("appliedCandidates")
 
