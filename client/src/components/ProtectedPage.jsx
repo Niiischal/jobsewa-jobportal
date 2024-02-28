@@ -66,7 +66,8 @@ function ProtectedPage({ children }) {
       >
         Logout
       </Menu.Item>
-      <Menu.Item key="3" icon={<IoIosHeartEmpty size={18} />}>
+      <Menu.Item key="3" icon={<IoIosHeartEmpty size={18} />}
+      onClick={()=> navigate("/my-jobs")}>
         My Jobs
       </Menu.Item>
     </Menu>

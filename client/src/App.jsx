@@ -7,6 +7,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import ProtectedJPHome from "./pages/JobProvider/Home";
 import ProtectedJSHome from "./pages/JobSeeker/Home";
+import MyJobs from "./pages/JobSeeker/MyJobs";
 import Login from "./pages/Login";
 import OTPVerification from "./pages/OTP";
 import Profile from "./pages/Profile";
@@ -49,11 +50,19 @@ function App() {
               </ProtectedPage>
             }
           />
-                    <Route
+          <Route
             path="/profile"
             element={
               <ProtectedPage>
                 <Profile />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/my-jobs"
+            element={
+              <ProtectedPage>
+                <MyJobs />
               </ProtectedPage>
             }
           />

@@ -14,25 +14,6 @@ function Home() {
       {user.role === "jobSeeker" && (
         <div>
           <Jobs/>
-          {/* <Tabs centered defaultActiveKey="1">
-            <Tabs.TabPane tab="Availabe Jobs" key="1">
-              <Jobs />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Resume" key="2">
-              <div className="flex justify-center items-center">
-                <Resume />
-              </div>
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Saved Jobs" key="3">
-              <SavedJobs />
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Applied Jobs" key="4">
-              <AppliedJobs/>
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="Post Interest" key="5">
-              <Interest/>
-            </Tabs.TabPane>
-          </Tabs> */}
         </div>
       )}
     </div>
