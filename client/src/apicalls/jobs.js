@@ -97,7 +97,7 @@ export const UpdateJobStatus = async (id, status) => {
 
 export const Applicants = async (id) => {
   try {
-    const response = await axiosInstance.get(`/api/jobs/job-applications/${id}`);
+    const response = await axiosInstance.get(`/api/jobs/get-job-applicants/${id}`);
     return response.data;
   } catch (error) {
     return { success: false, message: error.message };

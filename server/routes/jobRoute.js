@@ -239,5 +239,46 @@ router.put("/update-status/:id", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/get-job-applicants/:id", authMiddleware, async (req, res) => {
+  try {
+    const jobId = req.params.id;
+
+    const job = await Job.findById(jobId).populate("appliedCandidates")
+
+    if (!job) {
+      return res.status(404).send({
+        success: false,
+        message: "Job not found",
+      });
+    }
+
+    // Extract relevant information for each applicant
+    const applicants = job.appliedCandidates.map(candidate => ({
+      userId: candidate._id,
+      name: candidate.name,
+      email: candidate.email,
+      pdf: candidate.pdf,
+    }));
+
+    res.send({
+      success: true,
+      data: {
+        job: {
+          id: job._id,
+          category: job._category,
+          // Include other job details as needed
+        },
+        applicants
+      },
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+
 
 module.exports = router;
