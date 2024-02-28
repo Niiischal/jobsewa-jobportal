@@ -2,7 +2,7 @@ import { Button, Modal, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ApplyJob, GetJobs, SaveJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 import Filters from "../Filters";
@@ -129,6 +129,8 @@ const Jobs = () => {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
+  const { user } = useSelector((state) => state.users);
+
   const handleSaveJob = async (jobId) => {
     try {
       const response = await SaveJobById(jobId);
@@ -148,17 +150,20 @@ const Jobs = () => {
   };
   const handleApplyJob = async (jobId) => {
     try {
+      dispatch(SetLoader(true));
       const response = await ApplyJob(jobId);
       if (response.success) {
         const updatedAppliedJobs = [...appliedJob, jobId];
         setAppliedJob(updatedAppliedJobs); // Update the applied job state
         localStorage.setItem("appliedJobs", JSON.stringify(updatedAppliedJobs)); // Update local storage
         message.success(response.message);
+        dispatch(SetLoader(false))
       } else {
         message.error(response.message);
       }
     } catch (error) {
-      message.error("Failed to apply for job. Please try again later.");
+      dispatch(SetLoader(false));
+      message.error(error.message);
     }
   };
 

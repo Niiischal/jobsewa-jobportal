@@ -135,7 +135,7 @@ router.post("/apply-job/:id", authMiddleware, async (req, res) => {
     jobId = req.params.id
 
     const user = await User.findById(userId).populate("appliedJobs");
-    const job = await Job.findById(jobId);
+    const job = await Job.findById(jobId).populate("appliedCandidates");
 
     if (!job || !user) {
       return res.status(404).send({
