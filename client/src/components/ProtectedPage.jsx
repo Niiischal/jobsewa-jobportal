@@ -95,7 +95,8 @@ function ProtectedPage({ children }) {
           </div>
 
           <div className="relative z-10 cursor-pointer rounded flex items-center gap-3 ">
-            <span className="text-white">{user.name}</span>
+            <span className="text-white" onClick={()=>
+            navigate("/profile")}>{user.name}</span>
             <Dropdown overlay={menu} trigger={["click"]}>
               <BiUser size={26} color="white" />
             </Dropdown>
