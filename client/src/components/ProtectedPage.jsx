@@ -54,16 +54,25 @@ function ProtectedPage({ children }) {
 
   const menu = (
     <Menu>
-      <Menu.Item key="1" icon={<BiUser size={18} />}
-      onClick={()=> navigate("/profile")}>
+      <Menu.Item
+        key="1"
+        icon={<BiUser size={18} />}
+        onClick={() => navigate("/profile")}
+      >
         My profile
       </Menu.Item>
-      <Menu.Item key="2" icon={<IoIosHeartEmpty size={18} />}
-      onClick={()=> navigate("/my-jobs")}>
+      <Menu.Item
+        key="2"
+        icon={<IoIosHeartEmpty size={18} />}
+        onClick={() => navigate("/my-jobs")}
+      >
         My Jobs
       </Menu.Item>
-      <Menu.Item key="3" icon={<CiFileOn size={18} />}
-      onClick={()=> navigate("")}>
+      <Menu.Item
+        key="3"
+        icon={<CiFileOn size={18} />}
+        onClick={() => navigate("/resume")}
+      >
         Resume
       </Menu.Item>
       <Menu.Item
@@ -101,8 +110,9 @@ function ProtectedPage({ children }) {
           </div>
 
           <div className="relative z-10 cursor-pointer rounded flex items-center gap-3 ">
-            <span className="text-white" onClick={()=>
-            navigate("/profile")}>{user.name}</span>
+            <span className="text-white" onClick={() => navigate("/profile")}>
+              {user.name}
+            </span>
             <Dropdown overlay={menu} trigger={["click"]}>
               <BiUser size={26} color="white" />
             </Dropdown>
