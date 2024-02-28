@@ -1,7 +1,5 @@
-import { AndroidOutlined } from "@ant-design/icons";
 import { Tabs } from "antd";
 import React from "react";
-import { IoPersonAddOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import JobApplication from "./JobApplicaton";
 import Jobs from "./Jobs";
@@ -11,29 +9,16 @@ function Home() {
   return (
     <div>
       {user.role === "jobProvider" && (
-        <div>
-          <Tabs defaultActiveKey="1" centered>
+        <div className="pl-[1rem] pr-[1rem]">
+          <Tabs defaultActiveKey="1" >
             <Tabs.TabPane
-              tab={
-                <span className="flex gap-2 items-center">
-                  <IoPersonAddOutline />
-                  Add Jobs
-                </span>
-              }
+              tab={<span className="flex gap-2 items-center">Add Jobs</span>}
               key="1"
             >
               <Jobs />
             </Tabs.TabPane>
-            <Tabs.TabPane
-              tab={
-                <span>
-                  <AndroidOutlined />
-                  Job Applicants
-                </span>
-              }
-              key="2"
-            >
-              <JobApplication/>
+            <Tabs.TabPane tab={<span>Job Applicants</span>} key="2">
+              <JobApplication />
             </Tabs.TabPane>
           </Tabs>
         </div>
