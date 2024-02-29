@@ -257,34 +257,28 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <Input.Group compact>
-                          <Form.Item
-                            name={[field.name, "degree"]}
-                            fieldKey={[field.fieldKey, "degree"]}
-                            rules={[
-                              { required: true, message: "Degree is required" },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Degree"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "institution"]}
-                            fieldKey={[field.fieldKey, "institution"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Institution is required",
-                              },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Institution"
-                            />
-                          </Form.Item>
+                        <Form.Item
+                          name={[field.name, "degree"]}
+                          fieldKey={[field.fieldKey, "degree"]}
+                          rules={[
+                            { required: true, message: "Degree is required" },
+                          ]}
+                        >
+                          <Input placeholder="Degree" />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, "institution"]}
+                          fieldKey={[field.fieldKey, "institution"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Institution is required",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Institution" />
+                        </Form.Item>
+                        <div className="flex justify-between">
                           <Form.Item
                             name={[field.name, "startYear"]}
                             fieldKey={[field.fieldKey, "startYear"]}
@@ -296,7 +290,6 @@ function ResumeForm() {
                             ]}
                           >
                             <DatePicker
-                              style={{ width: "60%" }}
                               picker="year"
                               placeholder="Start Year"
                             />
@@ -311,13 +304,9 @@ function ResumeForm() {
                               },
                             ]}
                           >
-                            <DatePicker
-                              style={{ width: "60%" }}
-                              picker="year"
-                              placeholder="End Year"
-                            />
+                            <DatePicker picker="year" placeholder="End Year" />
                           </Form.Item>
-                        </Input.Group>
+                        </div>
                       </Form.Item>
                       {fields.length > 1 && (
                         <Button type="link" onClick={() => remove(field.name)}>
@@ -356,34 +345,28 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <Input.Group compact>
-                          <Form.Item
-                            name={[field.name, "title"]}
-                            fieldKey={[field.fieldKey, "title"]}
-                            rules={[
-                              { required: true, message: "Title is required" },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Title"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "company"]}
-                            fieldKey={[field.fieldKey, "company"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Company is required",
-                              },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Company"
-                            />
-                          </Form.Item>
+                        <Form.Item
+                          name={[field.name, "title"]}
+                          fieldKey={[field.fieldKey, "title"]}
+                          rules={[
+                            { required: true, message: "Title is required" },
+                          ]}
+                        >
+                          <Input placeholder="Title" />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, "company"]}
+                          fieldKey={[field.fieldKey, "company"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Company is required",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Company" />
+                        </Form.Item>
+                        <div className="flex justify-between">
                           <Form.Item
                             name={[field.name, "startDate"]}
                             fieldKey={[field.fieldKey, "startDate"]}
@@ -394,10 +377,7 @@ function ResumeForm() {
                               },
                             ]}
                           >
-                            <DatePicker
-                              style={{ width: "60%" }}
-                              placeholder="Start Date"
-                            />
+                            <DatePicker placeholder="Start Date" />
                           </Form.Item>
                           <Form.Item
                             name={[field.name, "endDate"]}
@@ -409,27 +389,21 @@ function ResumeForm() {
                               },
                             ]}
                           >
-                            <DatePicker
-                              style={{ width: "60%" }}
-                              placeholder="End Date"
-                            />
+                            <DatePicker placeholder="End Date" />
                           </Form.Item>
-                          <Form.Item
-                            name={[field.name, "description"]}
-                            fieldKey={[field.fieldKey, "description"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Description is required",
-                              },
-                            ]}
-                          >
-                            <Input.TextArea
-                              style={{ width: "100%" }}
-                              placeholder="Description"
-                            />
-                          </Form.Item>
-                        </Input.Group>
+                        </div>
+                        <Form.Item
+                          name={[field.name, "description"]}
+                          fieldKey={[field.fieldKey, "description"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Description is required",
+                            },
+                          ]}
+                        >
+                          <Input.TextArea placeholder="Description" />
+                        </Form.Item>
                       </Form.Item>
                       {fields.length > 1 && (
                         <Button type="link" onClick={() => remove(field.name)}>
@@ -466,34 +440,28 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <Input.Group compact>
-                          <Form.Item
-                            name={[field.name, "title"]}
-                            fieldKey={[field.fieldKey, "title"]}
-                            rules={[
-                              { required: true, message: "Title is required" },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Title"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "description"]}
-                            fieldKey={[field.fieldKey, "description"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Description is required",
-                              },
-                            ]}
-                          >
-                            <Input.TextArea
-                              style={{ width: "100%" }}
-                              placeholder="Description"
-                            />
-                          </Form.Item>
+                        <Form.Item
+                          name={[field.name, "title"]}
+                          fieldKey={[field.fieldKey, "title"]}
+                          rules={[
+                            { required: true, message: "Title is required" },
+                          ]}
+                        >
+                          <Input placeholder="Title" />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, "description"]}
+                          fieldKey={[field.fieldKey, "description"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Description is required",
+                            },
+                          ]}
+                        >
+                          <Input.TextArea placeholder="Description" />
+                        </Form.Item>
+                        <div className="flex justify-between">
                           <Form.Item
                             name={[field.name, "startDate"]}
                             fieldKey={[field.fieldKey, "startDate"]}
@@ -504,10 +472,7 @@ function ResumeForm() {
                               },
                             ]}
                           >
-                            <DatePicker
-                              style={{ width: "60%" }}
-                              placeholder="Start Date"
-                            />
+                            <DatePicker placeholder="Start Date" />
                           </Form.Item>
                           <Form.Item
                             name={[field.name, "endDate"]}
@@ -519,24 +484,18 @@ function ResumeForm() {
                               },
                             ]}
                           >
-                            <DatePicker
-                              style={{ width: "60%" }}
-                              placeholder="End Date"
-                            />
+                            <DatePicker placeholder="End Date" />
                           </Form.Item>
-                          <Form.Item
-                            name={[field.name, "link"]}
-                            fieldKey={[field.fieldKey, "link"]}
-                            rules={[
-                              { required: true, message: "Link is required" },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "100%" }}
-                              placeholder="Link"
-                            />
-                          </Form.Item>
-                        </Input.Group>
+                        </div>
+                        <Form.Item
+                          name={[field.name, "link"]}
+                          fieldKey={[field.fieldKey, "link"]}
+                          rules={[
+                            { required: true, message: "Link is required" },
+                          ]}
+                        >
+                          <Input placeholder="Link" />
+                        </Form.Item>
                       </Form.Item>
                       {fields.length > 1 && (
                         <Button type="link" onClick={() => remove(field.name)}>
@@ -573,59 +532,45 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <Input.Group compact>
-                          <Form.Item
-                            name={[field.name, "title"]}
-                            fieldKey={[field.fieldKey, "title"]}
-                            rules={[
-                              { required: true, message: "Title is required" },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Title"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "organization"]}
-                            fieldKey={[field.fieldKey, "organization"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Organization is required",
-                              },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "60%" }}
-                              placeholder="Organization"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "date"]}
-                            fieldKey={[field.fieldKey, "date"]}
-                            rules={[
-                              { required: true, message: "Date is required" },
-                            ]}
-                          >
-                            <DatePicker
-                              style={{ width: "60%" }}
-                              placeholder="Date"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, "link"]}
-                            fieldKey={[field.fieldKey, "link"]}
-                            rules={[
-                              { required: true, message: "Link is required" },
-                            ]}
-                          >
-                            <Input
-                              style={{ width: "100%" }}
-                              placeholder="Link"
-                            />
-                          </Form.Item>
-                        </Input.Group>
+                        <Form.Item
+                          name={[field.name, "title"]}
+                          fieldKey={[field.fieldKey, "title"]}
+                          rules={[
+                            { required: true, message: "Title is required" },
+                          ]}
+                        >
+                          <Input placeholder="Title" />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, "organization"]}
+                          fieldKey={[field.fieldKey, "organization"]}
+                          rules={[
+                            {
+                              required: true,
+                              message: "Organization is required",
+                            },
+                          ]}
+                        >
+                          <Input placeholder="Organization" />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, "date"]}
+                          fieldKey={[field.fieldKey, "date"]}
+                          rules={[
+                            { required: true, message: "Date is required" },
+                          ]}
+                        >
+                          <DatePicker placeholder="Date" />
+                        </Form.Item>
+                        <Form.Item
+                          name={[field.name, "link"]}
+                          fieldKey={[field.fieldKey, "link"]}
+                          rules={[
+                            { required: true, message: "Link is required" },
+                          ]}
+                        >
+                          <Input placeholder="Link" />
+                        </Form.Item>
                       </Form.Item>
                       {fields.length > 1 && (
                         <Button type="link" onClick={() => remove(field.name)}>
