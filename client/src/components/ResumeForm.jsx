@@ -150,7 +150,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Links
                       </Button>
                     </Form.Item>
@@ -191,7 +191,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Technical Skill
                       </Button>
                     </Form.Item>
@@ -230,7 +230,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Soft Skill
                       </Button>
                     </Form.Item>
@@ -317,7 +317,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Education
                       </Button>
                     </Form.Item>
@@ -414,7 +414,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Experience
                       </Button>
                     </Form.Item>
@@ -506,7 +506,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Project
                       </Button>
                     </Form.Item>
@@ -581,7 +581,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button type="dashed" onClick={() => add()} block>
+                      <Button type="primary" onClick={() => add()} block>
                         Add Certificate
                       </Button>
                     </Form.Item>
