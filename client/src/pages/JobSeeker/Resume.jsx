@@ -1,5 +1,6 @@
 import { Tabs } from 'antd'
 import React from 'react'
+import ResumeForm from '../../components/ResumeForm'
 import UploadResume from '../../components/UploadResume'
 
 function Resume() {
@@ -10,7 +11,7 @@ function Resume() {
         <UploadResume/>
       </Tabs.TabPane>
       <Tabs.TabPane tab="Generate Resume" key="2">
-        Generate Resume
+        <ResumeForm/>
       </Tabs.TabPane>
     </Tabs>
   </div>
