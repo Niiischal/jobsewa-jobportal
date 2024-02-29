@@ -42,85 +42,36 @@ const resumeSchema = new mongoose.Schema(
     ],
     education: [
       {
-        degree: {
-          type: String,
-          required: true,
-        },
-        institution: {
-          type: String,
-          required: true,
-        },
-        startYear: {
-          type: Number,
-          required: true,
-        },
-        endYear: {
-          type: Number,
-        },
+        degree: String,
+        institution: String,
+        startYear: Date,
+        endYear: Date,
       },
     ],
     experience: [
       {
-        title: {
-          type: String,
-          required: true,
-        },
-        company: {
-          type: String,
-          required: true,
-        },
-        startDate: {
-          type: Date,
-          required: true,
-        },
-        endDate: {
-          type: Date,
-        },
-        description: {
-          type: String,
-          required: true,
-        },
+        title: String,
+        company: String,
+        startDate: Date,
+        endDate: Date,
+        description: String,
       },
     ],
     projects: [
       {
-        title: {
-          type: String,
-          required: true,
-        },
-        description: {
-          type: String,
-          required: true,
-        },
-        startDate: {
-          type: Date,
-          required: true,
-        },
-        endDate: {
-          type: Date,
-        },
-        link: {
-          type: String,
-        },
+        title: String,
+        description: String,
+        startDate: Date,
+        endDate: Date,
+        link: String,
       },
     ],
     certificates: [
       {
-        title: {
-          type: String,
-          required: true,
-        },
-        organization: {
-          type: String,
-          required: true,
-        },
-        date: {
-          type: Date,
-          required: true,
-        },
-        link: {
-          type: String,
-        },
+        title: String,
+        organization: String,
+        date: Date,
+        link: String,
       },
     ],
   },
