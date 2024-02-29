@@ -1,32 +1,90 @@
-import { Button, Col, DatePicker, Form, Input, Row } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, message } from "antd";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GenerateResume } from "../apicalls/resumes";
+import { SetLoader } from "../redux/loadersSlice";
 
 function ResumeForm() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const onFinish = async (values) => {
+    try {
+      dispatch(SetLoader(true));
+      // Convert links, technicalSkills, softSkills to arrays of strings
+      values.links = values.links.map((linkObj) => linkObj.link);
+      values.technicalSkills = values.technicalSkills.map(
+        (skillObj) => skillObj.skill
+      );
+      values.softSkills = values.softSkills.map((skillObj) => skillObj.skill);
+
+      // Convert education, experience, projects, certificates to arrays of objects
+      values.education = values.education.map((edu) => ({
+        degree: edu.degree,
+        institution: edu.institution,
+        startYear: edu.startYear,
+        endYear: edu.endYear,
+      }));
+      values.experience = values.experience.map((exp) => ({
+        title: exp.title,
+        company: exp.company,
+        startDate: exp.startDate,
+        endDate: exp.endDate,
+        description: exp.description,
+      }));
+      values.projects = values.projects.map((proj) => ({
+        title: proj.title,
+        description: proj.description,
+        startDate: proj.startDate,
+        endDate: proj.endDate,
+        link: proj.link,
+      }));
+      values.certificates = values.certificates.map((cert) => ({
+        title: cert.title,
+        organization: cert.organization,
+        date: cert.date,
+        link: cert.link,
+      }));
+      const response = await GenerateResume(values);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
   return (
     <div className="p-6 rounded-lg border border-gray-200 shadow-lg cursor-pointer hover:shadow-xl transition duration-300">
       <h1 className="flex justify-center items-center text-3xl">
         Generate Resume
       </h1>
-      <Form layout="vertical">
+      <Form layout="vertical" onFinish={onFinish}>
         <Row gutter={8}>
+          {/* Full Name */}
           <Col span={8}>
             <Form.Item
               label="Full Name"
               name="name"
               rules={[{ required: true, message: "Please enter Full Name" }]}
             >
-              <Input type="text" />
+              <Input />
             </Form.Item>
           </Col>
+          {/* Email */}
           <Col span={8}>
             <Form.Item
               label="Email"
               name="email"
               rules={[{ required: true, message: "Please enter Email" }]}
             >
-              <Input type="text" />
+              <Input type="email" />
             </Form.Item>
           </Col>
+          {/* Location */}
           <Col span={8}>
             <Form.Item
               label="Location"
@@ -35,11 +93,12 @@ function ResumeForm() {
                 { required: true, message: "Please enter your Location" },
               ]}
             >
-              <Input type="text" />
+              <Input />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={8}>
+          {/* Contact Number */}
           <Col span={8}>
             <Form.Item
               label="Contact Number"
@@ -48,9 +107,10 @@ function ResumeForm() {
                 { required: true, message: "Please enter your contact number" },
               ]}
             >
-              <Input type="text" />
+              <Input />
             </Form.Item>
           </Col>
+          {/* About Me */}
           <Col span={8}>
             <Form.Item
               label="About Me"
@@ -60,32 +120,29 @@ function ResumeForm() {
               <Input.TextArea rows={2} />
             </Form.Item>
           </Col>
+          {/* Links */}
           <Col span={8}>
             <Form.List name="links">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={28} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Links" : ""}
-                        name={[name, "links"]}
+                        name={[field.name, "link"]} // Ensure each field is named 'link'
+                        fieldKey={[field.fieldKey, "link"]} // Ensure each field has a 'link' field key
                         rules={[
                           {
                             required: true,
-                            message: "Please provide the links",
+                            message: "Please provide the link",
                           },
                         ]}
                       >
-                        <Input type="text" />
+                        <Input />
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -93,13 +150,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Links
                       </Button>
                     </Form.Item>
@@ -110,32 +161,29 @@ function ResumeForm() {
           </Col>
         </Row>
         <Row gutter={8}>
+          {/* Technical Skills */}
           <Col span={8}>
             <Form.List name="technicalSkills">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={24} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Technical Skills" : ""}
-                        name={[name, "technicalSkills"]}
+                        name={[field.name, "skill"]} // Ensure each field is named 'skill'
+                        fieldKey={[field.fieldKey, "skill"]} // Ensure each field has a 'skill' field key
                         rules={[
                           {
                             required: true,
-                            message: "Please provide technical skills",
+                            message: "Please provide technical skill",
                           },
                         ]}
                       >
-                        <Input type="text" />
+                        <Input />
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -143,13 +191,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Technical Skill
                       </Button>
                     </Form.Item>
@@ -158,32 +200,29 @@ function ResumeForm() {
               )}
             </Form.List>
           </Col>
+          {/* Soft Skills */}
           <Col span={8}>
             <Form.List name="softSkills">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={24} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Soft Skills" : ""}
-                        name={[name, "softSkills"]}
+                        name={[field.name, "skill"]} // Ensure each field is named 'skill'
+                        fieldKey={[field.fieldKey, "skill"]} // Ensure each field has a 'skill' field key
                         rules={[
                           {
                             required: true,
-                            message: "Please provide soft skills",
+                            message: "Please provide soft skill",
                           },
                         ]}
                       >
-                        <Input type="text" />
+                        <Input />
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -191,13 +230,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Soft Skill
                       </Button>
                     </Form.Item>
@@ -206,16 +239,17 @@ function ResumeForm() {
               )}
             </Form.List>
           </Col>
+          {/* Education */}
           <Col span={8}>
             <Form.List name="education">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={24} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Education" : ""}
-                        name={[name, "education"]}
+                        name={[field.name]}
                         rules={[
                           {
                             required: true,
@@ -223,22 +257,70 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <div className="flex flex-col gap-2">
-                          <Input type="text" placeholder="Degree" />
-                          <Input type="text" placeholder="Institution" />
-                          <DatePicker.RangePicker
-                            placeholder={["Start Year", "End Year"]}
-                            format="YYYY"
-                          />
-                        </div>
+                        <Input.Group compact>
+                          <Form.Item
+                            name={[field.name, "degree"]}
+                            fieldKey={[field.fieldKey, "degree"]}
+                            rules={[
+                              { required: true, message: "Degree is required" },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Degree"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "institution"]}
+                            fieldKey={[field.fieldKey, "institution"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Institution is required",
+                              },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Institution"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "startYear"]}
+                            fieldKey={[field.fieldKey, "startYear"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Start Year is required",
+                              },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              picker="year"
+                              placeholder="Start Year"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "endYear"]}
+                            fieldKey={[field.fieldKey, "endYear"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "End Year is required",
+                              },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              picker="year"
+                              placeholder="End Year"
+                            />
+                          </Form.Item>
+                        </Input.Group>
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -246,13 +328,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Education
                       </Button>
                     </Form.Item>
@@ -267,12 +343,12 @@ function ResumeForm() {
             <Form.List name="experience">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={24} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Experience" : ""}
-                        name={[name, "experience"]}
+                        name={[field.name]}
                         rules={[
                           {
                             required: true,
@@ -280,22 +356,83 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <div className="flex flex-col gap-2">
-                          <Input type="text" placeholder="Title" />
-                          <Input type="text" placeholder="Company" />
-                          <DatePicker.RangePicker
-                            placeholder={["Start Date", "End Date"]}
-                          />
-                          <Input.TextArea placeholder="Description" />
-                        </div>
+                        <Input.Group compact>
+                          <Form.Item
+                            name={[field.name, "title"]}
+                            fieldKey={[field.fieldKey, "title"]}
+                            rules={[
+                              { required: true, message: "Title is required" },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Title"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "company"]}
+                            fieldKey={[field.fieldKey, "company"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Company is required",
+                              },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Company"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "startDate"]}
+                            fieldKey={[field.fieldKey, "startDate"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Start Date is required",
+                              },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              placeholder="Start Date"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "endDate"]}
+                            fieldKey={[field.fieldKey, "endDate"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "End Date is required",
+                              },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              placeholder="End Date"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "description"]}
+                            fieldKey={[field.fieldKey, "description"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Description is required",
+                              },
+                            ]}
+                          >
+                            <Input.TextArea
+                              style={{ width: "100%" }}
+                              placeholder="Description"
+                            />
+                          </Form.Item>
+                        </Input.Group>
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -303,13 +440,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Experience
                       </Button>
                     </Form.Item>
@@ -322,12 +453,12 @@ function ResumeForm() {
             <Form.List name="projects">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={24} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Projects" : ""}
-                        name={[name, "projects"]}
+                        name={[field.name]}
                         rules={[
                           {
                             required: true,
@@ -335,22 +466,80 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <div className="flex flex-col gap-2">
-                          <Input type="text" placeholder="Title" />
-                          <Input.TextArea placeholder="Description" />
-                          <DatePicker.RangePicker
-                            placeholder={["Start Date", "End Date"]}
-                          />
-                          <Input type="text" placeholder="Link" />
-                        </div>
+                        <Input.Group compact>
+                          <Form.Item
+                            name={[field.name, "title"]}
+                            fieldKey={[field.fieldKey, "title"]}
+                            rules={[
+                              { required: true, message: "Title is required" },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Title"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "description"]}
+                            fieldKey={[field.fieldKey, "description"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Description is required",
+                              },
+                            ]}
+                          >
+                            <Input.TextArea
+                              style={{ width: "100%" }}
+                              placeholder="Description"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "startDate"]}
+                            fieldKey={[field.fieldKey, "startDate"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Start Date is required",
+                              },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              placeholder="Start Date"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "endDate"]}
+                            fieldKey={[field.fieldKey, "endDate"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "End Date is required",
+                              },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              placeholder="End Date"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "link"]}
+                            fieldKey={[field.fieldKey, "link"]}
+                            rules={[
+                              { required: true, message: "Link is required" },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "100%" }}
+                              placeholder="Link"
+                            />
+                          </Form.Item>
+                        </Input.Group>
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -358,13 +547,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Project
                       </Button>
                     </Form.Item>
@@ -373,17 +556,16 @@ function ResumeForm() {
               )}
             </Form.List>
           </Col>
-          {/* Certificates */}
           <Col span={8}>
             <Form.List name="certificates">
               {(fields, { add, remove }) => (
                 <>
-                  {fields.map(({ key, name, ...restField }, index) => (
-                    <Col span={24} key={key}>
+                  {fields.map((field, index) => (
+                    <Col span={24} key={field.key}>
                       <Form.Item
-                        {...restField}
+                        {...field}
                         label={index === 0 ? "Certificates" : ""}
-                        name={[name, "certificates"]}
+                        name={[field.name]}
                         rules={[
                           {
                             required: true,
@@ -391,20 +573,62 @@ function ResumeForm() {
                           },
                         ]}
                       >
-                        <div className="flex flex-col gap-2">
-                          <Input type="text" placeholder="Title" />
-                          <Input type="text" placeholder="Organization" />
-                          <DatePicker placeholder="Date" />
-                          <Input type="text" placeholder="Link" />
-                        </div>
+                        <Input.Group compact>
+                          <Form.Item
+                            name={[field.name, "title"]}
+                            fieldKey={[field.fieldKey, "title"]}
+                            rules={[
+                              { required: true, message: "Title is required" },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Title"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "organization"]}
+                            fieldKey={[field.fieldKey, "organization"]}
+                            rules={[
+                              {
+                                required: true,
+                                message: "Organization is required",
+                              },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "60%" }}
+                              placeholder="Organization"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "date"]}
+                            fieldKey={[field.fieldKey, "date"]}
+                            rules={[
+                              { required: true, message: "Date is required" },
+                            ]}
+                          >
+                            <DatePicker
+                              style={{ width: "60%" }}
+                              placeholder="Date"
+                            />
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, "link"]}
+                            fieldKey={[field.fieldKey, "link"]}
+                            rules={[
+                              { required: true, message: "Link is required" },
+                            ]}
+                          >
+                            <Input
+                              style={{ width: "100%" }}
+                              placeholder="Link"
+                            />
+                          </Form.Item>
+                        </Input.Group>
                       </Form.Item>
                       {fields.length > 1 && (
-                        <Button
-                          type="link"
-                          onClick={() => {
-                            remove(name);
-                          }}
-                        >
+                        <Button type="link" onClick={() => remove(field.name)}>
                           Remove
                         </Button>
                       )}
@@ -412,13 +636,7 @@ function ResumeForm() {
                   ))}
                   <Col span={24}>
                     <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => {
-                          add();
-                        }}
-                        block
-                      >
+                      <Button type="dashed" onClick={() => add()} block>
                         Add Certificate
                       </Button>
                     </Form.Item>
