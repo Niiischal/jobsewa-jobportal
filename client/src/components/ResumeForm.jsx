@@ -3,7 +3,7 @@ import React from "react";
 
 function ResumeForm() {
   return (
-    <div>
+    <div className="p-6 rounded-lg border border-gray-200 shadow-lg cursor-pointer hover:shadow-xl transition duration-300">
       <h1 className="flex justify-center items-center text-3xl">
         Generate Resume
       </h1>

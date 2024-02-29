@@ -10,7 +10,7 @@ function Resume() {
       <Tabs.TabPane tab="Upload Resume" key="1">
         <UploadResume/>
       </Tabs.TabPane>
-      <Tabs.TabPane tab="Generate Resume" key="2">
+      <Tabs.TabPane tab="Create Resume" key="2">
         <ResumeForm/>
       </Tabs.TabPane>
     </Tabs>
