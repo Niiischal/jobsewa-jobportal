@@ -187,7 +187,6 @@ router.post("/forgot-password", async (req, res) => {
       throw new Error("No account found with this email address");
     }
 
-    //Function for generating a random OTP
     function generateOTP(length) {
       const values = "0123456789";
       let otp = "";
@@ -197,7 +196,6 @@ router.post("/forgot-password", async (req, res) => {
       return otp;
     }
 
-    // Unique OTP generation if the user doesn't have one
     if (!user.secretOTP) {
       const otp = generateOTP(6);
 
@@ -206,7 +204,6 @@ router.post("/forgot-password", async (req, res) => {
       await user.save();
     }
 
-    //get otp from the user document
     const otp = user.secretOTP;
 
     // sending otp in the email
@@ -253,28 +250,23 @@ router.post("/verification-OTP", async (req, res) => {
       throw new Error("User does not exist");
     }
 
-    // Verify the OTP
     if (user.secretOTP !== otp) {
       throw new Error("Invalid OTP");
     }
 
-    // Update the user's password
+    // Updating the user's password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
 
-    // Clear the OTP-related fields
     user.secretOTP = null;
 
-    // Save the updated user
     await user.save();
 
-    // Send a success response
     res.send({
       success: true,
       message: "Password updated successfully",
     });
   } catch (error) {
-    // Send an error response
     res.send({
       success: false,
       message: error.message,
@@ -282,7 +274,7 @@ router.post("/verification-OTP", async (req, res) => {
   }
 });
 
-// retrieve file from the system
+// retrieving file from the system
 const storage = multer.diskStorage({
   filename: function (req, file, callback) {
     callback(null, Date.now() + file.originalname);
@@ -295,12 +287,11 @@ router.post(
   multer({ storage: storage }).single("file"),
   async (req, res) => {
     try {
-      // Validate file format
       if (req.file.mimetype !== "application/pdf") {
         throw new Error("Invalid file format. Please upload a PDF document.");
       }
 
-      // Upload file to cloudinary
+      // Uploading file to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "JobSewa",
         resource_type: "raw",
@@ -330,7 +321,6 @@ router.put("/update-user/:id", authMiddleware, async (req, res) => {
   try {
     const { name, email } = req.body;
 
-    // Validate if name and email are present in the request body
     if (!name || !email) {
       return res.send({
         success: false,
@@ -338,7 +328,7 @@ router.put("/update-user/:id", authMiddleware, async (req, res) => {
       });
     }
 
-    // Update user information in the database with the hashed password
+    // Updating user information in the database with the hashed password
     await User.findByIdAndUpdate(req.params.id, {
       name,
       email,
@@ -356,12 +346,11 @@ router.put("/update-user/:id", authMiddleware, async (req, res) => {
   }
 });
 
-//change password
+//change password api
 router.put("/change-password/:id", authMiddleware, async (req, res) => {
   try {
     const { password } = req.body;
 
-    // Validate password is present in the request body
     if (!password) {
       return res.send({
         success: false,
@@ -369,10 +358,9 @@ router.put("/change-password/:id", authMiddleware, async (req, res) => {
       });
     }
 
-    // Hash the password before storing it in the database
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Update user information in the database with the hashed password
+    // Updating user information in the database with the hashed password
     await User.findByIdAndUpdate(req.params.id, {
       password: hashedPassword,
     });
