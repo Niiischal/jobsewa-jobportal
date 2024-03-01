@@ -1,4 +1,4 @@
-import { Button, Card, message, Pagination, Tag } from "antd";
+import { Button, Card, message, Pagination, Popconfirm, Tag } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +50,7 @@ function Jobs() {
 
   const StatusTag = ({ status }) => {
     let tagColor;
-  
+
     switch (status) {
       case "approved":
         tagColor = "success";
@@ -67,7 +67,7 @@ function Jobs() {
       default:
         tagColor = "default";
     }
-  
+
     return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
   };
 
@@ -113,18 +113,20 @@ function Jobs() {
             <p>Job Level: {job.level}</p>
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
-            <p>Status: <StatusTag status={job.status} /></p>
+            <p>
+              Status: <StatusTag status={job.status} />
+            </p>
             <div className="flex justify-between">
-              <Button
-                className="text-white bg-red-500"
-                onClick={() => {
-                  deleteJob(job._id);
-                }}
+              <Popconfirm
+                title="Are you sure to delete this job?"
+                onConfirm={() => deleteJob(job._id)}
+                okText="Yes"
+                cancelText="No"
+                okType="default"
               >
-                Delete
-              </Button>
+                <Button danger>Delete</Button>
+              </Popconfirm>
               <Button
-                className="text-white bg-green-800"
                 onClick={() => {
                   setSelectedJob(job);
                   setShowJobForm(true);

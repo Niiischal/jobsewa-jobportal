@@ -14,7 +14,7 @@ function JobDetails() {
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetJobs(null)
+      const response = await GetJobs(null);
       dispatch(SetLoader(false));
       if (response.success) {
         setJobs(response.data);
@@ -27,22 +27,20 @@ function JobDetails() {
 
   const onStatusUpdate = async (id, status) => {
     try {
-        dispatch(SetLoader(true))
-        const response = await UpdateJobStatus(id, status)
-        dispatch(SetLoader(false))
-        if(response.success){
-            message.success(response.message)
-            getData()
-        }
-        else{
-            throw new Error(response.message)
-        }
+      dispatch(SetLoader(true));
+      const response = await UpdateJobStatus(id, status);
+      dispatch(SetLoader(false));
+      if (response.success) {
+        message.success(response.message);
+        getData();
+      } else {
+        throw new Error(response.message);
+      }
     } catch (error) {
-        dispatch(SetLoader(false))
-        message.error(error.message)
+      dispatch(SetLoader(false));
+      message.error(error.message);
     }
-  }
-
+  };
 
   // Get current jobs
   const indexOfLastJob = currentPage * jobsPerPage;
@@ -56,7 +54,7 @@ function JobDetails() {
 
   const StatusTag = ({ status }) => {
     let tagColor;
-  
+
     switch (status) {
       case "approved":
         tagColor = "success";
@@ -73,7 +71,7 @@ function JobDetails() {
       default:
         tagColor = "default";
     }
-  
+
     return <Tag color={tagColor}>{status.toUpperCase()}</Tag>;
   };
 
@@ -81,7 +79,10 @@ function JobDetails() {
     return (
       <div className="flex gap-3 justify-center ">
         {status === "pending" && (
-          <Button type="default" onClick={() => onStatusUpdate(_id, "approved")}>
+          <Button
+            type="default"
+            onClick={() => onStatusUpdate(_id, "approved")}
+          >
             Approve
           </Button>
         )}
@@ -91,15 +92,15 @@ function JobDetails() {
           </Button>
         )}
         {status === "approved" && (
-                        <Popconfirm
-                        title="Are you sure to block this Job?"
-                        onConfirm={() => onStatusUpdate(_id, "blocked")}
-                        okText="Yes"
-                        cancelText="No"
-                        okType="default"
-                      >
-                        <Button danger>Block</Button>
-                      </Popconfirm>
+          <Popconfirm
+            title="Are you sure to block this Job?"
+            onConfirm={() => onStatusUpdate(_id, "blocked")}
+            okText="Yes"
+            cancelText="No"
+            okType="default"
+          >
+            <Button danger>Block</Button>
+          </Popconfirm>
         )}
         {status === "blocked" && (
           <Button onClick={() => onStatusUpdate(_id, "approved")}>
@@ -143,8 +144,14 @@ function JobDetails() {
             <p>Job Level: {job.level}</p>
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
-            <p>Status: <StatusTag status={job.status} /></p>
-            <ActionButtons status={job.status} _id={job._id} onStatusUpdate={onStatusUpdate} />
+            <p>
+              Status: <StatusTag status={job.status} />
+            </p>
+            <ActionButtons
+              status={job.status}
+              _id={job._id}
+              onStatusUpdate={onStatusUpdate}
+            />
           </Card>
         ))}
       </div>
