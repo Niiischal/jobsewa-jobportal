@@ -90,7 +90,7 @@ function UserDetails() {
 
   return (
     <div>
-      <div className="flex justify-between mt-[10px]">
+      <div className="flex justify-between mt-[10px] flex-wrap">
         {currentUsers.map((user) => (
           <Card
             className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"

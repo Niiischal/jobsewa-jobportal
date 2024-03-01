@@ -120,7 +120,7 @@ function JobDetails() {
 
   return (
     <div>
-      <div className="flex justify-evenly mt-[10px]">
+      <div className="flex justify-evenly mt-[10px] flex-wrap">
         {currentJobs.map((job) => (
           <Card
             className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
