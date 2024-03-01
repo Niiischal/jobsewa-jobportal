@@ -1,4 +1,4 @@
-import { Button, Card, Pagination, Tag, message } from "antd";
+import { Button, Card, Pagination, Popconfirm, Tag, message } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -91,9 +91,15 @@ function JobDetails() {
           </Button>
         )}
         {status === "approved" && (
-          <Button danger onClick={() => onStatusUpdate(_id, "blocked")}>
-            Block
-          </Button>
+                        <Popconfirm
+                        title="Are you sure to block this Job?"
+                        onConfirm={() => onStatusUpdate(_id, "blocked")}
+                        okText="Yes"
+                        cancelText="No"
+                        okType="default"
+                      >
+                        <Button danger>Block</Button>
+                      </Popconfirm>
         )}
         {status === "blocked" && (
           <Button onClick={() => onStatusUpdate(_id, "approved")}>

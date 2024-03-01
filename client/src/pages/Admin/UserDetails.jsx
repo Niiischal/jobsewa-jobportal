@@ -1,4 +1,4 @@
-import { Button, Card, Pagination, Tag, message } from "antd";
+import { Button, Card, Pagination, Popconfirm, Tag, message } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -46,9 +46,15 @@ function UserDetails() {
     return (
       <div className="flex gap-3 justify-center">
         {status === "active" && (
-          <Button danger onClick={() => onStatusUpdate(_id, "blocked")}>
-            Block
-          </Button>
+              <Popconfirm
+                title="Are you sure to block this User?"
+                onConfirm={() => onStatusUpdate(_id, "blocked")}
+                okText="Yes"
+                cancelText="No"
+                okType="default"
+              >
+                <Button danger>Block</Button>
+              </Popconfirm>
         )}
         {status === "blocked" && (
           <Button onClick={() => onStatusUpdate(_id, "active")}>Unblock</Button>
