@@ -101,7 +101,7 @@ function Jobs() {
       <div className="flex justify-between mt-[10px]">
         {currentJobs.map((job) => (
           <Card
-            className="border border-primary"
+            className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
             key={job._id}
             title={job.category}
           >

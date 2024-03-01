@@ -79,7 +79,7 @@ function JobDetails() {
 
   const ActionButtons = ({ status, _id, onStatusUpdate }) => {
     return (
-      <div className="flex gap-3 justify-center">
+      <div className="flex gap-3 justify-center ">
         {status === "pending" && (
           <Button type="default" onClick={() => onStatusUpdate(_id, "approved")}>
             Approve
@@ -123,7 +123,7 @@ function JobDetails() {
       <div className="flex justify-evenly mt-[10px]">
         {currentJobs.map((job) => (
           <Card
-            className="border border-primary"
+            className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
             key={job._id}
             title={job.category}
           >

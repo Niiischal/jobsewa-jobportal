@@ -8,7 +8,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 function UserDetails() {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [UsersPerPage] = useState(4); // Number of jobs per page
+  const [UsersPerPage] = useState(8); // Number of users per page
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -93,7 +93,7 @@ function UserDetails() {
       <div className="flex justify-between mt-[10px]">
         {currentUsers.map((user) => (
           <Card
-            className="border border-primary"
+            className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
             key={user._id}
             title={user.name}
           >
