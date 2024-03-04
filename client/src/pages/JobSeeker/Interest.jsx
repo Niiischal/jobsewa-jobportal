@@ -1,4 +1,4 @@
-import { Button, Card, Pagination, message } from "antd";
+import { Button, Card, Pagination, Popconfirm, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteInterest, GetInterests } from "../../apicalls/interests";
@@ -91,16 +91,16 @@ function Interest() {
             <p>Experience: {interest.experience}</p>
             <p>Skills: {interest.skills}</p>
             <div className="flex justify-between">
-            <Button
-                className="text-white bg-red-500"
-                onClick={() => {
-                  deleteInterest(interest._id);
-                }}
+            <Popconfirm
+                title="Are you sure to delete this job?"
+                onConfirm={() => deleteInterest(interest._id)}
+                okText="Yes"
+                cancelText="No"
+                okType="default"
               >
-                Delete
-              </Button>
+                <Button danger>Delete</Button>
+              </Popconfirm>
               <Button
-                className="text-white bg-green-800"
                 onClick={() => {
                   setSelectedInterest(interest);
                   setShowInterestForm(true);
