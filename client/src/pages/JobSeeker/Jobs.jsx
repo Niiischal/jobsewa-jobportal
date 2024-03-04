@@ -11,7 +11,6 @@ const Jobs = () => {
   const [showJobModal, setShowJobModal] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [showDiv, setShowDiv] = useState(false);
   const [savedJob, setSavedJob] = useState(() => {
     // Retrieve saved jobs from local storage
     const savedJobs = localStorage.getItem("savedJobs");
@@ -121,7 +120,7 @@ const Jobs = () => {
       setSelectedJob(job);
     } else {
       setSelectedJob(job);
-      setShowJobModal(true)
+      setShowJobModal(true);
     }
   };
 
@@ -157,7 +156,7 @@ const Jobs = () => {
         setAppliedJob(updatedAppliedJobs); // Update the applied job state
         localStorage.setItem("appliedJobs", JSON.stringify(updatedAppliedJobs)); // Update local storage
         message.success(response.message);
-        dispatch(SetLoader(false))
+        dispatch(SetLoader(false));
       } else {
         message.error(response.message);
       }
@@ -219,7 +218,7 @@ const Jobs = () => {
 
         {windowWidth > 768 && selectedJob && (
           <div
-            className="w-[69%] font-proxima overflow-y-scroll border border-gray-200 shadow-lg"
+            className="w-[69%] overflow-y-scroll"
             style={{ maxHeight: "calc(100vh - 4rem)" }}
           >
             <div className="pl-[10px] pr-[10px] pt[0] rounded-lg">
@@ -228,7 +227,7 @@ const Jobs = () => {
                   <div>
                     <h1>{selectedJob.category}</h1>
                   </div>
-                  <div className="flex items-center gap-3 text-[16px] text-gray-600">
+                  <div className="flex items-center gap-3 text-[16px] text-gray-600 font-proxima">
                     <span>{selectedJob.companyname}</span>
                     <span>{selectedJob.companylocation}</span>
                     <span>{selectedJob.companyemail}</span>
