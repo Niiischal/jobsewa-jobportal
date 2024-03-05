@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "active",
     },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
     secretOTP: {
       type: String,
     },
