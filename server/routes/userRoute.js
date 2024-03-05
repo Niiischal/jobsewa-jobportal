@@ -6,6 +6,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const nodemailer = require("nodemailer");
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
+const crypto = require("crypto");
 
 const createAdminUser = async () => {
   try {
@@ -22,7 +23,7 @@ const createAdminUser = async () => {
         name: "Admin",
         email: "admin@jobsewanp.com",
         password: hashedPassword,
-        role: "admin", 
+        role: "admin",
       });
 
       await newAdmin.save();
@@ -51,28 +52,78 @@ router.post("/register", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
+    // Generate a unique verification token
+    const verificationToken = crypto.randomBytes(20).toString("hex");
+
     // Extract the role from the request body, default to "jobSeeker" if not provided
     const roles = req.body.roles ? [req.body.roles] : ["jobSeeker"];
 
-    // Create a new user with the role information
+    // Create a new user with the role and verification token information
     const newUser = new User({
       ...req.body,
       password: hashedPassword,
       roles: roles,
+      verificationToken: verificationToken,
     });
 
     // Save the new user to the database
     await newUser.save();
 
+    // Send verification email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "jobsewanp@gmail.com",
+        pass: "zowv hopz ugmd dtgq",
+      },
+    });
+
+    const mailOptions = {
+      from: "jobsewanp@gmail.com",
+      to: newUser.email,
+      subject: "Email Verification",
+      html: `<p>Please click the following link to verify your email address: <a href="http://localhost:3000/verify/${verificationToken}">Verify Email</a></p>`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
     res.send({
       success: true,
-      message: "User created successfully",
+      message:
+        "User created successfully. Please check your email for verification.",
     });
   } catch (error) {
     res.send({
       success: false,
       message: error.message,
     });
+  }
+});
+
+// Verification route
+router.get("/verify/:token", async (req, res) => {
+  try {
+    // Extract the verification token from the request parameters
+    const verificationToken = req.params.token;
+
+    // Find the user with the matching verification token
+    const user = await User.findOne({ verificationToken: verificationToken });
+
+    // If no user found with the token, return an error
+    if (!user) {
+      throw new Error("Invalid verification token");
+    }
+
+    // Update user status to "active" or mark email as verified
+    user.status = "active";
+    user.isEmailVerified = true;
+    user.verificationToken = undefined; // Remove the verification token
+    await user.save();
+
+    // Provide feedback to the user
+    res.send("Email verified successfully. You can now log in.");
+  } catch (error) {
+    res.status(400).send("Error verifying email: " + error.message);
   }
 });
 
@@ -85,10 +136,14 @@ router.post("/login", async (req, res) => {
       throw new Error("User not found");
     }
 
+    // Check if user's email is verified
+    if (!user.isEmailVerified) {
+      throw new Error("Email not verified");
+    }
+
     // Blocking the user from login while the user status is not active
-    if(user.status!=="active")
-    {
-      throw new Error(" The account have been blocked, contact the admin")
+    if (user.status !== "active") {
+      throw new Error(" The account have been blocked, contact the admin");
     }
 
     //comparing password
@@ -376,6 +431,5 @@ router.put("/change-password/:id", authMiddleware, async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;
