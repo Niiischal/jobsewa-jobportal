@@ -83,13 +83,13 @@ function Filters({ filters, setFilters }) {
       <div className="flex sm:w-[50%] sm:ml-[25%] sm:justify-center">
         <SearchBar />
       </div>
-      <div className="flex justify-end mt-3 sm:justify-center">
+      <div className="flex justify-end mt-3 sm:justify-center ">
         <Button type="primary" onClick={toggleText}>
           Filters
         </Button>
       </div>
       {showText && (
-        <div className="flex bg-gray-100 rounded-lg justify-between pl-4 pr-4 sm:w-[60%] sm:ml-[20%]">
+        <div className="flex bg-gray-100 rounded-lg justify-between pl-4 pr-4 text-[12px] sm:w-[60%] sm:ml-[20%]">
           <div className="flex flex-col">
             <h3 className="text-gray-600">Categories</h3>
             {categories.map((category) => {
