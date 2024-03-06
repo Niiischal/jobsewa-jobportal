@@ -9,6 +9,15 @@ export const RegisterUser = async (payload) => {
   }
 };
 
+export const VerifyEmail = async (token) => {
+  try {
+    const response = await axiosInstance.get(`/api/users/verify/${token}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 export const LoginUser = async (payload) => {
   try {
     const response = await axiosInstance.post("/api/users/login", payload);
