@@ -113,11 +113,10 @@ router.get("/verify/:token", async (req, res) => {
     if (!user) {
       throw new Error("Invalid verification token");
     }
-
-    // Update user status to "active" or mark email as verified
     user.status = "active";
     user.isEmailVerified = true;
-    user.verificationToken = undefined; // Remove the verification token
+    user.verificationToken = "";
+
     await user.save();
 
     // Provide feedback to the user
@@ -126,6 +125,7 @@ router.get("/verify/:token", async (req, res) => {
     res.status(400).send("Error verifying email: " + error.message);
   }
 });
+
 
 //user login api
 router.post("/login", async (req, res) => {
@@ -137,9 +137,9 @@ router.post("/login", async (req, res) => {
     }
 
     // Check if user's email is verified
-    if (!user.isEmailVerified) {
-      throw new Error("Email not verified");
-    }
+    // if (!user.isEmailVerified) {
+    //   throw new Error("Email not verified");
+    // }
 
     // Blocking the user from login while the user status is not active
     if (user.status !== "active") {
