@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema(
     },
     isEmailVerified: {
       type: Boolean,
-      default: false,
     },
     secretOTP: {
       type: String,
@@ -59,10 +58,10 @@ userSchema.pre("save", function (next) {
     this.savedJobs = undefined;
     this.appliedJobs = undefined;
   }
-  else if(this.role=="admin"){
-    this.isEmailVerified = undefined;
-    this.verificationToken = undefined;
-  }
+  // else if(this.role=="admin"){
+  //   this.isEmailVerified = undefined;
+  //   this.verificationToken = undefined;
+  // }
   next();
 });
 
