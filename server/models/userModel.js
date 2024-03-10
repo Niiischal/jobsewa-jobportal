@@ -59,6 +59,10 @@ userSchema.pre("save", function (next) {
     this.savedJobs = undefined;
     this.appliedJobs = undefined;
   }
+  else if(this.role=="admin"){
+    this.isEmailVerified = undefined;
+    this.verificationToken = undefined;
+  }
   next();
 });
 
