@@ -48,28 +48,26 @@ router.post("/register", async (req, res) => {
       throw new Error("User already exists.");
     }
 
-    // Hash the password
+    // Hashing the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-    // Generate a unique verification token
+    // Generating a unique verification token
     const verificationToken = crypto.randomBytes(20).toString("hex");
 
-    // Extract the role from the request body, default to "jobSeeker" if not provided
     const roles = req.body.roles ? [req.body.roles] : ["jobSeeker"];
 
-    // Create a new user with the role and verification token information
     const newUser = new User({
       ...req.body,
       password: hashedPassword,
       roles: roles,
       verificationToken: verificationToken,
+      isEmailVerified: false,
     });
 
     // Save the new user to the database
     await newUser.save();
 
-    // Send verification email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -91,6 +89,7 @@ router.post("/register", async (req, res) => {
       success: true,
       message:
         "User created successfully. Please check your email for verification.",
+      token: verificationToken,
     });
   } catch (error) {
     res.send({
@@ -103,29 +102,26 @@ router.post("/register", async (req, res) => {
 // Verification route
 router.get("/verify/:token", async (req, res) => {
   try {
-    // Extract the verification token from the request parameters
     const verificationToken = req.params.token;
+    console.log(verificationToken);
 
-    // Find the user with the matching verification token
-    const user = await User.findOne({ verificationToken: verificationToken });
+    const user = await User.findOne({ verificationToken });
 
-    // If no user found with the token, return an error
     if (!user) {
       throw new Error("Invalid verification token");
     }
-    user.status = "active";
+
     user.isEmailVerified = true;
-    user.verificationToken = "";
+    user.status = "active";
+    user.verificationToken = undefined;
 
     await user.save();
 
-    // Provide feedback to the user
     res.send("Email verified successfully. You can now log in.");
   } catch (error) {
     res.status(400).send("Error verifying email: " + error.message);
   }
 });
-
 
 //user login api
 router.post("/login", async (req, res) => {
@@ -136,10 +132,10 @@ router.post("/login", async (req, res) => {
       throw new Error("User not found");
     }
 
-    // Check if user's email is verified
-    // if (!user.isEmailVerified) {
-    //   throw new Error("Email not verified");
-    // }
+    // // Checking if user's email is verified
+    if (!user.isEmailVerified) {
+      throw new Error("Email not verified");
+    }
 
     // Blocking the user from login while the user status is not active
     if (user.status !== "active") {
