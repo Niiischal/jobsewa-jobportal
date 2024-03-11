@@ -68,4 +68,21 @@ router.delete("/delete-interests/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// get all user api
+router.get("/get-interests", authMiddleware, async (req, res) => {
+  try {
+    const interests = await Interest.find();
+    res.send({
+      success: true,
+      message: "Interests retrieved successfully",
+      data: interests,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
