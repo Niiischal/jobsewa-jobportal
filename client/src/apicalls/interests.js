@@ -44,3 +44,12 @@ export const DeleteInterest = async (id) => {
     return { success: false, message: error.message };
   }
 };
+
+export const GetAllInterests = async () => {
+  try {
+    const response = await axiosInstance.get("/api/interests/get-interests");
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
