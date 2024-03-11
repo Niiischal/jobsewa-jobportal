@@ -3,6 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import JobApplication from "./JobApplicaton";
 import Jobs from "./Jobs";
+import SeekerInterests from "./SeekerInterests";
 
 function Home() {
   const { user } = useSelector((state) => state.users);
@@ -19,6 +20,9 @@ function Home() {
             </Tabs.TabPane>
             <Tabs.TabPane tab={<span>Job Applicants</span>} key="2">
               <JobApplication />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab={<span>Seeker's Interests</span>} key="3">
+              <SeekerInterests />
             </Tabs.TabPane>
           </Tabs>
         </div>
