@@ -1,8 +1,8 @@
-import { Button, Card, Pagination, Tag, message } from "antd";
+import { Card, Pagination, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { SetLoader } from "../../redux/loadersSlice";
 import { GetAllInterests } from "../../apicalls/interests";
+import { SetLoader } from "../../redux/loadersSlice";
 
 function SeekerInterests() {
   const [interests, setInterests] = useState([]);
@@ -24,18 +24,18 @@ function SeekerInterests() {
     }
   };
 
-
   // Get current jobs
   const indexOfLastInterest = currentPage * interestsPerPage;
   const indexOfFirstInterest = indexOfLastInterest - interestsPerPage;
-  const currentInterests = interests.slice(indexOfFirstInterest, indexOfLastInterest);
+  const currentInterests = interests.slice(
+    indexOfFirstInterest,
+    indexOfLastInterest
+  );
 
   // Change page
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
-
 
   useEffect(() => {
     getData();
@@ -53,9 +53,9 @@ function SeekerInterests() {
             <p className="font-semibold">Posted By: {interest.name}</p>
             <p>Email: {interest.email}</p>
             <p>Location: {interest.location}</p>
-            <p>Education: {interest.education}</p>
-            <p>Category: {interest.category}</p>
-            <p>Experience: {interest.experience}</p>
+            <Tag color="blue">{interest.education}</Tag>
+            <Tag color="volcano">{interest.category}</Tag>
+            <Tag color="lime">{interest.experience}</Tag>
             <p>Skills: {interest.skills}</p>
           </Card>
         ))}
