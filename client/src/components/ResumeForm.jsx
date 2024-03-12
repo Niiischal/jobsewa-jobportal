@@ -1,6 +1,6 @@
 import { Button, Col, DatePicker, Form, Input, Row, message } from "antd";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GenerateResume } from "../apicalls/resumes";
 import { SetLoader } from "../redux/loadersSlice";
@@ -8,6 +8,7 @@ import { SetLoader } from "../redux/loadersSlice";
 function ResumeForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
   const onFinish = async (values) => {
     try {
       dispatch(SetLoader(true));
@@ -45,6 +46,7 @@ function ResumeForm() {
         date: cert.date,
         link: cert.link,
       }));
+      values.jobSeeker = user._id;
       const response = await GenerateResume(values);
       dispatch(SetLoader(false));
       if (response.success) {
