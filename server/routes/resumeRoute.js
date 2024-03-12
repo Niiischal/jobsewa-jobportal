@@ -18,4 +18,24 @@ router.post("/generate-resume", authMiddleware, async (req, res) => {
   }
 });
 
+router.post("/get-resume", async (req, res) => {
+  try {
+    const { jobSeeker } = req.body;
+    let filters = {};
+    if (jobSeeker) {
+      filters.jobSeeker = jobSeeker;
+    }
+    const resume = await Resume.find(filters).populate("jobSeeker");
+    res.send({
+      success: true,
+      data: resume,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;
