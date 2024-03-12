@@ -11,3 +11,15 @@ export const GenerateResume = async (payload) => {
     return { success: false, message: error.message };
   }
 };
+
+export const GetResume = async (filters) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/resumes/get-resume",
+      filters
+    );
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
