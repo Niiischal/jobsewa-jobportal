@@ -49,6 +49,7 @@ function ResumeForm() {
       dispatch(SetLoader(false));
       if (response.success) {
         message.success(response.message);
+        navigate("/resume-description")
       } else {
         throw new Error(response.message);
       }
