@@ -74,6 +74,11 @@ const resumeSchema = new mongoose.Schema(
         link: String,
       },
     ],
+    jobSeeker: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: true,
+  },
   },
   {
     timestamps: true,
