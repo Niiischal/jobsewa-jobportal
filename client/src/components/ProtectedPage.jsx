@@ -4,6 +4,7 @@ import { BiUser } from "react-icons/bi";
 import { CiFileOn } from "react-icons/ci";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineLogout } from "react-icons/md";
+import { TbFileDescription } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetCurrentUser } from "../apicalls/users";
@@ -76,6 +77,13 @@ function ProtectedPage({ children }) {
             onClick={() => navigate("/resume")}
           >
             Resume
+          </Menu.Item>
+          <Menu.Item
+            key="3"
+            icon={<TbFileDescription size={18} />}
+            onClick={() => navigate("/resume-description")}
+          >
+            Resume Description
           </Menu.Item>
         </>
       )}
