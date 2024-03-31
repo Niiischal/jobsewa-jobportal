@@ -52,18 +52,15 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", function (next) {
-  if (this.role !== "jobSeeker") {
-    // If not a jobSeeker, remove these properties
-    this.pdf = undefined;
-    this.savedJobs = undefined;
-    this.appliedJobs = undefined;
-  }
-  // else if(this.role=="admin"){
-  //   this.isEmailVerified = undefined;
-  //   this.verificationToken = undefined;
-  // }
-  next();
-});
+    if (this.role !== "jobSeeker") {
+      // If not a jobSeeker, remove these properties
+      this.pdf = undefined;
+      this.savedJobs = undefined;
+      this.appliedJobs = undefined;
+    }
+    next();
+  });
+  
 
 const User = mongoose.model("users", userSchema);
 
