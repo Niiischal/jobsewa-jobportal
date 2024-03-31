@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const User = require("../models/userModel");
+const User = require("../models/usersModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -24,6 +24,7 @@ const createAdminUser = async () => {
         email: "admin@jobsewanp.com",
         password: hashedPassword,
         role: "admin",
+        isEmailVerified: true,
       });
 
       await newAdmin.save();
@@ -60,9 +61,9 @@ router.post("/register", async (req, res) => {
     const newUser = new User({
       ...req.body,
       password: hashedPassword,
+      isEmailVerified: false,
       roles: roles,
       verificationToken: verificationToken,
-      isEmailVerified: false,
     });
 
     // Save the new user to the database
@@ -103,7 +104,7 @@ router.post("/register", async (req, res) => {
 router.get("/verify/:token", async (req, res) => {
   try {
     const verificationToken = req.params.token;
-    console.log(verificationToken);
+    console.log("Verification token:", verificationToken);
 
     const user = await User.findOne({ verificationToken });
 

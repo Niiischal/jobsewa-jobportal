@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Job = require("../models/jobModel");
 const authMiddleware = require("../middlewares/authMiddleware");
-const User = require("../models/userModel");
+const User = require("../models/usersModel");
 
 // api to add new job
 router.post("/add-jobs", authMiddleware, async (req, res) => {
