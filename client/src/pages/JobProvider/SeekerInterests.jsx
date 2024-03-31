@@ -1,4 +1,4 @@
-import { Card, Pagination, Tag, message } from "antd";
+import { Button, Card, Pagination, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GetAllInterests } from "../../apicalls/interests";
@@ -57,6 +57,7 @@ function SeekerInterests() {
             <Tag color="volcano">{interest.category}</Tag>
             <Tag color="lime">{interest.experience}</Tag>
             <p>Skills: {interest.skills}</p>
+            <Button type="primary" className="w-[100%]">MESSAGE</Button>
           </Card>
         ))}
       </div>
