@@ -79,7 +79,7 @@ function ProtectedPage({ children }) {
             Resume
           </Menu.Item>
           <Menu.Item
-            key="3"
+            key="4"
             icon={<TbFileDescription size={18} />}
             onClick={() => navigate("/resume-description")}
           >
