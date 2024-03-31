@@ -4,6 +4,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { GetResume } from '../../apicalls/resumes';
+import ResumePDF from '../../components/ResumePDF';
 import { SetLoader } from '../../redux/loadersSlice';
 
 function ResumeDescription() {
@@ -32,11 +33,31 @@ function ResumeDescription() {
     getData();
   }, []);
 
+  const handleDownloadPDF = async () => {
+    if (resume) {
+      try {
+        const pdfBlob = new Blob([<ResumePDF resume={resume} />], { type: 'application/pdf' });
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = pdfUrl;
+        a.download = 'resume.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
+    } else {
+      message.error('Resume data is not available yet. Please try again later.');
+    }
+  };
+  
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between mb-3">
-      <Button type='primary' onClick={() => navigate("/resume")}><IoArrowBackOutline size={18}/></Button>
-      <Button type='primary'> Download Resume</Button> 
+        <Button type='primary' onClick={() => navigate("/resume")}><IoArrowBackOutline size={18}/></Button>
+        <Button type='primary' onClick={handleDownloadPDF}>Download Resume</Button> 
       </div>
       {resume !== null ? (
         <div>
