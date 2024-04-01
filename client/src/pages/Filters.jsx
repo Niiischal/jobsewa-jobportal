@@ -80,9 +80,6 @@ function Filters({ filters, setFilters }) {
 
   return (
     <div className="pl-[10px] pr-[10px]">
-      <div className="flex sm:w-[50%] sm:ml-[25%] sm:justify-center">
-        <SearchBar />
-      </div>
       <div className="flex justify-end mt-3 sm:justify-center ">
         <Button type="primary" onClick={toggleText}>
           Filters
