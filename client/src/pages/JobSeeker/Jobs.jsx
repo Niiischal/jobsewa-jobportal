@@ -190,7 +190,7 @@ const Jobs = () => {
                   </h2>
                 </div>
                 <p className="text-base font-semibold text-gray-700 mb-2">
-                  {job.category}
+                  {job.title}
                 </p>
                 <div className="flex items-center gap-3 mb-2 text-[13px] text-gray-600">
                   <p>{job.companylocation}</p>
@@ -199,7 +199,8 @@ const Jobs = () => {
                   <p>{formatDate(job.createdAt)}</p>
                   <p>{job.type}</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between">
+                  <Tag color="lime">{job.category}</Tag>
                   <Tag color="blue">{job.level}</Tag>
                   <Tag color="green">{job.education}</Tag>
                 </div>
@@ -225,14 +226,15 @@ const Jobs = () => {
               <div className="flex gap-8">
                 <div className="flex justify-between flex-col">
                   <div>
-                    <h1>{selectedJob.category}</h1>
+                    <h1>{selectedJob.title}</h1>
                   </div>
                   <div className="flex items-center gap-3 text-[16px] text-gray-600 font-proxima">
                     <span>{selectedJob.companyname}</span>
                     <span>{selectedJob.companylocation}</span>
                     <span>{selectedJob.companyemail}</span>
                   </div>
-                  <div className="flex items-center gap-3 my-5 border-b dark:border-gray-900">
+                  <div className="flex items-center justify-between my-5 border-b dark:border-gray-900">
+                    <Tag color="lime">{selectedJob.category}</Tag>
                     <Tag color="blue">{selectedJob.level}</Tag>
                     <Tag color="green">{selectedJob.type}</Tag>
                     <Tag color="red">{selectedJob.education}</Tag>
@@ -307,7 +309,7 @@ const Jobs = () => {
                 <div className="flex gap-4">
                   <div className="flex justify-between flex-col">
                     <div>
-                      <h2>{selectedJob.category}</h2>
+                      <h2>{selectedJob.title}</h2>
                     </div>
                     <div className="flex items-center gap-2 text-[12px] text-gray-600">
                       <span>{selectedJob.companyname}</span>
@@ -315,7 +317,10 @@ const Jobs = () => {
                       <span>{selectedJob.companyemail}</span>
                     </div>
                     <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
-                      <Tag color="blue">{selectedJob.level}</Tag>
+                      <Tag color="blue">{selectedJob.category}</Tag>
+                      <Tag color="green">{selectedJob.level}</Tag>
+                    </div>
+                    <div className="flex items-center justify-between my-1 border-b dark:border-gray-900">
                       <Tag color="green">{selectedJob.type}</Tag>
                       <Tag color="red">{selectedJob.education}</Tag>
                       <Tag color="orange">{selectedJob.experience}</Tag>
