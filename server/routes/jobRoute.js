@@ -29,6 +29,7 @@ router.post("/get-jobs", async (req, res) => {
       type = [],
       category = [],
       status,
+      search,
     } = req.body;
     let filters = {};
     if (jobProvider) {
@@ -51,6 +52,11 @@ router.post("/get-jobs", async (req, res) => {
     // filter by job level
     if (type.length > 0) {
       filters.type = { $in: type };
+    }
+
+    // search by title
+    if (search) {
+      filters.$or = [{ title: { $regex: search, $options: "i" } }];
     }
 
     const jobs = await Job.find(filters)
@@ -131,8 +137,8 @@ router.get("/get-saved-jobs/:id", authMiddleware, async (req, res) => {
 
 router.post("/apply-job/:id", authMiddleware, async (req, res) => {
   try {
-    userId = req.body.userId
-    jobId = req.params.id
+    userId = req.body.userId;
+    jobId = req.params.id;
 
     const user = await User.findById(userId).populate("appliedJobs");
     const job = await Job.findById(jobId).populate("appliedCandidates");
@@ -178,7 +184,9 @@ router.post("/apply-job/:id", authMiddleware, async (req, res) => {
 
 router.get("/get-applied-jobs/:id", authMiddleware, async (req, res) => {
   try {
-    const appliedJobs = await User.findById(req.body.userId).populate("appliedJobs");
+    const appliedJobs = await User.findById(req.body.userId).populate(
+      "appliedJobs"
+    );
     res.send({
       success: true,
       data: appliedJobs,
@@ -255,7 +263,7 @@ router.get("/get-job-applicants/:id", authMiddleware, async (req, res) => {
     let appliedCandidates = [];
 
     for (const job of jobs) {
-      await job.populate("appliedCandidates")
+      await job.populate("appliedCandidates");
       appliedCandidates.push(...job.appliedCandidates);
     }
 
@@ -270,7 +278,5 @@ router.get("/get-job-applicants/:id", authMiddleware, async (req, res) => {
     });
   }
 });
-
-
 
 module.exports = router;
