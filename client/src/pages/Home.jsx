@@ -2,18 +2,21 @@ import { Button, Modal, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { IoIosHeartEmpty } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetJobs } from "../apicalls/jobs";
 import Navbar from "../components/Navbar";
 import { SetLoader } from "../redux/loadersSlice";
 import Filters from "./Filters";
+
 const Home = () => {
   const [showJobModal, setShowJobModal] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); 
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate()
 
   const JobDetailsTable = ({ selectedJob }) => {
@@ -72,7 +75,7 @@ const Home = () => {
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetJobs(filters);
+      const response = await GetJobs({ filters, search: searchQuery });
       dispatch(SetLoader(false));
       if (response.success) {
         setJobs(response.data);
@@ -99,9 +102,13 @@ const Home = () => {
     };
   }, []);
 
+  const handleSearch = () => {
+    getData();
+  };
+
   useEffect(() => {
     getData();
-  }, [filters]);
+  }, [filters, searchQuery]);
 
   const handleJobClick = (job) => {
     if (windowWidth > 768) {
@@ -119,11 +126,27 @@ const Home = () => {
   return (
     <div>
       <Navbar label="login"/>
-      <div className="flex flex-col items-center bg-[#e7e8e8] rounded-lg">
-        <h1 className="mr-10">
+      <div className="flex flex-col bg-[#e7e8e8] rounded-lg">
+        <h1 className="text-center">
           Find the <span className="text-primary">right</span> job <span className="text-primary">.</span>
         </h1>
+        <div className="flex flex-col gap-1">
+        <div className="flex justify-center items-center">
+          <input
+            type="text"
+            placeholder="Search job by title here"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border border-gray-300 rounded border-solid w-[50%] focus:outline-none focus:ring focus:ring-gray-100"
+          />
+          <IoSearch
+            size={18}
+            className="cursor-pointer border border-gray-300 rounded border-solid p-2 h-[20px] w-10 bg-primary text-white ml-2"
+            onClick={handleSearch}
+          />
+        </div>
         <Filters filters={filters} setFilters={setFilters} />
+      </div>
       </div>
       <div className="flex flex-col md:flex-row mt-5">
         <div
