@@ -15,6 +15,17 @@ const categoryOptions = [
   "IT / Telecommunication",
 ];
 
+const jobTitleOptions = [
+  "Software Engineer",
+  "Graphic Designer",
+  "Marketing Manager",
+  "Data Analyst",
+  "Project Manager",
+  "Accountant",
+  "Web Developer",
+  "Mobile App Developer",
+];
+
 const durationOptions = ["14 Days", "30 Days"];
 
 const levelOptions = [
@@ -24,11 +35,7 @@ const levelOptions = [
   "Mid Level",
 ];
 
-const typeOptions= [
-  "Remote",
-  "On-site",
-  "Hybrid",
-]
+const typeOptions = ["Remote", "On-site", "Hybrid"];
 
 const educationOptions = [
   "below SLC/SEE",
@@ -253,7 +260,8 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
                   />
                 </Form.Item>
               </Col>
-              <Form.Item
+              <Col span={8}>
+                <Form.Item
                   label="Education required"
                   name="education"
                   rules={[
@@ -272,8 +280,32 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
                     }))}
                   />
                 </Form.Item>
+              </Col>
             </Row>
-            <Form.Item
+            <Row gutter={12}>
+              <Col span={12}>
+                <Form.Item
+                  label="Job Title"
+                  name="title"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select the job title",
+                    },
+                  ]}
+                >
+                  <Select
+                    className="h-[40px]"
+                    defaultValue="--select--"
+                    options={jobTitleOptions.map((title) => ({
+                      label: title,
+                      value: title,
+                    }))}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
                   label="Experience"
                   name="experience"
                   rules={[
@@ -292,6 +324,8 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
                     }))}
                   />
                 </Form.Item>
+              </Col>
+            </Row>
             <Row gutter={8}>
               <Col span={8}>
                 <Form.Item
