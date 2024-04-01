@@ -93,6 +93,9 @@ function AppliedJobs() {
             setShowJobModal(true);
           }}
         >
+          <h3 className="text-base font-semibold text-gray-900 mb-2">
+            {job.title}
+          </h3>
           <p className="text-base font-semibold text-gray-700 mb-2">
             {job.category}
           </p>
@@ -124,7 +127,7 @@ function AppliedJobs() {
               <div className="flex gap-4">
                 <div className="flex justify-between flex-col">
                   <div>
-                    <h2>{selectedJob.category}</h2>
+                    <h2>{selectedJob.title}</h2>
                   </div>
                   <div className="flex items-center gap-2 text-[12px] text-gray-600">
                     <span>{selectedJob.companyname}</span>
@@ -132,6 +135,7 @@ function AppliedJobs() {
                     <span>{selectedJob.companyemail}</span>
                   </div>
                   <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
+                    <Tag color="lime">{selectedJob.category}</Tag>
                     <Tag color="blue">{selectedJob.level}</Tag>
                     <Tag color="green">{selectedJob.type}</Tag>
                     <Tag color="red">{selectedJob.education}</Tag>
