@@ -2,6 +2,7 @@ import { Button, Modal, Table, Tag, message } from "antd";
 import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
 import React, { useEffect, useState } from "react";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplyJob, GetJobs, SaveJobById } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
@@ -11,6 +12,7 @@ const Jobs = () => {
   const [showJobModal, setShowJobModal] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [savedJob, setSavedJob] = useState(() => {
     // Retrieve saved jobs from local storage
     const savedJobs = localStorage.getItem("savedJobs");
@@ -84,7 +86,7 @@ const Jobs = () => {
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetJobs(filters);
+      const response = await GetJobs({ filters, search: searchQuery });
       dispatch(SetLoader(false));
       if (response.success) {
         setJobs(response.data);
@@ -111,9 +113,13 @@ const Jobs = () => {
     };
   }, []);
 
+  const handleSearch = () => {
+    getData();
+  };
+
   useEffect(() => {
     getData();
-  }, [filters]);
+  }, [filters, searchQuery]);
 
   const handleJobClick = (job) => {
     if (windowWidth > 768) {
@@ -171,7 +177,23 @@ const Jobs = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <Filters filters={filters} setFilters={setFilters} />
+      <div className="flex flex-col gap-1">
+        <div className="flex justify-between items-center">
+          <input
+            type="text"
+            placeholder="Search job by title here"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border border-gray-300 rounded border-solid w-full focus:outline-none focus:ring focus:ring-gray-100"
+          />
+          <IoSearch
+            size={18}
+            className="cursor-pointer border border-gray-300 rounded border-solid p-2 h-[20px] w-10 bg-primary text-white ml-2"
+            onClick={handleSearch}
+          />
+        </div>
+        <Filters filters={filters} setFilters={setFilters} />
+      </div>
       <div className="flex flex-col md:flex-row">
         <div
           className="md:w-[28%] p-4 overflow-y-scroll"
