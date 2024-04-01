@@ -7,7 +7,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 import JobForm from "./JobForm";
 
 function Jobs() {
-  const [selectedJob, setSelectedJob] = useState();
+  const [selectedJob, setSelectedJob] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [showJobForm, setShowJobForm] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -208,59 +208,58 @@ function Jobs() {
           getData={getData}
         />
       )}
-      {currentJobs.map((job) => (
         <Modal
           open={showJobModal}
           onCancel={() => setShowJobModal(false)}
           centered
           width={"90%"}
           footer={null}
-          key={job._id}
         >
-          <div className="font-proxima mt-5">
-            <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
-              <div className="flex gap-4">
-                <div className="flex justify-between flex-col">
-                  <div>
-                    <h2>{job.category}</h2>
-                  </div>
-                  <div className="flex items-center gap-2 text-[12px] text-gray-600">
-                    <span>{job.companyname}</span>
-                    <span>{job.companylocation}</span>
-                    <span>{job.companyemail}</span>
-                  </div>
-                  <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
-                    <Tag color="blue">{job.level}</Tag>
-                    <Tag color="green">{job.type}</Tag>
-                    <Tag color="red">{job.education}</Tag>
-                    <Tag color="orange">{job.experience}</Tag>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="pl-[10px] pr-[10px]">
-              <div className="details flex flex-col gap-3">
-                <div className="descprition">
-                  <h3>Description</h3>
-                  <span className="text-[14px] text-gray-500">
-                    {job.description}
-                  </span>
-                </div>
-                <div className="specification">
-                  <h3>Specification</h3>
-                  <span className="text-[14px] text-gray-500">
-                    {job.specification}
-                  </span>
-                </div>
-                <div className="facts">
-                  <h3>Numbers & Facts</h3>
-                  <JobDetailsTable selectedJob={selectedJob} />
-                </div>
-              </div>
-            </div>
-          </div>
+          {selectedJob && (
+                      <div className="font-proxima mt-5">
+                      <div className="pl-[10px] pr-[10px] pt[0] rounded-lg border border-gray-200 shadow-lg">
+                        <div className="flex gap-4">
+                          <div className="flex justify-between flex-col">
+                            <div>
+                              <h2>{selectedJob.category}</h2>
+                            </div>
+                            <div className="flex items-center gap-2 text-[12px] text-gray-600">
+                              <span>{selectedJob.companyname}</span>
+                              <span>{selectedJob.companylocation}</span>
+                              <span>{selectedJob.companyemail}</span>
+                            </div>
+                            <div className="flex items-center gap-1 my-5 border-b dark:border-gray-900">
+                              <Tag color="blue">{selectedJob.level}</Tag>
+                              <Tag color="green">{selectedJob.type}</Tag>
+                              <Tag color="red">{selectedJob.education}</Tag>
+                              <Tag color="orange">{selectedJob.experience}</Tag>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pl-[10px] pr-[10px]">
+                        <div className="details flex flex-col gap-3">
+                          <div className="descprition">
+                            <h3>Description</h3>
+                            <span className="text-[14px] text-gray-500">
+                              {selectedJob.description}
+                            </span>
+                          </div>
+                          <div className="specification">
+                            <h3>Specification</h3>
+                            <span className="text-[14px] text-gray-500">
+                              {selectedJob.specification}
+                            </span>
+                          </div>
+                          <div className="facts">
+                            <h3>Numbers & Facts</h3>
+                            <JobDetailsTable selectedJob={selectedJob} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+          )}
         </Modal>
-      ))}
     </div>
   );
 }
