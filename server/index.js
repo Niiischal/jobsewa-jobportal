@@ -1,8 +1,8 @@
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 app.use(cors());
 
 require("dotenv").config();
@@ -12,18 +12,16 @@ dbConfig();
 const port = process.env.PORT || 5000;
 
 // Available routes
-const userRoute = require("./routes/userRoute"); 
-const jobRoute = require("./routes/jobRoute"); 
-const interestRoute = require("./routes/interestRoute")
-const resumeRoute = require("./routes/resumeRoute")
+const userRoute = require("./routes/userRoute");
+const jobRoute = require("./routes/jobRoute");
+const interestRoute = require("./routes/interestRoute");
+const resumeRoute = require("./routes/resumeRoute");
+const notificationRoute = require("./routes/notificationRoute");
 
-app.use("/api/users", userRoute); 
-app.use("/api/jobs", jobRoute); 
-app.use("/api/interests", interestRoute)
-app.use("/api/resumes", resumeRoute)
+app.use("/api/users", userRoute);
+app.use("/api/jobs", jobRoute);
+app.use("/api/interests", interestRoute);
+app.use("/api/resumes", resumeRoute);
+app.use("/api/notifications", notificationRoute);
 
-
-
-app.listen(port, () =>
-  console.log(`Server running on port ${port}`)
-);
+app.listen(port, () => console.log(`Server running on port ${port}`));
