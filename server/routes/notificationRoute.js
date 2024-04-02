@@ -38,9 +38,9 @@ router.get("/get-all-notifications", authMiddleware, async (req, res) => {
 });
 
 //delete a notification
-router.get("/delete-notification/:id", authMiddleware, async (req, res) => {
+router.delete("/delete-notification/:id", authMiddleware, async (req, res) => {
   try {
-    await Notificaton.findByIdAndDelete(req.params.id);
+    await Notification.findByIdAndDelete(req.params.id);
     res.send({
       success: true,
       message: "Notification deleted successfully",
