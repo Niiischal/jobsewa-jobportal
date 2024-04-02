@@ -22,7 +22,7 @@ router.post("/notify", authMiddleware, async (req, res) => {
 //get all notification by user
 router.get("/get-all-notifications", authMiddleware, async (req, res) => {
   try {
-    const notifications = await Notification.fine({
+    const notifications = await Notification.find({
       user: req.body.userId,
     }).sort({ createdAt: -1 });
     res.send({
