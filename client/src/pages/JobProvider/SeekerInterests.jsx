@@ -7,7 +7,7 @@ import { SetLoader } from "../../redux/loadersSlice";
 function SeekerInterests() {
   const [interests, setInterests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [interestsPerPage] = useState(4); // Number of jobs per page
+  const [interestsPerPage] = useState(4); // Number of interests per page
   const dispatch = useDispatch();
 
   const getData = async () => {
@@ -24,7 +24,7 @@ function SeekerInterests() {
     }
   };
 
-  // Get current jobs
+  // Get current interests
   const indexOfLastInterest = currentPage * interestsPerPage;
   const indexOfFirstInterest = indexOfLastInterest - interestsPerPage;
   const currentInterests = interests.slice(
@@ -42,28 +42,31 @@ function SeekerInterests() {
   }, []);
 
   return (
-    <div>
-      <div className="flex justify-evenly mt-[10px] flex-wrap">
+    <div className="container mx-auto px-4">
+      <div className="flex flex-wrap justify-center md:justify-evenly mt-4">
         {currentInterests.map((interest) => (
-          <Card
-            className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
-            key={interest._id}
-            title={interest.title}
-          >
-            <p className="font-semibold">Posted By: {interest.name}</p>
-            <p>Email: {interest.email}</p>
-            <p>Location: {interest.location}</p>
-            <Tag color="blue">{interest.education}</Tag>
-            <Tag color="volcano">{interest.category}</Tag>
-            <Tag color="lime">{interest.experience}</Tag>
-            <p>Skills: {interest.skills}</p>
-            <Button type="primary" className="w-[100%]">MESSAGE</Button>
-          </Card>
+          <div key={interest._id} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
+            <Card
+              className="bg-white cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
+              title={interest.title}
+            >
+              <p className="font-semibold">Posted By: {interest.name}</p>
+              <p>Email: {interest.email}</p>
+              <p>Location: {interest.location}</p>
+              <div className="flex flex-wrap gap-1">
+                <Tag color="blue">{interest.education}</Tag>
+                <Tag color="volcano">{interest.category}</Tag>
+                <Tag color="lime">{interest.experience}</Tag>
+              </div>
+              <p>Skills: {interest.skills}</p>
+              <Button type="primary" className="w-full mt-2">MESSAGE</Button>
+            </Card>
+          </div>
         ))}
       </div>
       {interests.length > 0 && (
         <Pagination
-          className="mt-[10px] flex justify-end"
+          className="mt-4 flex justify-end"
           current={currentPage}
           total={interests.length}
           pageSize={interestsPerPage}
