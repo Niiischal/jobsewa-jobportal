@@ -8,7 +8,10 @@ import { RiNotificationLine } from "react-icons/ri";
 import { TbFileDescription } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetAllNotifications } from "../apicalls/notifications";
+import {
+  GetAllNotifications,
+  ReadAllNotifications,
+} from "../apicalls/notifications";
 import { GetCurrentUser } from "../apicalls/users";
 import { SetLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
@@ -54,7 +57,19 @@ function ProtectedPage({ children }) {
         throw new Error(response.message);
       }
     } catch (error) {
-      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
+  const readNotifications = async () => {
+    try {
+      const response = await ReadAllNotifications();
+      if (response.success) {
+        getNotifications();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
       message.error(error.message);
     }
   };
@@ -178,11 +193,14 @@ function ProtectedPage({ children }) {
                   .length
               }
               onClick={() => {
+                readNotifications();
                 setShowNotifications(true);
-                console.log("clicked")
               }}
             >
-              <Avatar size="large" shape="square" icon={<RiNotificationLine />} 
+              <Avatar
+                size="large"
+                shape="square"
+                icon={<RiNotificationLine />}
               />
             </Badge>
             <Dropdown overlay={menu} trigger={["click"]}>
