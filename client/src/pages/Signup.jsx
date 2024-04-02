@@ -2,6 +2,7 @@ import { Button, Form, Input, Radio, message } from "antd";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { AddNotification } from "../apicalls/notifications";
 import { RegisterUser, VerifyEmail } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 import { SetLoader } from "../redux/loadersSlice";
@@ -18,7 +19,7 @@ const Signup = () => {
   const dispatch = useDispatch();
   const onFinish = async (values) => {
     try {
-      dispatch(SetLoader(true))
+      dispatch(SetLoader(true));
       // Extract the selected role from the values object
       const selectedRole = values.role;
 
@@ -27,16 +28,25 @@ const Signup = () => {
         ...values,
         roles: [selectedRole],
       });
-      dispatch(SetLoader(false))
+      dispatch(SetLoader(false));
       if (response.success) {
-        await VerifyEmail(response.token)
+        await VerifyEmail(response.token);
         message.success(response.message);
         navigate("/login");
+
+        // Send notification to admin
+        await AddNotification({
+          title: "New User Alert!",
+          message: `A new user with email ${values.email} has registered as a ${selectedRole}.`,
+          user: values.user._id,
+          onClick: "/admin-home",
+          read: false,
+        });
       } else {
         throw new Error(response.message);
       }
     } catch (error) {
-      dispatch(SetLoader(false))
+      dispatch(SetLoader(false));
       message.error(error.message);
     }
   };
@@ -49,7 +59,7 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className="h-screen flex justify-center items-center">
         <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fcfdfd] cursor-pointer shadow-lg hover:shadow-xl transition duration-300">
           <h1 className="text-[30px] my-2">Create an Account</h1>
