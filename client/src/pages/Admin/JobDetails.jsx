@@ -42,11 +42,6 @@ function JobDetails() {
     }
   };
 
-  // Get current jobs
-  const indexOfLastJob = currentPage * jobsPerPage;
-  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
-  const currentJobs = jobs.slice(indexOfFirstJob, indexOfLastJob);
-
   // Change page
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -77,7 +72,7 @@ function JobDetails() {
 
   const ActionButtons = ({ status, _id, onStatusUpdate }) => {
     return (
-      <div className="flex gap-3 justify-center ">
+      <div className="flex gap-3 justify-center">
         {status === "pending" && (
           <Button
             type="default"
@@ -127,8 +122,8 @@ function JobDetails() {
 
   return (
     <div>
-      <div className="flex justify-evenly mt-[10px] flex-wrap">
-        {currentJobs.map((job) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {jobs.map((job) => (
           <Card
             className="bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
             key={job._id}
@@ -136,17 +131,13 @@ function JobDetails() {
           >
             <p className="font-semibold">Recruiter: {job.jobProvider.name}</p>
             <p>Email: {job.jobProvider.email}</p>
-            <p>
-              Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}
-            </p>
+            <p>Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}</p>
             <p>No of Openings: {job.openings}</p>
             <p>Duration: {job.duration}</p>
             <p>Job Level: {job.level}</p>
             <p>Education required: {job.education}</p>
             <p>Experience required: {job.experience}</p>
-            <p>
-              Status: <StatusTag status={job.status} />
-            </p>
+            <p>Status: <StatusTag status={job.status} /></p>
             <ActionButtons
               status={job.status}
               _id={job._id}
