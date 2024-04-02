@@ -152,7 +152,7 @@ function ProtectedPage({ children }) {
         </>
       )}
       <Menu.Item
-        key="4"
+        key="5"
         icon={<MdOutlineLogout size={18} />}
         onClick={handleLogout}
       >
