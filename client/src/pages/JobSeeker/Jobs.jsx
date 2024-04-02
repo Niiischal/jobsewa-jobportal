@@ -5,9 +5,9 @@ import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplyJob, GetJobs, SaveJobById } from "../../apicalls/jobs";
+import { AddNotification } from "../../apicalls/notifications";
 import { SetLoader } from "../../redux/loadersSlice";
 import Filters from "../Filters";
-
 const Jobs = () => {
   const [showJobModal, setShowJobModal] = useState(false);
   const [jobs, setJobs] = useState([]);
@@ -163,7 +163,16 @@ const Jobs = () => {
         localStorage.setItem("appliedJobs", JSON.stringify(updatedAppliedJobs)); // Update local storage
         message.success(response.message);
         dispatch(SetLoader(false));
+        //send notification to provider
+        await AddNotification({
+          title: "Job Application Alert!",
+          message: ` ${user.name} applied on your job, ${selectedJob.title}.`,
+          user: selectedJob.jobProvider._id,
+          onClick: `/jobprovider-home`,
+          read: false,
+        });
       } else {
+        dispatch(SetLoader(false));
         message.error(response.message);
       }
     } catch (error) {
