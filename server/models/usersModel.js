@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema(
     },
     isEmailVerified: {
       type: Boolean,
+      default: false,
     },
     secretOTP: {
       type: String,

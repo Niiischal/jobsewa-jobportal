@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AddNotification } from "../apicalls/notifications";
-import { RegisterUser, VerifyEmail } from "../apicalls/users";
+import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 import { SetLoader } from "../redux/loadersSlice";
 
@@ -30,7 +30,6 @@ const Signup = () => {
       });
       dispatch(SetLoader(false));
       if (response.success) {
-        await VerifyEmail(response.token);
         message.success(response.message);
         navigate("/login");
 

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Chat from "./components/Chat";
+import EmailVerification from "./components/EmailVerification";
 import Loader from "./components/Loader";
 import ProtectedPage from "./components/ProtectedPage";
 import ProtectedAHome from "./pages/Admin/Home";
@@ -25,6 +26,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/verify/:token" element={<EmailVerification/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
