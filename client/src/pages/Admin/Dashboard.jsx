@@ -96,7 +96,7 @@ const Dashboard = () => {
       </div>
       <Divider />
       <Tabs>
-        <Tabs.TabPane tab="Products" key="1">
+        <Tabs.TabPane tab="Jobs" key="1">
           <JobDetails />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Users" key="2">

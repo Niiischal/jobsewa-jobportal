@@ -16,7 +16,6 @@ function OTP() {
       const response = await VerificationOTP({ email, otp, newPassword });
       if (response.success) {
         message.success(response.message);
-        // navigate the user to login if the password is updated successfully
         navigate("/login");
       } else {
         throw new Error(response.message);
