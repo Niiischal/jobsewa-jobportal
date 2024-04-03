@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Chat from "./components/Chat";
 import Loader from "./components/Loader";
 import ProtectedPage from "./components/ProtectedPage";
 import ProtectedAHome from "./pages/Admin/Home";
@@ -81,6 +82,14 @@ function App() {
             element={
               <ProtectedPage>
                 <ResumeDescription/>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedPage>
+                <Chat/>
               </ProtectedPage>
             }
           />
