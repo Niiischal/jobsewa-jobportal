@@ -1,7 +1,7 @@
 import { Avatar, Badge, Dropdown, Menu, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiUser } from "react-icons/bi";
-import { CiFileOn } from "react-icons/ci";
+import { CiChat1, CiFileOn } from "react-icons/ci";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineLogout } from "react-icons/md";
 import { RiNotificationLine } from "react-icons/ri";
@@ -120,6 +120,13 @@ function ProtectedPage({ children }) {
           >
             Resume Description
           </Menu.Item>
+          <Menu.Item
+            key="5"
+            icon={<CiChat1 size={18}/>}
+            onClick={() => navigate("/chat")}
+          >
+            Messages
+          </Menu.Item>
         </>
       )}
       {user && user.role === "jobProvider" && (
@@ -138,6 +145,13 @@ function ProtectedPage({ children }) {
           >
             My Jobs
           </Menu.Item>
+          <Menu.Item
+            key="3"
+            icon={<CiChat1 size={18}/>}
+            onClick={() => navigate("/chat")}
+          >
+            Messages
+          </Menu.Item>
         </>
       )}
       {user && user.role === "admin" && (
@@ -152,7 +166,7 @@ function ProtectedPage({ children }) {
         </>
       )}
       <Menu.Item
-        key="5"
+        key="6"
         icon={<MdOutlineLogout size={18} />}
         onClick={handleLogout}
       >
@@ -165,7 +179,7 @@ function ProtectedPage({ children }) {
     user && (
       <div>
         {/* header */}
-        <div className="flex justify-between items-center pl-[2rem] pr-[2rem] bg-primary">
+        <div className="flex justify-between items-center pl-[2rem] pr-[2rem] bg-primary ">
           <div className="logo-div">
             <h1
               className="logo text-[27px] cursor-pointer text-white"
@@ -183,7 +197,7 @@ function ProtectedPage({ children }) {
             </h1>
           </div>
 
-          <div className="relative z-10 cursor-pointer rounded flex items-center gap-3 ">
+          <div className="relative z-10 cursor-pointer rounded flex items-center gap-1 ">
             <span className="text-white" onClick={() => navigate("/profile")}>
               {user.name}
             </span>
