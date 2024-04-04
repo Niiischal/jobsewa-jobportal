@@ -1,11 +1,13 @@
-import { Button, Form, Input, Radio, message } from "antd";
-import { useEffect } from "react";
+import { Button, Form, Input, Tabs, message } from "antd";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { AddNotification } from "../apicalls/notifications";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 import { SetLoader } from "../redux/loadersSlice";
+
+const { TabPane } = Tabs;
 
 const rules = [
   {
@@ -17,16 +19,15 @@ const rules = [
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [selectedTab, setSelectedTab] = useState("jobSeeker"); 
+
   const onFinish = async (values) => {
     try {
       dispatch(SetLoader(true));
-      // Extract the selected role from the values object
-      const selectedRole = values.role;
-
-      // Make the API call with the extracted values
+      // Make the API call with the selected tab
       const response = await RegisterUser({
         ...values,
-        roles: [selectedRole],
+        tab: selectedTab,
       });
       dispatch(SetLoader(false));
       if (response.success) {
@@ -36,7 +37,7 @@ const Signup = () => {
         // Send notification to admin
         await AddNotification({
           title: "New User Alert!",
-          message: `A new user with email ${values.email} has registered as a ${selectedRole}.`,
+          message: `A new user with email ${values.email} has registered as a ${selectedTab}.`,
           user: values.user._id,
           onClick: "/admin-home",
           read: false,
@@ -54,7 +55,7 @@ const Signup = () => {
     if (localStorage.getItem("token")) {
       navigate("/jobseeker-home");
     }
-  });
+  }, [navigate]);
 
   return (
     <>
@@ -62,55 +63,82 @@ const Signup = () => {
       <div className="h-screen flex justify-center items-center">
         <div className="form-container p-5 rounded-sm w-[350px] border-solid border border-primary bg-[#fcfdfd] cursor-pointer shadow-lg hover:shadow-xl transition duration-300">
           <h1 className="text-[30px] my-2">Create an Account</h1>
-          <Form layout="vertical" onFinish={onFinish}>
-            <Form.Item
-              label="Full Name"
-              name="name"
-              className="font-semibold"
-              rules={rules}
-            >
-              <Input placeholder="Enter Your Full Name" />
-            </Form.Item>
-            <Form.Item
-              label="Email"
-              name="email"
-              className="font-semibold"
-              rules={rules}
-            >
-              <Input type="email" placeholder="Enter Your Email" />
-            </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              className="font-semibold"
-              rules={rules}
-            >
-              <Input.Password
-                placeholder="Enter Your Password"
-                type="password"
-              />
-            </Form.Item>
-            <Form.Item
-              label="Select Role"
-              name="role"
-              className="font-semibold"
-              rules={rules}
-            >
-              <Radio.Group>
-                <Radio value="jobSeeker">Job Seeker</Radio>
-                <Radio value="jobProvider">Job Provider</Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Sign Up
-            </Button>
-            <div className="mt-4 text-center text-base">
-              <span>Already have an account? </span>
-              <Link to="/login" className="text-primary hover:text-black">
-                Log In
-              </Link>
-            </div>
-          </Form>
+          <Tabs defaultActiveKey="jobSeeker" onChange={setSelectedTab}>
+            <TabPane tab="Job Seeker" key="jobSeeker">
+              <Form layout="vertical" onFinish={onFinish}>
+                <Form.Item
+                  label="Full Name"
+                  name="name"
+                  className="font-semibold"
+                  rules={rules}
+                >
+                  <Input placeholder="Enter Your Full Name" />
+                </Form.Item>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  className="font-semibold"
+                  rules={rules}
+                >
+                  <Input type="email" placeholder="Enter Your Email" />
+                </Form.Item>
+                <Form.Item
+                  label="Password"
+                  name="password"
+                  className="font-semibold"
+                  rules={rules}
+                >
+                  <Input.Password
+                    placeholder="Enter Your Password"
+                    type="password"
+                  />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" block>
+                  Sign Up
+                </Button>
+              </Form>
+            </TabPane>
+            <TabPane tab="Job Provider" key="jobProvider">
+              <Form layout="vertical" onFinish={onFinish}>
+                <Form.Item
+                  label="Full Name"
+                  name="name"
+                  className="font-semibold"
+                  rules={rules}
+                >
+                  <Input placeholder="Enter Your Full Name" />
+                </Form.Item>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  className="font-semibold"
+                  rules={rules}
+                >
+                  <Input type="email" placeholder="Enter Your Email" />
+                </Form.Item>
+                <Form.Item
+                  label="Password"
+                  name="password"
+                  className="font-semibold"
+                  rules={rules}
+                >
+                  <Input.Password
+                    placeholder="Enter Your Password"
+                    type="password"
+                  />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" block>
+                  Sign Up
+                </Button>
+              </Form>
+            </TabPane>
+          </Tabs>
+          <div className="mt-4 text-center text-base">
+            <span>Already have an account? </span>
+            <Link to="/login" className="text-primary hover:text-black">
+              Log In
+            </Link>
+          </div>
         </div>
       </div>
     </>

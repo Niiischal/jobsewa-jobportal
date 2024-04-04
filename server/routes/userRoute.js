@@ -56,13 +56,21 @@ router.post("/register", async (req, res) => {
     // Generating a unique verification token
     const verificationToken = crypto.randomBytes(20).toString("hex");
 
-    const roles = req.body.roles ? [req.body.roles] : ["jobSeeker"];
+    // Determine the role based on the selected tab
+    let role;
+    if (req.body.tab === "jobSeeker") {
+      role = "jobSeeker";
+    } else if (req.body.tab === "jobProvider") {
+      role = "jobProvider";
+    } else {
+      throw new Error("Invalid role selected.");
+    }
 
     const newUser = new User({
       ...req.body,
       password: hashedPassword,
       isEmailVerified: false,
-      roles: roles,
+      role: role,
       verificationToken: verificationToken,
     });
 
