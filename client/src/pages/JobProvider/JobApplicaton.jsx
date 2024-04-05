@@ -7,23 +7,23 @@ import { Applicants } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 
 function JobApplication() {
-  const [allApplicants, setAllApplicants] = useState([]); // Stores all the applicants fetched
-  const [filteredApplicants, setFilteredApplicants] = useState([]); // Stores the filtered or searched applicants
+  const [allApplicants, setAllApplicants] = useState([]); 
+  const [filteredApplicants, setFilteredApplicants] = useState([]); 
   const [currentPage, setCurrentPage] = useState(1);
-  const [applicantsPerPage] = useState(4); // You can adjust the number of applicants per page
-  const [searchQuery, setSearchQuery] = useState(""); // Holds the current search query
+  const [applicantsPerPage] = useState(4); // number of applicants per page
+  const [searchQuery, setSearchQuery] = useState(""); 
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  // Function to fetch applicants data
+
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await Applicants(id); // Assuming this fetches the applicants data
+      const response = await Applicants(id); 
       dispatch(SetLoader(false));
       if (response && response.data) {
-        setAllApplicants(response.data); // Initially set all fetched applicants
-        setFilteredApplicants(response.data); // Set filtered applicants to all applicants initially
+        setAllApplicants(response.data); 
+        setFilteredApplicants(response.data); 
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -62,7 +62,7 @@ function JobApplication() {
 
   return (
     <div>
-      <div className="flex gap-3 mb-4">
+      <div>
         <input
           type="text"
           placeholder="Search by applicant's name here"
@@ -70,12 +70,8 @@ function JobApplication() {
           onChange={handleSearchChange}
           className="border border-gray-300 rounded border-solid w-full focus:outline-none focus:ring focus:ring-gray-100"
         />
-        <IoSearch
-          size={18}
-          className="cursor-pointer border border-gray-300 rounded border-solid p-2 h-[20px] w-10 bg-primary text-white"
-        />
       </div>
-      <div className="flex flex-wrap justify-between gap-4">
+      <div className="flex flex-wrap justify-between gap-4 mt-3">
         {currentApplicants.map((user) => (
           <Card
             key={user._id}

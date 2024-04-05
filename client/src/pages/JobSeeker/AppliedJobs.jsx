@@ -1,5 +1,5 @@
-import { Card, Modal, Table, Tag, message } from "antd";
-import { formatDistanceToNow } from "date-fns"; // Import formatDistanceToNow from date-fns
+import { Card, Modal, Pagination, Table, Tag, message } from "antd";
+import { formatDistanceToNow } from "date-fns";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -8,8 +8,12 @@ import { SetLoader } from "../../redux/loadersSlice";
 
 function AppliedJobs() {
   const [appliedJobs, setAppliedJobs] = useState([]);
+  const [filteredJobs, setFilteredJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState();
   const [showJobModal, setShowJobModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [jobsPerPage] = useState(4); // Number of jobs per page
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -20,6 +24,7 @@ function AppliedJobs() {
       dispatch(SetLoader(false));
       if (response.success) {
         setAppliedJobs(response.data.appliedJobs);
+        setFilteredJobs(response.data.appliedJobs); // Initialize filteredJobs with all applied jobs
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -29,7 +34,26 @@ function AppliedJobs() {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [id]);
+
+  // Effect for handling search functionality
+  useEffect(() => {
+    const filtered = appliedJobs.filter((job) =>
+      job.companyname.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredJobs(filtered);
+    setCurrentPage(1); // Reset pagination to first page on new search
+  }, [searchQuery, appliedJobs]);
+
+  // Get the portion of jobs to display based on pagination
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+
+  // Handles page change in pagination
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const JobDetailsTable = ({ selectedJob }) => {
     const columns = [
@@ -81,12 +105,27 @@ function AppliedJobs() {
   const formatDate = (dateString) => {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
+
+  // Handles updates to the search query
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
-    <div className="flex justify-between gap-4">
-      {appliedJobs.map((job) => (
+    <div>
+      <div>
+      <input
+        type="text"
+        placeholder="Search by company name"
+        value={searchQuery}
+        onChange={handleSearchChange}
+        className="border border-gray-300 rounded border-solid w-full focus:outline-none focus:ring focus:ring-gray-100"
+      />
+      </div>
+      {currentJobs.map((job) => (
         <Card
           key={job.id}
-          className="cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
+          className="cursor-pointer shadow-lg hover:shadow-xl transition duration-300 mt-3"
           title={job.companyname}
           onClick={() => {
             setSelectedJob(job);
@@ -113,6 +152,16 @@ function AppliedJobs() {
           </p>
         </Card>
       ))}
+
+      {filteredJobs.length > jobsPerPage && (
+        <Pagination
+          className="mt-4 flex justify-end"
+          current={currentPage}
+          total={filteredJobs.length}
+          pageSize={jobsPerPage}
+          onChange={handlePageChange}
+        />
+      )}
 
       <Modal
         open={showJobModal}
