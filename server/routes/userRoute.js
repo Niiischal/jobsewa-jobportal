@@ -43,20 +43,18 @@ createAdminUser();
 //user registration api
 router.post("/register", async (req, res) => {
   try {
-    // Check if the user already exists
+    // Checking if the user already exists
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       throw new Error("User already exists.");
     }
 
-    // Hashing the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     // Generating a unique verification token
     const verificationToken = crypto.randomBytes(20).toString("hex");
 
-    // Determine the role based on the selected tab
     let role;
     if (req.body.tab === "jobSeeker") {
       role = "jobSeeker";
@@ -74,7 +72,7 @@ router.post("/register", async (req, res) => {
       verificationToken: verificationToken,
     });
 
-    // Save the new user to the database
+    // Saving the new user to the database
     await newUser.save();
 
     const transporter = nodemailer.createTransport({
@@ -436,5 +434,6 @@ router.put("/change-password/:id", authMiddleware, async (req, res) => {
     });
   }
 });
+
 
 module.exports = router;

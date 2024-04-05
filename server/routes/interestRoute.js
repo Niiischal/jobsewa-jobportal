@@ -68,7 +68,7 @@ router.delete("/delete-interests/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// get all user api
+// get all interests api
 router.get("/get-interests", authMiddleware, async (req, res) => {
   try {
     const interests = await Interest.find();

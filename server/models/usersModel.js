@@ -38,14 +38,18 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    savedJobs: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'jobs'
-    }],
-    appliedJobs:[{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'jobs'
-    }]
+    savedJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "jobs",
+      },
+    ],
+    appliedJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "jobs",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -53,15 +57,14 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", function (next) {
-    if (this.role !== "jobSeeker") {
-      // If not a jobSeeker, remove these properties
-      this.pdf = undefined;
-      this.savedJobs = undefined;
-      this.appliedJobs = undefined;
-    }
-    next();
-  });
-  
+  if (this.role !== "jobSeeker") {
+    // If not a jobSeeker, remove these properties
+    this.pdf = undefined;
+    this.savedJobs = undefined;
+    this.appliedJobs = undefined;
+  }
+  next();
+});
 
 const User = mongoose.model("users", userSchema);
 
