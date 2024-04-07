@@ -106,6 +106,7 @@ router.post("/save-job-by-id/:id", authMiddleware, async (req, res) => {
 
     // Adding the job ID to the user's savedJobs field
     user.savedJobs.push(jobId);
+    user.isJobSaved = true;
     await user.save();
 
     res.send({

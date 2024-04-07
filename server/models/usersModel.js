@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    isJobSaved: {
+      type: Boolean,
+      default: false,
+    },
     savedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,

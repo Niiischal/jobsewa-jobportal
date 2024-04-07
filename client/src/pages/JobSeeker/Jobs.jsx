@@ -13,12 +13,7 @@ const Jobs = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [savedJob, setSavedJob] = useState(() => {
-    // Retrieve saved jobs from local storage
-    const savedJobs = localStorage.getItem("savedJobs");
-    // initialize an empty arrary if the savedJob is not found
-    return savedJobs ? JSON.parse(savedJobs) : [];
-  });
+  const [savedJobs, setSavedJobs] = useState([]);
   const [appliedJob, setAppliedJob] = useState(() => {
     // Retrieve saved jobs from local storage
     const appliedJobs = localStorage.getItem("appliedJobs");
@@ -89,7 +84,11 @@ const Jobs = () => {
       const response = await GetJobs({ filters, search: searchQuery });
       dispatch(SetLoader(false));
       if (response.success) {
-        setJobs(response.data);
+        const updatedJobs = response.data.map((job) => ({
+          ...job,
+          isSaved: user && user.savedJobs.includes(job._id),
+        }));
+        setJobs(updatedJobs);
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -140,11 +139,12 @@ const Jobs = () => {
     try {
       const response = await SaveJobById(jobId);
       if (response.success) {
-        setSavedJob((prevSavedJobs) => ({
-          ...prevSavedJobs,
-          [jobId]: true,
-        }));
-        localStorage.setItem("savedJobs", JSON.stringify(savedJob));
+        setJobs((prevJobs) =>
+          prevJobs.map((job) =>
+            job._id === jobId ? { ...job, isSaved: true } : job
+          )
+        );
+        setSavedJobs((prevSavedJobs) => [...prevSavedJobs, jobId]);
         message.success(response.message);
       } else {
         message.error(response.message);
@@ -153,6 +153,11 @@ const Jobs = () => {
       message.error("Failed to save job. Please try again later.");
     }
   };
+
+  const isJobSaved = (jobId) => {
+    return savedJobs.includes(jobId) || (user && user.isJobSaved);
+  };
+  
   const handleApplyJob = async (jobId) => {
     try {
       dispatch(SetLoader(true));
@@ -273,7 +278,7 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  {savedJob[selectedJob._id] ? (
+                  {selectedJob.isSaved ? (
                     <IoIosHeart
                       size={24}
                       className="text-red-500 cursor-not-allowed"
@@ -358,7 +363,7 @@ const Jobs = () => {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col pt-[15px] items-end">
-                    {savedJob[selectedJob._id] ? (
+                    {isJobSaved(selectedJob._id) ? (
                       <IoIosHeart
                         size={24}
                         className="text-red-500 cursor-not-allowed"
