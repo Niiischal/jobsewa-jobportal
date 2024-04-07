@@ -79,7 +79,7 @@ router.post("/register", async (req, res) => {
       service: "gmail",
       auth: {
         user: "jobsewanp@gmail.com",
-        pass: "zowv hopz ugmd dtgq",
+        pass: "yysh wgbo cwfh oixt",
       },
     });
 
@@ -133,23 +133,20 @@ router.get("/verify/:token", async (req, res) => {
 //user login api
 router.post("/login", async (req, res) => {
   try {
-    // checking if user already exists
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       throw new Error("User not found");
     }
 
-    // // Checking if user's email is verified
     if (!user.isEmailVerified) {
       throw new Error("Email not verified");
     }
 
-    // Blocking the user from login while the user status is not active
+    // Blocking the user from login 
     if (user.status !== "active") {
       throw new Error(" The account have been blocked, contact the admin");
     }
 
-    //comparing password
     const validPassword = await bcrypt.compare(
       req.body.password,
       user.password
@@ -269,7 +266,7 @@ router.post("/forgot-password", async (req, res) => {
       service: "gmail",
       auth: {
         user: "jobsewanp@gmail.com",
-        pass: "zowv hopz ugmd dtgq",
+        pass: "yysh wgbo cwfh oixt",
       },
     });
 
