@@ -1,4 +1,4 @@
-import { Modal, message } from "antd";
+import { Divider, Modal, message } from "antd";
 import moment from "moment";
 import React from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -71,6 +71,7 @@ function Notifications({
                 />
               </div>
             </div>
+            <Divider/>
           </div>
         ))}
       </div>
