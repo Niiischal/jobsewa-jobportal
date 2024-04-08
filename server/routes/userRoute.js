@@ -7,6 +7,7 @@ const nodemailer = require("nodemailer");
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
 const crypto = require("crypto");
+const Notification =require("../models/notificationModel")
 
 const createAdminUser = async () => {
   try {
@@ -91,6 +92,20 @@ router.post("/register", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
+
+    const users = await User.findById(newUser._id);
+    //send notifications to the admin
+    const admins = await User.find({ role: "admin" });
+    admins.forEach(async (admin) => {
+      const newNotification = new Notification({
+        user: admin._id,
+        title: "New User Registered!",
+        message: `${users.name} is newly registered into the system. Take a time to view the user details`,
+        onClick: `/admin-home`,
+        read: false,
+      });
+      await newNotification.save();
+    });
 
     res.send({
       success: true,

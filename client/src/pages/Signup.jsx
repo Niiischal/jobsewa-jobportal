@@ -2,7 +2,6 @@ import { Button, Form, Input, Tabs, message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { AddNotification } from "../apicalls/notifications";
 import { RegisterUser } from "../apicalls/users";
 import Navbar from "../components/Navbar";
 import { SetLoader } from "../redux/loadersSlice";
@@ -33,15 +32,6 @@ const Signup = () => {
       if (response.success) {
         message.success(response.message);
         navigate("/login");
-
-        // Send notification to admin
-        await AddNotification({
-          title: "New User Alert!",
-          message: `A new user with email ${values.email} has registered as a ${selectedTab}.`,
-          user: values.user._id,
-          onClick: "/admin-home",
-          read: false,
-        });
       } else {
         throw new Error(response.message);
       }
