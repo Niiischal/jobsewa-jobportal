@@ -14,12 +14,7 @@ const Jobs = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [savedJobs, setSavedJobs] = useState([]);
-  const [appliedJob, setAppliedJob] = useState(() => {
-    // Retrieve saved jobs from local storage
-    const appliedJobs = localStorage.getItem("appliedJobs");
-    // initialize an empty arrary if the savedJob is not found
-    return appliedJobs ? JSON.parse(appliedJobs) : [];
-  });
+  const [appliedJobs, setAppliedJobs] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
 
   const JobDetailsTable = ({ selectedJob }) => {
@@ -158,14 +153,18 @@ const Jobs = () => {
     return savedJobs.includes(jobId) || (user && user.isJobSaved);
   };
   
+  
   const handleApplyJob = async (jobId) => {
     try {
       dispatch(SetLoader(true));
       const response = await ApplyJob(jobId);
       if (response.success) {
-        const updatedAppliedJobs = [...appliedJob, jobId];
-        setAppliedJob(updatedAppliedJobs); // Update the applied job state
-        localStorage.setItem("appliedJobs", JSON.stringify(updatedAppliedJobs)); // Update local storage
+        setJobs((prevJobs) =>
+          prevJobs.map((job) =>
+            job._id === jobId ? { ...job, isApplied: true } : job
+          )
+        );
+        setAppliedJobs((prevAppliedJobs) => [...prevAppliedJobs, jobId]);
         message.success(response.message);
         dispatch(SetLoader(false));
         //send notification to provider
@@ -186,8 +185,10 @@ const Jobs = () => {
     }
   };
 
-  // Function to check if a job is applied by the current user
-  const isJobAppliedByUser = (jobId) => appliedJob.includes(jobId);
+  const isJobApplied = (jobId) => {
+    return appliedJobs.includes(jobId) || (user && user.isJobApplied);
+  };
+  
 
   return (
     <div className="flex flex-col gap-10">
@@ -300,9 +301,9 @@ const Jobs = () => {
                       e.stopPropagation(); // Prevent event bubbling
                       handleApplyJob(selectedJob._id);
                     }}
-                    disabled={isJobAppliedByUser(selectedJob._id)}
+                    disabled={isJobApplied(selectedJob._id)}
                   >
-                    {isJobAppliedByUser(selectedJob._id)
+                    {isJobApplied(selectedJob._id)
                       ? "Applied"
                       : "Quick Apply"}
                   </Button>
@@ -385,9 +386,9 @@ const Jobs = () => {
                         e.stopPropagation(); // Prevent event bubbling
                         handleApplyJob(selectedJob._id);
                       }}
-                      disabled={isJobAppliedByUser(selectedJob._id)}
+                      disabled={isJobApplied(selectedJob._id)}
                     >
-                      {isJobAppliedByUser(selectedJob._id)
+                      {isJobApplied(selectedJob._id)
                         ? "Applied"
                         : "Quick Apply"}
                     </Button>

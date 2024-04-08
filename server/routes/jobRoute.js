@@ -183,6 +183,7 @@ router.post("/apply-job/:id", authMiddleware, async (req, res) => {
     user.appliedJobs.push(jobId);
     job.appliedCandidates.push(userId);
 
+    user.isJobApplied = true;
     await user.save();
     await job.save();
 

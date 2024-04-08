@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isJobApplied: {
+      type: Boolean,
+      default: false,
+    },
     savedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -66,6 +70,8 @@ userSchema.pre("save", function (next) {
     this.pdf = undefined;
     this.savedJobs = undefined;
     this.appliedJobs = undefined;
+    this.isJobSaved = undefined;
+    this.isJobApplied = undefined;
   }
   next();
 });
