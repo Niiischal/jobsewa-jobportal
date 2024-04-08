@@ -2,22 +2,23 @@ const router = require("express").Router();
 const Job = require("../models/jobModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 const User = require("../models/usersModel");
+const Notification = require("../models/notificationModel")
 
 // api to add new job
 router.post("/add-jobs", authMiddleware, async (req, res) => {
   try {
     const newJob = new Job(req.body);
     await newJob.save();
-    
+
     const user = await User.findById(req.body.userId);
     //send notifications to the admin
     const admins = await User.find({ role: "admin" });
     admins.forEach(async (admin) => {
       const newNotification = new Notification({
-        user: admin._id,
         title: "New Job Posted!",
         message: `${user.name} posted a new Job. Take a time to review it`,
         onClick: `/admin-home`,
+        user: admin._id,
         read: false,
       });
       await newNotification.save();

@@ -90,7 +90,6 @@ router.post("/register", async (req, res) => {
       subject: "Email Verification",
       html: `<p>Please click the following link to verify your email address: <a href="http://localhost:3000/verify/${verificationToken}">Verify Email</a></p>`,
     };
-
     await transporter.sendMail(mailOptions);
 
     const users = await User.findById(newUser._id);
@@ -98,11 +97,11 @@ router.post("/register", async (req, res) => {
     const admins = await User.find({ role: "admin" });
     admins.forEach(async (admin) => {
       const newNotification = new Notification({
-        user: admin._id,
         title: "New User Registered!",
         message: `${users.name} is newly registered into the system. Take a time to view the user details`,
         onClick: `/admin-home`,
         read: false,
+        user: admin._id,
       });
       await newNotification.save();
     });
