@@ -76,7 +76,7 @@ const Jobs = () => {
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetJobs({ filters, search: searchQuery });
+      const response = await GetJobs({ ...filters, search: searchQuery });
       dispatch(SetLoader(false));
       if (response.success) {
         const updatedJobs = response.data.map((job) => ({
