@@ -15,6 +15,7 @@ const Jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [savedJobs, setSavedJobs] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState([]);
+  const [remainingTime, setRemainingTime] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
 
   const JobDetailsTable = ({ selectedJob }) => {
@@ -128,6 +129,18 @@ const Jobs = () => {
     return formatDistanceToNow(new Date(dateString), { addSuffix: true });
   };
 
+  useEffect(() => {
+    if (selectedJob && selectedJob.duration && selectedJob.createdAt) {
+      const duration = parseInt(selectedJob.duration.split(" ")[0], 10);
+      const expirationDate = new Date(selectedJob.createdAt);
+      expirationDate.setDate(expirationDate.getDate() + duration);
+      const remaining = formatDistanceToNow(expirationDate, {
+        addSuffix: true,
+      });
+      setRemainingTime(remaining);
+    }
+  }, [selectedJob]);
+
   const { user } = useSelector((state) => state.users);
 
   const handleSaveJob = async (jobId) => {
@@ -152,8 +165,7 @@ const Jobs = () => {
   const isJobSaved = (jobId) => {
     return savedJobs.includes(jobId) || (user && user.isJobSaved);
   };
-  
-  
+
   const handleApplyJob = async (jobId) => {
     try {
       dispatch(SetLoader(true));
@@ -188,7 +200,17 @@ const Jobs = () => {
   const isJobApplied = (jobId) => {
     return appliedJobs.includes(jobId) || (user && user.isJobApplied);
   };
+
+  const isDeadlinePassed = () => {
+    if (!selectedJob || !selectedJob.createdAt || !selectedJob.duration) {
+      return false; 
+    }
+    const duration = parseInt(selectedJob.duration.split(" ")[0], 10);
+    const expirationDate = new Date(selectedJob.createdAt);
+    expirationDate.setDate(expirationDate.getDate() + duration);
   
+    return expirationDate < new Date();
+  };
 
   return (
     <div className="flex flex-col gap-10">
@@ -301,11 +323,9 @@ const Jobs = () => {
                       e.stopPropagation(); // Prevent event bubbling
                       handleApplyJob(selectedJob._id);
                     }}
-                    disabled={isJobApplied(selectedJob._id)}
+                    disabled={isJobApplied(selectedJob._id) || isDeadlinePassed() }
                   >
-                    {isJobApplied(selectedJob._id)
-                      ? "Applied"
-                      : "Quick Apply"}
+                    {isJobApplied(selectedJob._id) ? "Applied" : "Quick Apply"}
                   </Button>
                 </div>
               </div>
@@ -328,6 +348,13 @@ const Jobs = () => {
                   <h2>Numbers & Facts</h2>
                   <JobDetailsTable selectedJob={selectedJob} />
                 </div>
+                {remainingTime && (
+                  <div>
+                    <h3 className="text-red-500">
+                      Deadline: {remainingTime}
+                    </h3>
+                  </div>
+                )}
               </div>
             </div>
           </div>
