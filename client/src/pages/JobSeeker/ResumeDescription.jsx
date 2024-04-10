@@ -1,11 +1,12 @@
-import { Button, message } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, message } from "antd";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import React, { useEffect, useState } from "react";
 import { IoArrowBackOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { GetResume } from '../../apicalls/resumes';
-import ResumePDF from '../../components/ResumePDF';
-import { SetLoader } from '../../redux/loadersSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetResume } from "../../apicalls/resumes";
+import { SetLoader } from "../../redux/loadersSlice";
 
 function ResumeDescription() {
   const [resume, setResume] = useState(null);
@@ -34,47 +35,66 @@ function ResumeDescription() {
   }, []);
 
   const handleDownloadPDF = async () => {
-    if (resume) {
-      try {
-        const pdfBlob = new Blob([<ResumePDF resume={resume} />], { type: 'application/pdf' });
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        const a = document.createElement('a');
-        a.href = pdfUrl;
-        a.download = 'resume.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } catch (error) {
-        console.error('Error generating PDF:', error);
-      }
-    } else {
-      message.error('Resume data is not available yet. Please try again later.');
+    if (!resume) {
+      message.error(
+        "Resume data is not available yet. Please try again later."
+      );
+      return;
+    }
+
+    try {
+      const doc = new jsPDF();
+      // Using autoTable plugin to generate PDF from HTML
+      doc.autoTable({ html: "#resume-description" }); 
+      doc.save(`${user.name}.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
     }
   };
-  
+
 
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between mb-3">
-        <Button type='primary' onClick={() => navigate("/resume")}><IoArrowBackOutline size={18}/></Button>
-        <Button type='primary' onClick={handleDownloadPDF}>Download Resume</Button> 
+        <Button type="primary" onClick={() => navigate("/resume")}>
+          <IoArrowBackOutline size={18} />
+        </Button>
+        <Button type="primary" onClick={handleDownloadPDF}>
+          Download Resume
+        </Button>
       </div>
       {resume !== null ? (
-        <div>
+        <div id="resume-description">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
             <div>
-              <h2 className="text-xl font-semibold mb-2">Personal Information</h2>
-              <p><strong>Name:</strong> {resume.name}</p>
-              <p><strong>Email:</strong> {resume.email}</p>
-              <p><strong>Location:</strong> {resume.location}</p>
-              <p><strong>Contact Number:</strong> {resume.contact}</p>
-              <p><strong>About Me:</strong> {resume.about}</p>
+              <h2 className="text-xl font-semibold mb-2">
+                Personal Information
+              </h2>
+              <p>
+                <strong>Name:</strong> {resume.name}
+              </p>
+              <p>
+                <strong>Email:</strong> {resume.email}
+              </p>
+              <p>
+                <strong>Location:</strong> {resume.location}
+              </p>
+              <p>
+                <strong>Contact Number:</strong> {resume.contact}
+              </p>
+              <p>
+                <strong>About Me:</strong> {resume.about}
+              </p>
             </div>
             <div>
               <h2 className="text-xl font-semibold mb-2">Links</h2>
               <ul>
                 {resume.links.map((link, index) => (
-                  <li key={index}><a href={link} target="_blank" rel="noopener noreferrer">{link}</a></li>
+                  <li key={index}>
+                    <a href={link} target="_blank" rel="noopener noreferrer">
+                      {link}
+                    </a>
+                  </li>
                 ))}
               </ul>
               <h2 className="text-xl font-semibold mb-2">Technical Skills</h2>
@@ -88,10 +108,18 @@ function ResumeDescription() {
               <h2 className="text-xl font-semibold mb-2">Education</h2>
               {resume.education.map((edu, index) => (
                 <div key={index}>
-                  <p><strong>Degree:</strong> {edu.degree}</p>
-                  <p><strong>Institution:</strong> {edu.institution}</p>
-                  <p><strong>Start Year:</strong> {edu.startYear}</p>
-                  <p><strong>End Year:</strong> {edu.endYear}</p>
+                  <p>
+                    <strong>Degree:</strong> {edu.degree}
+                  </p>
+                  <p>
+                    <strong>Institution:</strong> {edu.institution}
+                  </p>
+                  <p>
+                    <strong>Start Year:</strong> {edu.startYear}
+                  </p>
+                  <p>
+                    <strong>End Year:</strong> {edu.endYear}
+                  </p>
                 </div>
               ))}
             </div>
@@ -99,11 +127,21 @@ function ResumeDescription() {
               <h2 className="text-xl font-semibold mb-2">Experience</h2>
               {resume.experience.map((exp, index) => (
                 <div key={index}>
-                  <p><strong>Title:</strong> {exp.title}</p>
-                  <p><strong>Company:</strong> {exp.company}</p>
-                  <p><strong>Start Date:</strong> {exp.startDate}</p>
-                  <p><strong>End Date:</strong> {exp.endDate}</p>
-                  <p><strong>Description:</strong> {exp.description}</p>
+                  <p>
+                    <strong>Title:</strong> {exp.title}
+                  </p>
+                  <p>
+                    <strong>Company:</strong> {exp.company}
+                  </p>
+                  <p>
+                    <strong>Start Date:</strong> {exp.startDate}
+                  </p>
+                  <p>
+                    <strong>End Date:</strong> {exp.endDate}
+                  </p>
+                  <p>
+                    <strong>Description:</strong> {exp.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -113,11 +151,28 @@ function ResumeDescription() {
               <h2 className="text-xl font-semibold mb-2">Projects</h2>
               {resume.projects.map((project, index) => (
                 <div key={index}>
-                  <p><strong>Title:</strong> {project.title}</p>
-                  <p><strong>Description:</strong> {project.description}</p>
-                  <p><strong>Start Date:</strong> {project.startDate}</p>
-                  <p><strong>End Date:</strong> {project.endDate}</p>
-                  <p><strong>Link:</strong> <a href={project.link} target="_blank" rel="noopener noreferrer">{project.link}</a></p>
+                  <p>
+                    <strong>Title:</strong> {project.title}
+                  </p>
+                  <p>
+                    <strong>Description:</strong> {project.description}
+                  </p>
+                  <p>
+                    <strong>Start Date:</strong> {project.startDate}
+                  </p>
+                  <p>
+                    <strong>End Date:</strong> {project.endDate}
+                  </p>
+                  <p>
+                    <strong>Link:</strong>{" "}
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {project.link}
+                    </a>
+                  </p>
                 </div>
               ))}
             </div>
@@ -125,10 +180,25 @@ function ResumeDescription() {
               <h2 className="text-xl font-semibold mb-2">Certificates</h2>
               {resume.certificates.map((certificate, index) => (
                 <div key={index}>
-                  <p><strong>Title:</strong> {certificate.title}</p>
-                  <p><strong>Organization:</strong> {certificate.organization}</p>
-                  <p><strong>Date:</strong> {certificate.date}</p>
-                  <p><strong>Link:</strong> <a href={certificate.link} target="_blank" rel="noopener noreferrer">{certificate.link}</a></p>
+                  <p>
+                    <strong>Title:</strong> {certificate.title}
+                  </p>
+                  <p>
+                    <strong>Organization:</strong> {certificate.organization}
+                  </p>
+                  <p>
+                    <strong>Date:</strong> {certificate.date}
+                  </p>
+                  <p>
+                    <strong>Link:</strong>{" "}
+                    <a
+                      href={certificate.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {certificate.link}
+                    </a>
+                  </p>
                 </div>
               ))}
             </div>

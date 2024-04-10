@@ -12,14 +12,14 @@ function ResumeForm() {
   const onFinish = async (values) => {
     try {
       dispatch(SetLoader(true));
-      // Convert links, technicalSkills, softSkills to arrays of strings
+      // Converting links, technicalSkills, softSkills to arrays of strings
       values.links = values.links.map((linkObj) => linkObj.link);
       values.technicalSkills = values.technicalSkills.map(
         (skillObj) => skillObj.skill
       );
       values.softSkills = values.softSkills.map((skillObj) => skillObj.skill);
 
-      // Convert education, experience, projects, certificates to arrays of objects
+      // Converting education, experience, projects, certificates to arrays of objects
       values.education = values.education.map((edu) => ({
         degree: edu.degree,
         institution: edu.institution,
