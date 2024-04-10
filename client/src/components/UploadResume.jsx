@@ -25,14 +25,11 @@ const UploadResume = () => {
 
       if (response.success) {
         message.success(response.message);
-                // Update user data in the Redux store
-        // Ensure user.files is initialized as an array
+        // Updating user data in the Redux store
         const updatedUser = {
           ...user,
           files: user.files ? [...user.files, response.result.secure_url] : [response.result.secure_url],
         };
-
-        // Update user data in the Redux store
         dispatch(SetUser(updatedUser));
       }
     } catch (error) {
