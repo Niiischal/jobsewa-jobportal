@@ -35,6 +35,14 @@ export const GetCurrentUser = async () => {
     return { success: false, message: error.message };
   }
 };
+export const GetUser = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/api/users/get-user/${id}`);
+    return response.data;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
 
 export const GetAllUser = async () => {
   try {

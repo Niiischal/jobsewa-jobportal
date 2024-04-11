@@ -215,6 +215,23 @@ router.get("/get-current-user", authMiddleware, async (req, res) => {
 });
 
 // get all user api
+router.get("/get-user/:id", authMiddleware, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findById(id)
+    res.send({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    res.send({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// get all user api
 router.get("/get-users", authMiddleware, async (req, res) => {
   try {
     const users = await User.find();
