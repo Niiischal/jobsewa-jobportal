@@ -1,6 +1,5 @@
 import { Button, message } from "antd";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
 import React, { useEffect, useState } from "react";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +33,7 @@ function ResumeDescription() {
     getData();
   }, []);
 
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDF = () => {
     if (!resume) {
       message.error(
         "Resume data is not available yet. Please try again later."
@@ -42,16 +41,95 @@ function ResumeDescription() {
       return;
     }
 
-    try {
-      const doc = new jsPDF();
-      // Using autoTable plugin to generate PDF from HTML
-      doc.autoTable({ html: "#resume-description" }); 
-      doc.save(`${user.name}.pdf`);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
+    const doc = new jsPDF();
+    let y = 10; // Starting Y position
 
+    // Helper function for adding add new page if needed
+    const addNewPageIfNeeded = () => {
+      if (y > 280) {
+        doc.addPage();
+        y = 10; 
+      }
+    };
+
+    doc.setFontSize(18);
+    doc.setFont(undefined, "bold");
+    y += 10;
+
+    const addSectionHeader = (header) => {
+      addNewPageIfNeeded();
+      doc.setFontSize(12);
+      doc.setFont(undefined, "bold");
+      doc.text(header, 14, y);
+      y += 5;
+    };
+
+    const addSectionContent = (contentArray) => {
+      doc.setFontSize(10);
+      doc.setFont(undefined, "normal");
+      contentArray.forEach((content) => {
+        doc.text(content, 14, y);
+        y += 5;
+      });
+      y += 20; 
+    };
+
+    addSectionHeader("Personal Information");
+    addSectionContent([
+      `Name: ${resume.name}`,
+      `Email: ${resume.email}`,
+      `Location: ${resume.location}`,
+      `Contact Number: ${resume.contact}`,
+      `About Me: ${resume.about}`,
+    ]);
+
+    addSectionHeader("Education");
+    resume.education.forEach((edu) => {
+      addSectionContent([
+        `Degree: ${edu.degree}`,
+        `Institution: ${edu.institution}`,
+        `Start Year - End Year: ${edu.startYear} - ${edu.endYear}`,
+      ]);
+    });
+
+    addSectionHeader("Experience");
+    resume.experience.forEach((exp) => {
+      addSectionContent([
+        `Title: ${exp.title}`,
+        `Company: ${exp.company}`,
+        `Start Date - End Date: ${exp.startDate} - ${exp.endDate}`,
+        `Description: ${exp.description}`,
+      ]);
+    });
+
+    addSectionHeader("Projects");
+    resume.projects.forEach((project) => {
+      addSectionContent([
+        `Title: ${project.title}`,
+        `Description: ${project.description}`,
+        `Start Date - End Date: ${project.startDate} - ${project.endDate}`,
+        `Link: ${project.link}`,
+      ]);
+    });
+
+    addSectionHeader("Certificates");
+    resume.certificates.forEach((certificate) => {
+      addSectionContent([
+        `Title: ${certificate.title}`,
+        `Organization: ${certificate.organization}`,
+        `Date: ${certificate.date}`,
+        `Link: ${certificate.link}`,
+      ]);
+    });
+
+    addSectionHeader("Technical Skills");
+    addSectionContent([resume.technicalSkills]);
+
+    addSectionHeader("Soft Skills");
+    addSectionContent([resume.softSkills]);
+
+    doc.save(`${user.name}.pdf`);
+  };
 
   return (
     <div className="container mx-auto py-8">
@@ -64,7 +142,7 @@ function ResumeDescription() {
         </Button>
       </div>
       {resume !== null ? (
-        <div id="resume-description">
+        <div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
             <div>
               <h2 className="text-xl font-semibold mb-2">
