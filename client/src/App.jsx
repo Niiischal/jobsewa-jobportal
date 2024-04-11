@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Home from "./pages/Home";
 import ProtectedJPHome from "./pages/JobProvider/Home";
 import ProtectedJSHome from "./pages/JobSeeker/Home";
+import InitialPDF from "./pages/JobSeeker/InitialPDF";
 import MyJobs from "./pages/JobSeeker/MyJobs";
 import Resume from "./pages/JobSeeker/Resume";
 import ResumeDescription from "./pages/JobSeeker/ResumeDescription";
@@ -92,6 +93,14 @@ function App() {
             element={
               <ProtectedPage>
                 <Chat/>
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/initial-pdf"
+            element={
+              <ProtectedPage>
+                <InitialPDF />
               </ProtectedPage>
             }
           />

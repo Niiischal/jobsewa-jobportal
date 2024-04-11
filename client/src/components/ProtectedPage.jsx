@@ -35,7 +35,11 @@ function ProtectedPage({ children }) {
           // Redirect to the job provider dashboard
           navigate("/jobprovider-home");
         } else if (response.data.role === "jobSeeker") {
-          navigate("/jobseeker-home");
+          if (response.data.pdf) {
+            navigate("/jobseeker-home");
+          } else {
+            navigate("/initial-pdf");
+          }
         } else if (response.data.role === "admin") {
           navigate("/admin-home");
         }
@@ -122,7 +126,7 @@ function ProtectedPage({ children }) {
           </Menu.Item>
           <Menu.Item
             key="5"
-            icon={<CiChat1 size={18}/>}
+            icon={<CiChat1 size={18} />}
             onClick={() => navigate("/chat")}
           >
             Messages
@@ -147,7 +151,7 @@ function ProtectedPage({ children }) {
           </Menu.Item>
           <Menu.Item
             key="3"
-            icon={<CiChat1 size={18}/>}
+            icon={<CiChat1 size={18} />}
             onClick={() => navigate("/chat")}
           >
             Messages
