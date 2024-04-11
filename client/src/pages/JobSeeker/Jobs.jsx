@@ -147,12 +147,18 @@ const Jobs = () => {
     try {
       const response = await SaveJobById(jobId);
       if (response.success) {
-        setJobs((prevJobs) =>
-          prevJobs.map((job) =>
-            job._id === jobId ? { ...job, isSaved: true } : job
-          )
+        // Update jobs state
+        const updatedJobs = jobs.map((job) =>
+          job._id === jobId ? { ...job, isSaved: true } : job
         );
+        setJobs(updatedJobs);
+
+        if (selectedJob && selectedJob._id === jobId) {
+          setSelectedJob({ ...selectedJob, isSaved: true });
+        }
+
         setSavedJobs((prevSavedJobs) => [...prevSavedJobs, jobId]);
+
         message.success(response.message);
       } else {
         message.error(response.message);
@@ -203,12 +209,12 @@ const Jobs = () => {
 
   const isDeadlinePassed = () => {
     if (!selectedJob || !selectedJob.createdAt || !selectedJob.duration) {
-      return false; 
+      return false;
     }
     const duration = parseInt(selectedJob.duration.split(" ")[0], 10);
     const expirationDate = new Date(selectedJob.createdAt);
     expirationDate.setDate(expirationDate.getDate() + duration);
-  
+
     return expirationDate < new Date();
   };
 
@@ -323,7 +329,9 @@ const Jobs = () => {
                       e.stopPropagation(); // Prevent event bubbling
                       handleApplyJob(selectedJob._id);
                     }}
-                    disabled={isJobApplied(selectedJob._id) || isDeadlinePassed() }
+                    disabled={
+                      isJobApplied(selectedJob._id) || isDeadlinePassed()
+                    }
                   >
                     {isJobApplied(selectedJob._id) ? "Applied" : "Quick Apply"}
                   </Button>
@@ -350,9 +358,7 @@ const Jobs = () => {
                 </div>
                 {remainingTime && (
                   <div>
-                    <h3 className="text-red-500">
-                      Deadline: {remainingTime}
-                    </h3>
+                    <h3 className="text-red-500">Deadline: {remainingTime}</h3>
                   </div>
                 )}
               </div>
