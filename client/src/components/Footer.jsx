@@ -3,7 +3,7 @@ import { LiaCopyright } from "react-icons/lia";
 
 function Footer() {
   return (
-    <div className="flex justify-center items-center h-[50px] bg-primary w-full gap-3">
+    <div className="flex justify-center items-center h-[50px] bg-primary w-full gap-2">
       <p className="text-white">Nischal Khatiwada</p>
       <div className="flex items-center">
         <LiaCopyright size={25} color="white" />
