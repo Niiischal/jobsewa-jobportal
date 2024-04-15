@@ -59,7 +59,7 @@ const UploadResume = () => {
       <Button
         disabled={!file}
         onClick={() => {
-          console.log("handleUpload function called");
+          console.log("handle Upload function called");
           handleUpload();
         }}
         style={{
