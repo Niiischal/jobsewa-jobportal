@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import OTPVerification from "./pages/OTP";
 import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
+import Footer from "./components/Footer";
 
 function App() {
   const { loading } = useSelector((state) => state.loaders);
@@ -24,88 +25,91 @@ function App() {
   return (
     <div>
       {loading && <Loader />}
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/verify/:token" element={<EmailVerification/>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Signup />} />
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
-          <Route path="/verifyOTP" element={<OTPVerification />} />
-          <Route
-            path="/jobseeker-home"
-            element={
-              <ProtectedPage>
-                <ProtectedJSHome />
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/jobprovider-home"
-            element={
-              <ProtectedPage>
-                <ProtectedJPHome />
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/admin-home"
-            element={
-              <ProtectedPage>
-                <ProtectedAHome />
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedPage>
-                <Profile />
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/my-jobs"
-            element={
-              <ProtectedPage>
-                <MyJobs />
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/resume"
-            element={
-              <ProtectedPage>
-                <Resume/>
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/resume-description"
-            element={
-              <ProtectedPage>
-                <ResumeDescription/>
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <ProtectedPage>
-                <Chat/>
-              </ProtectedPage>
-            }
-          />
-          <Route
-            path="/initial-pdf"
-            element={
-              <ProtectedPage>
-                <InitialPDF />
-              </ProtectedPage>
-            }
-          />
-        </Routes>
-      </Router>
+      <section>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/verify/:token" element={<EmailVerification />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Signup />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route path="/verifyOTP" element={<OTPVerification />} />
+            <Route
+              path="/jobseeker-home"
+              element={
+                <ProtectedPage>
+                  <ProtectedJSHome />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/jobprovider-home"
+              element={
+                <ProtectedPage>
+                  <ProtectedJPHome />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/admin-home"
+              element={
+                <ProtectedPage>
+                  <ProtectedAHome />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedPage>
+                  <Profile />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/my-jobs"
+              element={
+                <ProtectedPage>
+                  <MyJobs />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/resume"
+              element={
+                <ProtectedPage>
+                  <Resume />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/resume-description"
+              element={
+                <ProtectedPage>
+                  <ResumeDescription />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <ProtectedPage>
+                  <Chat />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path="/initial-pdf"
+              element={
+                <ProtectedPage>
+                  <InitialPDF />
+                </ProtectedPage>
+              }
+            />
+          </Routes>
+        </Router>
+      </section>
+      <Footer />
     </div>
   );
 }
