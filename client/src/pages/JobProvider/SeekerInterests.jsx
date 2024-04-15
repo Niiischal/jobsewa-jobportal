@@ -1,9 +1,10 @@
 import { Button, Card, Pagination, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CreateChat } from "../../apicalls/chats";
 import { GetAllInterests } from "../../apicalls/interests";
+import { AddNotification } from "../../apicalls/notifications";
 import { SetLoader } from "../../redux/loadersSlice";
 
 function SeekerInterests() {
@@ -12,7 +13,6 @@ function SeekerInterests() {
   const [interestsPerPage] = useState(4); // Number of interests per page
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { id } = useParams();
   const { user } = useSelector((state) => state.users);
 
   const getData = async () => {
@@ -54,6 +54,14 @@ function SeekerInterests() {
         receiverId: receiverId,
       });
       dispatch(SetLoader(false));
+      //send notification to job seeker
+      await AddNotification({
+        title: "New Conversation Alert!",
+        message: ` ${user.name} started a conversation with you.`,
+        user: receiverId,
+        onClick: `/chat`,
+        read: false,
+      })
       if (response.success) {
         navigate("/chat");
       }
@@ -87,7 +95,7 @@ function SeekerInterests() {
               <Button
                 type="primary"
                 className="w-full mt-2"
-                onClick={()=>handleMessageRequest(interest.jobSeeker)}
+                onClick={() => handleMessageRequest(interest.jobSeeker)}
               >
                 Start a Conversation
               </Button>
