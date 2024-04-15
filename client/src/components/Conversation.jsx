@@ -24,8 +24,8 @@ function Conversation({ data, currentUser, online }) {
     return (
         <div className='flex flex-col items-center'>
             <div className="flex items-center rounded p-2 hover:bg-gray-300 cursor-pointer w-full">
-                <div className="relative mr-2">
-                    <div className="bg-gray-300 w-12 h-12 rounded-full flex items-center justify-center">
+                <div className="relative mr-2 ">
+                    <div className="bg-gray-300 w-12 h-12 rounded-full flex flex-col items-center justify-center">
                         <CgProfile size={50} />
                         {online && <div className="bg-green-500 w-4 h-4 rounded-full absolute top-0 right-0 border border-white"></div>}
                     </div>

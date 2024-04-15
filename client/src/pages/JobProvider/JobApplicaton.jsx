@@ -1,8 +1,8 @@
-import { Card, Pagination, message } from "antd";
+import { Button, Card, Pagination, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { IoSearch } from "react-icons/io5";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { CreateChat } from "../../apicalls/chats";
 import { Applicants } from "../../apicalls/jobs";
 import { SetLoader } from "../../redux/loadersSlice";
 
@@ -14,6 +14,8 @@ function JobApplication() {
   const [searchQuery, setSearchQuery] = useState(""); 
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { user } = useSelector((state) => state.users);
+  const navigate = useNavigate();
 
 
   const getData = async () => {
@@ -60,6 +62,23 @@ function JobApplication() {
     setSearchQuery(e.target.value);
   };
 
+  const handleMessageRequest = async (receiverId) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await CreateChat({
+        senderId: user._id,
+        receiverId: receiverId,
+      });
+      dispatch(SetLoader(false));
+      if (response.success) {
+        navigate("/chat");
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
   return (
     <div>
       <div>
@@ -91,6 +110,13 @@ function JobApplication() {
                 <p key={jobId}>{jobId}</p>
               ))}
             </div>
+            <Button
+                type="primary"
+                className="w-full mt-2"
+                onClick={()=>handleMessageRequest(user._id)}
+              >
+                Start a Conversation
+              </Button>
           </Card>
         ))}
       </div>

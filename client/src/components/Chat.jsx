@@ -71,9 +71,9 @@ function Chat() {
       <div className="w-1/4">
         <div className="flex flex-col gap-4 p-4 bg-gray-100 rounded items-center">
           <h2 className="text-lg font-semibold">Chats</h2>
-          <div className="flex felx-col gap-4">
+          <div className="flex flex-col gap-4">
             {chats.map((chat) => (
-              <div onClick={() => setCurrentChat(chat)}>
+              <div onClick={() => setCurrentChat(chat)} >
                 <Conversation data={chat} currentUser={user._id} online={checkOnlineStatus(chat)}/>
               </div>
             ))}

@@ -1,6 +1,8 @@
 import { Button, Card, Pagination, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { CreateChat } from "../../apicalls/chats";
 import { GetAllInterests } from "../../apicalls/interests";
 import { SetLoader } from "../../redux/loadersSlice";
 
@@ -9,6 +11,9 @@ function SeekerInterests() {
   const [currentPage, setCurrentPage] = useState(1);
   const [interestsPerPage] = useState(4); // Number of interests per page
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { user } = useSelector((state) => state.users);
 
   const getData = async () => {
     try {
@@ -41,11 +46,31 @@ function SeekerInterests() {
     getData();
   }, []);
 
+  const handleMessageRequest = async (receiverId) => {
+    try {
+      dispatch(SetLoader(true));
+      const response = await CreateChat({
+        senderId: user._id,
+        receiverId: receiverId,
+      });
+      dispatch(SetLoader(false));
+      if (response.success) {
+        navigate("/chat");
+      }
+    } catch (error) {
+      dispatch(SetLoader(false));
+      message.error(error.message);
+    }
+  };
+
   return (
     <div className="container mx-auto px-4">
       <div className="flex flex-wrap justify-center md:justify-evenly mt-4">
         {currentInterests.map((interest) => (
-          <div key={interest._id} className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2">
+          <div
+            key={interest._id}
+            className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+          >
             <Card
               className="bg-white cursor-pointer shadow-lg hover:shadow-xl transition duration-300"
               title={interest.title}
@@ -59,7 +84,13 @@ function SeekerInterests() {
                 <Tag color="lime">{interest.experience}</Tag>
               </div>
               <p>Skills: {interest.skills}</p>
-              <Button type="primary" className="w-full mt-2">MESSAGE</Button>
+              <Button
+                type="primary"
+                className="w-full mt-2"
+                onClick={()=>handleMessageRequest(interest.jobSeeker)}
+              >
+                Start a Conversation
+              </Button>
             </Card>
           </div>
         ))}
