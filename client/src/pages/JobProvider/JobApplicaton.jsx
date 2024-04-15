@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { CreateChat } from "../../apicalls/chats";
 import { Applicants } from "../../apicalls/jobs";
+import { AddNotification } from "../../apicalls/notifications";
 import { SetLoader } from "../../redux/loadersSlice";
 
 function JobApplication() {
@@ -70,6 +71,13 @@ function JobApplication() {
         receiverId: receiverId,
       });
       dispatch(SetLoader(false));
+      await AddNotification({
+        title: "New Conversation Alert!",
+        message: ` ${user.name} started a conversation with you.`,
+        user: receiverId,
+        onClick: `/chat`,
+        read: false,
+      })
       if (response.success) {
         navigate("/chat");
       }
