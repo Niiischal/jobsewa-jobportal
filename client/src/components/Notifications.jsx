@@ -39,12 +39,12 @@ function Notifications({
       onCancel={() => setShowNotifications(false)}
       footer={null}
       centered
-      width={900}
+      width={500}
     >
       <div className="flex flex-col my-4 gap-2">
         {notifications.map((notification) => (
           <div
-            className="p-4 rounded-md border border-gray-200 flex flex-col gap-1 cursor-pointer"
+            className="p-4 rounded-md border border-gray-200 flex flex-col gap- cursor-pointer"
             key={notification._id}
           >
             <div className="flex justify-between items-center">
@@ -62,21 +62,19 @@ function Notifications({
                   {moment(notification.createdAt).fromNow()}
                 </h1>
               </div>
-              <div>
-                <RiDeleteBin6Line
-                  onClick={() => {
-                    deleteNotification(notification._id);
-                  }}
-                  size={18}
-                />
-              </div>
+              <RiDeleteBin6Line
+                onClick={() => {
+                  deleteNotification(notification._id);
+                }}
+                size={18}
+              />
             </div>
-            <Divider/>
+            <Divider />
           </div>
         ))}
       </div>
     </Modal>
   );
-};
+}
 
 export default Notifications;

@@ -233,7 +233,7 @@ function ProtectedPage({ children }) {
         {
           <Notifications
             notifications={notifications}
-            reloadNotifications={setNotifications}
+            reloadNotifications={getNotifications}
             showNotification={showNotification}
             setShowNotifications={setShowNotifications}
           />
