@@ -93,6 +93,7 @@ const Profile = () => {
 
         form.setFieldsValue({
           password: "",
+          confirmPassword: "",
         });
       } else {
         throw new Error("User ID is undefined or null.");
