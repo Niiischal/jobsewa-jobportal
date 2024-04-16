@@ -11,7 +11,7 @@ import { SetUser } from "../../redux/usersSlice";
 function InitialPDF() {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.users);
 
   const handleUpload = async () => {
@@ -35,7 +35,7 @@ function InitialPDF() {
             : [response.result.secure_url],
         };
         dispatch(SetUser(updatedUser));
-        navigate("/jobseeker-home")
+        navigate("/jobseeker-home");
       }
     } catch (error) {
       dispatch(SetLoader(false));
@@ -52,9 +52,14 @@ function InitialPDF() {
         </div>
         <Upload
           listType="picture"
-          beforeUpload={() => false}
-          onChange={(info) => {
-            setFile(info.file);
+          beforeUpload={(file) => {
+            const isValidFileType = file.type === "application/pdf";
+            if (!isValidFileType) {
+              message.error("Invalid file type. Please upload a PDF file.");
+              return false;
+            }
+            setFile(file);
+            return false;
           }}
         >
           <Button type="primary" icon={<UploadOutlined />}>
