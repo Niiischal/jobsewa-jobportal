@@ -149,7 +149,7 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("User not found. Please register into the system first!");
     }
 
     if (!user.isEmailVerified) {
