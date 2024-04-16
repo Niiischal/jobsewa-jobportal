@@ -4,7 +4,12 @@ import React, { useEffect, useState } from "react";
 import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { ApplyJob, GetJobs, SaveJobById } from "../../apicalls/jobs";
+import {
+  ApplyJob,
+  GetJobs,
+  GetAppliedJobById,
+  SaveJobById,
+} from "../../apicalls/jobs";
 import { AddNotification } from "../../apicalls/notifications";
 import { SetLoader } from "../../redux/loadersSlice";
 import Filters from "../Filters";
@@ -82,7 +87,8 @@ const Jobs = () => {
       if (response.success) {
         const updatedJobs = response.data.map((job) => ({
           ...job,
-          isSaved: user && user.savedJobs.includes(job._id),
+          isSaved: savedJobs.includes(job._id),
+          isApplied: appliedJobs.includes(job._id),
         }));
         setJobs(updatedJobs);
       }
@@ -114,7 +120,7 @@ const Jobs = () => {
 
   useEffect(() => {
     getData();
-  }, [filters, searchQuery]);
+  }, [filters, searchQuery, savedJobs, appliedJobs]);
 
   const handleJobClick = (job) => {
     if (windowWidth > 768) {
@@ -147,18 +153,7 @@ const Jobs = () => {
     try {
       const response = await SaveJobById(jobId);
       if (response.success) {
-        // Update jobs state
-        const updatedJobs = jobs.map((job) =>
-          job._id === jobId ? { ...job, isSaved: true } : job
-        );
-        setJobs(updatedJobs);
-
-        if (selectedJob && selectedJob._id === jobId) {
-          setSelectedJob({ ...selectedJob, isSaved: true });
-        }
-
         setSavedJobs((prevSavedJobs) => [...prevSavedJobs, jobId]);
-
         message.success(response.message);
       } else {
         message.error(response.message);
@@ -168,20 +163,30 @@ const Jobs = () => {
     }
   };
 
-  const isJobSaved = (jobId) => {
-    return savedJobs.includes(jobId) || (user && user.isJobSaved);
-  };
+  // const isJobSaved = (jobId) => {
+  //   return savedJobs.includes(jobId) || (user && user.isJobSaved);
+  // };
+
+  useEffect(() => {
+    const fetchAppliedJobs = async () => {
+      try {
+        const response = await GetAppliedJobById();
+        if (response.success) {
+          setAppliedJobs(response.data.appliedJobs);
+        }
+      } catch (error) {
+        message.error("Failed to retrived applied jobs");
+      }
+    };
+
+    fetchAppliedJobs();
+  }, []);
 
   const handleApplyJob = async (jobId) => {
     try {
       dispatch(SetLoader(true));
       const response = await ApplyJob(jobId);
       if (response.success) {
-        setJobs((prevJobs) =>
-          prevJobs.map((job) =>
-            job._id === jobId ? { ...job, isApplied: true } : job
-          )
-        );
         setAppliedJobs((prevAppliedJobs) => [...prevAppliedJobs, jobId]);
         message.success(response.message);
         dispatch(SetLoader(false));
@@ -204,7 +209,7 @@ const Jobs = () => {
   };
 
   const isJobApplied = (jobId) => {
-    return appliedJobs.includes(jobId) || (user && user.isJobApplied);
+    return appliedJobs.includes(jobId);
   };
 
   const isDeadlinePassed = () => {
@@ -307,20 +312,24 @@ const Jobs = () => {
                   </div>
                 </div>
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
-                  {selectedJob.isSaved ? (
-                    <IoIosHeart
-                      size={24}
-                      className="text-red-500 cursor-not-allowed"
-                    />
-                  ) : (
-                    <IoIosHeartEmpty
-                      size={24}
-                      className="text-red-500 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent event bubbling
-                        handleSaveJob(selectedJob._id);
-                      }}
-                    />
+                  {selectedJob && (
+                    <div>
+                      {user && user.savedJobs.includes(selectedJob._id) ? (
+                        <IoIosHeart
+                          size={24}
+                          className="text-red-500 cursor-not-allowed"
+                        />
+                      ) : (
+                        <IoIosHeartEmpty
+                          size={24}
+                          className="text-red-500 cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent event bubbling
+                            handleSaveJob(selectedJob._id);
+                          }}
+                        />
+                      )}
+                    </div>
                   )}
                   <Button
                     type="primary"
@@ -397,34 +406,38 @@ const Jobs = () => {
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col pt-[15px] items-end">
-                    {isJobSaved(selectedJob._id) ? (
-                      <IoIosHeart
-                        size={24}
-                        className="text-red-500 cursor-not-allowed"
-                      />
-                    ) : (
-                      <IoIosHeartEmpty
-                        size={24}
-                        className="text-red-500 cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent event bubbling
-                          handleSaveJob(selectedJob._id);
-                        }}
-                      />
+                    {selectedJob && (
+                      <div>
+                        {user && user.savedJobs.includes(selectedJob._id) ? (
+                          <IoIosHeart
+                            size={24}
+                            className="text-red-500 cursor-not-allowed"
+                          />
+                        ) : (
+                          <IoIosHeartEmpty
+                            size={24}
+                            className="text-red-500 cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent event bubbling
+                              handleSaveJob(selectedJob._id);
+                            }}
+                          />
+                        )}
+                      </div>
                     )}
-                    <Button
-                      type="primary"
-                      className="w-full mt-[4.8rem]"
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent event bubbling
-                        handleApplyJob(selectedJob._id);
-                      }}
-                      disabled={isJobApplied(selectedJob._id)}
-                    >
-                      {isJobApplied(selectedJob._id)
-                        ? "Applied"
-                        : "Quick Apply"}
-                    </Button>
+                  <Button
+                    type="primary"
+                    className="w-full mt-[4.8rem]"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent event bubbling
+                      handleApplyJob(selectedJob._id);
+                    }}
+                    disabled={
+                      isJobApplied(selectedJob._id) || isDeadlinePassed()
+                    }
+                  >
+                    {isJobApplied(selectedJob._id) ? "Applied" : "Quick Apply"}
+                  </Button>
                   </div>
                 </div>
               </div>
