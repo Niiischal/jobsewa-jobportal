@@ -28,7 +28,9 @@ const UploadResume = () => {
         // Updating user data in the Redux store
         const updatedUser = {
           ...user,
-          files: user.files ? [...user.files, response.result.secure_url] : [response.result.secure_url],
+          files: user.files
+            ? [...user.files, response.result.secure_url]
+            : [response.result.secure_url],
         };
         dispatch(SetUser(updatedUser));
       }
@@ -47,9 +49,14 @@ const UploadResume = () => {
       </div>
       <Upload
         listType="picture"
-        beforeUpload={() => false}
-        onChange={(info) => {
-          setFile(info.file);
+        beforeUpload={(file) => {
+          const isValidFileType = file.type === "application/pdf";
+          if (!isValidFileType) {
+            message.error("Invalid file type. Please upload a PDF file.");
+            return false;
+          }
+          setFile(file);
+          return false;
         }}
       >
         <Button type="primary" icon={<UploadOutlined />}>
