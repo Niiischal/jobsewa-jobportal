@@ -35,10 +35,10 @@ function ProtectedPage({ children }) {
           // Redirect to the job provider dashboard
           navigate("/jobprovider-home");
         } else if (response.data.role === "jobSeeker") {
-          if (response.data.pdf) {
-            navigate("/jobseeker-home");
-          } else {
+          if (response.data.pdf.length === 0) {
             navigate("/initial-pdf");
+          } else {
+            navigate("/jobseeker-home");
           }
         } else if (response.data.role === "admin") {
           navigate("/admin-home");
