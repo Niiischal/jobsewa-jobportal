@@ -390,7 +390,7 @@ router.post(
 
       res.send({
         success: true,
-        message: "File upload successful",
+        message: "Resume upload successful",
         result,
       });
     } catch (error) {
