@@ -7,7 +7,7 @@ const nodemailer = require("nodemailer");
 const cloudinary = require("../config/cloudinaryConfig");
 const multer = require("multer");
 const crypto = require("crypto");
-const Notification =require("../models/notificationModel")
+const Notification = require("../models/notificationModel");
 
 const createAdminUser = async () => {
   try {
@@ -138,9 +138,15 @@ router.get("/verify/:token", async (req, res) => {
 
     await user.save();
 
-    res.send("Email verified successfully. You can now log in.");
+    res.send({
+      success: true,
+      message: "Email verified successfully. You can now log in.",
+    });
   } catch (error) {
-    res.status(400).send("Error verifying email: " + error.message);
+    res.send({
+      success: false,
+      message: error.message,
+    });
   }
 });
 
@@ -156,7 +162,7 @@ router.post("/login", async (req, res) => {
       throw new Error("Email not verified");
     }
 
-    // Blocking the user from login 
+    // Blocking the user from login
     if (user.status !== "active") {
       throw new Error(" The account have been blocked, contact the admin");
     }
@@ -218,7 +224,7 @@ router.get("/get-current-user", authMiddleware, async (req, res) => {
 router.get("/get-user/:id", authMiddleware, async (req, res) => {
   try {
     const id = req.params.id;
-    const user = await User.findById(id)
+    const user = await User.findById(id);
     res.send({
       success: true,
       data: user,
@@ -462,6 +468,5 @@ router.put("/change-password/:id", authMiddleware, async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;
