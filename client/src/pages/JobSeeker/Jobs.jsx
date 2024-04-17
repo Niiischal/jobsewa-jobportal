@@ -6,8 +6,8 @@ import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ApplyJob,
-  GetJobs,
   GetAppliedJobById,
+  GetJobs,
   SaveJobById,
 } from "../../apicalls/jobs";
 import { AddNotification } from "../../apicalls/notifications";
@@ -163,10 +163,6 @@ const Jobs = () => {
     }
   };
 
-  // const isJobSaved = (jobId) => {
-  //   return savedJobs.includes(jobId) || (user && user.isJobSaved);
-  // };
-
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
@@ -206,10 +202,6 @@ const Jobs = () => {
       dispatch(SetLoader(false));
       message.error(error.message);
     }
-  };
-
-  const isJobApplied = (jobId) => {
-    return appliedJobs.includes(jobId);
   };
 
   const isDeadlinePassed = () => {
@@ -339,10 +331,13 @@ const Jobs = () => {
                       handleApplyJob(selectedJob._id);
                     }}
                     disabled={
-                      isJobApplied(selectedJob._id) || isDeadlinePassed()
+                      (user && user.appliedJobs.includes(selectedJob._id)) ||
+                      isDeadlinePassed()
                     }
                   >
-                    {isJobApplied(selectedJob._id) ? "Applied" : "Quick Apply"}
+                    {user && user.appliedJobs.includes(selectedJob._id)
+                      ? "Applied"
+                      : "Quick Apply"}
                   </Button>
                 </div>
               </div>
@@ -425,19 +420,22 @@ const Jobs = () => {
                         )}
                       </div>
                     )}
-                  <Button
-                    type="primary"
-                    className="w-full mt-[4.8rem]"
-                    onClick={(e) => {
-                      e.stopPropagation(); // Prevent event bubbling
-                      handleApplyJob(selectedJob._id);
-                    }}
-                    disabled={
-                      isJobApplied(selectedJob._id) || isDeadlinePassed()
-                    }
-                  >
-                    {isJobApplied(selectedJob._id) ? "Applied" : "Quick Apply"}
-                  </Button>
+                    <Button
+                      type="primary"
+                      className="w-full mt-[4.8rem]"
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent event bubbling
+                        handleApplyJob(selectedJob._id);
+                      }}
+                      disabled={
+                        (user && user.appliedJobs.includes(selectedJob._id)) ||
+                        isDeadlinePassed()
+                      }
+                    >
+                      {user && user.appliedJobs.includes(selectedJob._id)
+                        ? "Applied"
+                        : "Quick Apply"}
+                    </Button>
                   </div>
                 </div>
               </div>
