@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { VerifyEmail } from '../apicalls/users';
 
 const EmailVerification = () => {
-  const { token } = useParams(); // Extract token from URL
+  const { token } = useParams(); 
  
   useEffect(() => {
     const verifyEmail = async () => {
