@@ -1,4 +1,13 @@
-import { Button, Card, message, Modal, Pagination, Popconfirm, Table, Tag } from "antd";
+import {
+  Button,
+  Card,
+  message,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Table,
+  Tag,
+} from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -149,25 +158,29 @@ function Jobs() {
       <div className="flex flex-wrap justify-between mt-[10px]">
         {currentJobs.map((job) => (
           <Card
-            className="w-full md:w-[48%] lg:w-[30%] bg-[#fafafa] cursor-pointer shadow-lg hover:shadow-xl transition duration-300 m-[5px]"
+            className="w-full md:w-[48%] lg:w-[30%] bg-[#fafafa] shadow-lg hover:shadow-xl transition duration-300 m-[5px]"
             key={job._id}
             title={job.category}
-            onClick={() => {
-              setSelectedJob(job);
-              setShowJobModal(true);
-            }}
           >
-            <p>
-              Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}
-            </p>
-            <p>No of Openings: {job.openings}</p>
-            <p>Duration: {job.duration}</p>
-            <p>Job Level: {job.level}</p>
-            <p>Education required: {job.education}</p>
-            <p>Experience required: {job.experience}</p>
-            <p>
-              Status: <StatusTag status={job.status} />
-            </p>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                setSelectedJob(job);
+                setShowJobModal(true);
+              }}
+            >
+              <p>
+                Added On: {moment(job.createdAt).format("DD-MM-YYYY hh:mm A")}
+              </p>
+              <p>No of Openings: {job.openings}</p>
+              <p>Duration: {job.duration}</p>
+              <p>Job Level: {job.level}</p>
+              <p>Education required: {job.education}</p>
+              <p>Experience required: {job.experience}</p>
+              <p>
+                Status: <StatusTag status={job.status} />
+              </p>
+            </div>
             <div className="flex justify-between">
               <Popconfirm
                 title="Are you sure to delete this job?"
@@ -182,6 +195,7 @@ function Jobs() {
                 onClick={() => {
                   setSelectedJob(job);
                   setShowJobForm(true);
+                  setShowJobModal(false);
                 }}
               >
                 Edit

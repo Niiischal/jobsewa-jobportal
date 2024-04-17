@@ -64,7 +64,7 @@ router.post("/get-jobs", async (req, res) => {
       filters.level = { $in: level };
     }
 
-    // filter by job level
+    // filter by job type
     if (type.length > 0) {
       filters.type = { $in: type };
     }
