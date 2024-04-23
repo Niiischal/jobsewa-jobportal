@@ -279,6 +279,16 @@ const Jobs = () => {
           </div>
         </div>
 
+        {windowWidth > 768 && !selectedJob && (
+          <div className="w-[69%] overflow-y-scroll">
+            <div className="p-6">
+              <h3 className="text-gray-600 text-center mt-40">
+                Select a job to view its details
+              </h3>
+            </div>
+          </div>
+        )}
+
         {windowWidth > 768 && selectedJob && (
           <div
             className="w-[69%] overflow-y-scroll"

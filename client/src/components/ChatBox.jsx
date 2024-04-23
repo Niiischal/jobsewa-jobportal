@@ -21,7 +21,6 @@ function ChatBox({ chat, currentUser, setSendMessage, receiveMessage }) {
       try {
         const { data } = await GetUser(userId);
         setUserData(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -90,23 +89,28 @@ function ChatBox({ chat, currentUser, setSendMessage, receiveMessage }) {
             </div>
           </div>
           <div className="flex flex-col gap-2 p-6 overflow-y-auto">
-            {messages.map((message) => (
-              <div
-                ref={scroll}
-                className={`message ${
-                  message.senderId === currentUser
-                    ? "bg-primary"
-                    : "bg-[#343a40]"
-                } text-white p-3 rounded-[1rem] max-w-[28rem] w-[fit-content] flex flex-col gap-2 ${
-                  message.senderId === currentUser ? "self-end" : ""
-                }`}
-              >
-                <span className="text-[15px]">{message.text}</span>
-                <span className="text-[10px] self-end">
-                  {format(message.createdAt)}
-                </span>
-              </div>
-            ))}
+            {messages.length === 0 ? (
+              <div className="text-center text-gray-500">Start the conversation by sending a message</div>
+            ) : (
+              messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`message ${
+                    message.senderId === currentUser
+                      ? "bg-primary"
+                      : "bg-[#343a40]"
+                  } text-white p-3 rounded-[1rem] max-w-[28rem] w-[fit-content] flex flex-col gap-2 ${
+                    message.senderId === currentUser ? "self-end" : ""
+                  }`}
+                >
+                  <span className="text-[15px]">{message.text}</span>
+                  <span className="text-[10px] self-end">
+                    {format(message.createdAt)}
+                  </span>
+                </div>
+              ))
+            )}
+            <div ref={scroll} />
           </div>
           <div className="flex justify-between items-center p-2 bg-gray-100 rounded-[1rem] border">
             <InputEmoji
