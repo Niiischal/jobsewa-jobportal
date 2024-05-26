@@ -75,7 +75,7 @@ const Home = () => {
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
-      const response = await GetJobs({ filters, search: searchQuery });
+      const response = await GetJobs({ ...filters, search: searchQuery });
       dispatch(SetLoader(false));
       if (response.success) {
         setJobs(response.data);
