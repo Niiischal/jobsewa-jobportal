@@ -4,7 +4,7 @@ import { LiaCopyright } from "react-icons/lia";
 function Footer() {
   return (
     <div className="flex justify-center items-center h-[50px] bg-primary w-full gap-2">
-      <p className="text-white">Nischal Khatiwada</p>
+      <p className="text-white">JobSewa</p>
       <div className="flex items-center">
         <LiaCopyright size={25} color="white" />
         <p className="text-white">2024</p>
