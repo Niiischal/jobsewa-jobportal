@@ -8,6 +8,7 @@ import {
   ApplyJob,
   GetAppliedJobById,
   GetJobs,
+  GetSavedJobById,
   SaveJobById,
 } from "../../apicalls/jobs";
 import { AddNotification } from "../../apicalls/notifications";
@@ -22,6 +23,7 @@ const Jobs = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const [remainingTime, setRemainingTime] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth); // State to keep track of window width
+  const { user } = useSelector((state) => state.users);
 
   const JobDetailsTable = ({ selectedJob }) => {
     const columns = [
@@ -80,21 +82,46 @@ const Jobs = () => {
   const dispatch = useDispatch();
 
   const getData = async () => {
+    dispatch(SetLoader(true));
     try {
-      dispatch(SetLoader(true));
-      const response = await GetJobs({ ...filters, search: searchQuery });
-      dispatch(SetLoader(false));
-      if (response.success) {
-        const updatedJobs = response.data.map((job) => ({
+      // Fetch job listings and the saved/applied job statuses concurrently
+      const [jobResponse, savedJobsResponse, appliedJobsResponse] =
+        await Promise.all([
+          GetJobs({ ...filters, search: searchQuery }),
+          GetSavedJobById(user.id),
+          GetAppliedJobById(user.id),
+        ]);
+
+      if (jobResponse.success) {
+        const updatedJobs = jobResponse.data.map((job) => ({
           ...job,
-          isSaved: savedJobs.includes(job._id),
-          isApplied: appliedJobs.includes(job._id),
+          isSaved:
+            savedJobsResponse.success &&
+            savedJobsResponse.data.savedJobs.some(
+              (savedJob) => savedJob._id === job._id
+            ),
+          isApplied:
+            appliedJobsResponse.success &&
+            appliedJobsResponse.data.appliedJobs.some(
+              (appliedJob) => appliedJob._id === job._id
+            ),
         }));
         setJobs(updatedJobs);
       }
+
+      if (savedJobsResponse.success) {
+        setSavedJobs(savedJobsResponse.data.savedJobs.map((job) => job._id));
+      }
+
+      if (appliedJobsResponse.success) {
+        setAppliedJobs(
+          appliedJobsResponse.data.appliedJobs.map((job) => job._id)
+        );
+      }
     } catch (error) {
-      dispatch(SetLoader(false));
       message.error(error.message);
+    } finally {
+      dispatch(SetLoader(false));
     }
   };
 
@@ -120,7 +147,13 @@ const Jobs = () => {
 
   useEffect(() => {
     getData();
-  }, [filters, searchQuery, savedJobs, appliedJobs]);
+  }, [filters, searchQuery]);
+
+  useEffect(() => {
+    if (user.id) {
+      getData();
+    }
+  }, [user.id, filters, searchQuery]);
 
   const handleJobClick = (job) => {
     if (windowWidth > 768) {
@@ -147,8 +180,6 @@ const Jobs = () => {
     }
   }, [selectedJob]);
 
-  const { user } = useSelector((state) => state.users);
-
   const handleSaveJob = async (jobId) => {
     try {
       const response = await SaveJobById(jobId);
@@ -163,27 +194,12 @@ const Jobs = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchAppliedJobs = async () => {
-      try {
-        const response = await GetAppliedJobById();
-        if (response.success) {
-          setAppliedJobs(response.data.appliedJobs);
-        }
-      } catch (error) {
-        message.error("Failed to retrived applied jobs");
-      }
-    };
-
-    fetchAppliedJobs();
-  }, []);
-
   const handleApplyJob = async (jobId) => {
     try {
       dispatch(SetLoader(true));
       const response = await ApplyJob(jobId);
       if (response.success) {
-        setAppliedJobs((prevAppliedJobs) => [...prevAppliedJobs, jobId]);
+        setAppliedJobs((prev) => [...prev, jobId]);
         message.success(response.message);
         dispatch(SetLoader(false));
         //send notification to provider
@@ -203,6 +219,24 @@ const Jobs = () => {
       message.error(error.message);
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const appliedJobsResponse = await GetAppliedJobById(user.id);
+      if (appliedJobsResponse.success) {
+        setAppliedJobs(
+          appliedJobsResponse.data.appliedJobs.map((job) => job._id)
+        );
+      } else {
+        console.error(
+          "Failed to fetch applied jobs:",
+          appliedJobsResponse.message
+        );
+      }
+    };
+
+    fetchData();
+  }, [user.id]);
 
   const isDeadlinePassed = () => {
     if (!selectedJob || !selectedJob.createdAt || !selectedJob.duration) {
@@ -316,7 +350,7 @@ const Jobs = () => {
                 <div className="flex flex-1 flex-col pt-[15px] items-end">
                   {selectedJob && (
                     <div>
-                      {user && user.savedJobs.includes(selectedJob._id) ? (
+                      {savedJobs.includes(selectedJob._id) ? (
                         <IoIosHeart
                           size={24}
                           className="text-red-500 cursor-not-allowed"
@@ -341,11 +375,11 @@ const Jobs = () => {
                       handleApplyJob(selectedJob._id);
                     }}
                     disabled={
-                      (user && user.appliedJobs.includes(selectedJob._id)) ||
+                      appliedJobs.includes(selectedJob._id) ||
                       isDeadlinePassed()
                     }
                   >
-                    {user && user.appliedJobs.includes(selectedJob._id)
+                    {appliedJobs.includes(selectedJob._id)
                       ? "Applied"
                       : "Quick Apply"}
                   </Button>
@@ -413,7 +447,7 @@ const Jobs = () => {
                   <div className="flex flex-1 flex-col pt-[15px] items-end">
                     {selectedJob && (
                       <div>
-                        {user && user.savedJobs.includes(selectedJob._id) ? (
+                        {savedJobs.includes(selectedJob._id) ? (
                           <IoIosHeart
                             size={24}
                             className="text-red-500 cursor-not-allowed"
@@ -438,11 +472,11 @@ const Jobs = () => {
                         handleApplyJob(selectedJob._id);
                       }}
                       disabled={
-                        (user && user.appliedJobs.includes(selectedJob._id)) ||
+                        appliedJobs.includes(selectedJob._id) ||
                         isDeadlinePassed()
                       }
                     >
-                      {user && user.appliedJobs.includes(selectedJob._id)
+                      {appliedJobs.includes(selectedJob._id)
                         ? "Applied"
                         : "Quick Apply"}
                     </Button>
