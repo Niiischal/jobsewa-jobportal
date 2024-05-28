@@ -167,9 +167,10 @@ function JobForm({ showJobForm, setShowJobForm, selectedJob, getData }) {
                   name="openings"
                   rules={[
                     { required: true, message: "Please enter No of openings" },
+                    // { type: 'number', min: 1, message: "The openings cannot be in negative" }
                   ]}
                 >
-                  <Input type="number" />
+                  <Input type="number" min={1} />
                 </Form.Item>
               </Col>
             </Row>
